@@ -1,35 +1,34 @@
 // src/app/auth-error/page.tsx
 "use client";
 
-import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import Link from "next/link";
 
-export default function AuthErrorPage() {
+function AuthErrorContent() {
   const searchParams = useSearchParams();
-  const error = searchParams.get('error');
-
-  let errorMessage = "An unexpected error occurred. Please try again.";
-
-  if (error === "InvalidEmailDomain") {
-    errorMessage = "You must use a valid university email to sign in.";
-  }
-  // আপনি চাইলে এখানে আরও কাস্টম error মেসেজ যোগ করতে পারেন
+  const error = searchParams.get("error");
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-900">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-center text-red-600">
-          Authentication Error
-        </h1>
-        <p className="text-center text-gray-700">
-          {errorMessage}
-        </p>
-        <Link href="/login">
-          <span className="block w-full text-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700">
-            Back to Login
-          </span>
-        </Link>
-      </div>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4 text-center">
+      <h1 className="text-4xl font-bold text-red-500 mb-4">Authentication Error ⚠️</h1>
+      <p className="text-gray-300 mb-8 text-lg">
+        {error ? `Error Code: ${error}` : "An unknown error occurred during login."}
+      </p>
+      <Link 
+        href="/" 
+        className="bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-500 transition font-medium"
+      >
+        ← Back to Home
+      </Link>
     </div>
+  );
+}
+
+export default function AuthErrorPage() {
+  return (
+    <Suspense fallback={<div className="text-white text-center p-10">Loading error details...</div>}>
+      <AuthErrorContent />
+    </Suspense>
   );
 }
