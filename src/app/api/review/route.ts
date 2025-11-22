@@ -1,15 +1,16 @@
+// src/app/api/review/route.ts
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
-import { z } from "zod"; 
+import { z } from "zod";
 
-const bannedWords = ["gali"]; 
+const bannedWords = ["bad", "worst", "useless", "stupid", "idiot", "fake", "baje", "faltu", "gali"]; 
 
 const reviewSchema = z.object({
-  rating: z.coerce.number().min(1).max(5), 
-  comment: z.string().min(5).max(500),     
-  course: z.string().max(20).optional(),   
+  rating: z.coerce.number().min(1).max(5),
+  comment: z.string().min(5).max(500),
+  course: z.string().max(20).optional(),
   facultyId: z.string(),
 });
 
@@ -39,14 +40,13 @@ export async function POST(request: Request) {
 
     const { facultyId, rating, comment, course } = validation.data;
 
-    
+    // Spam Check
     const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
-    
     const recentReview = await prisma.review.findFirst({
       where: {
         userId: user.id,
         createdAt: {
-          gte: fiveMinutesAgo, 
+          gte: fiveMinutesAgo,
         },
       },
     });
@@ -54,10 +54,11 @@ export async function POST(request: Request) {
     if (recentReview) {
       return NextResponse.json(
         { error: "Please wait 5 minutes before posting another review! ⏳" }, 
-        { status: 429 } 
+        { status: 429 }
       );
     }
 
+    // Moderation Check
     const containsBadWord = bannedWords.some((word) => 
       comment.toLowerCase().includes(word)
     );
@@ -69,14 +70,16 @@ export async function POST(request: Request) {
       );
     }
 
+    // Save Review
     const newReview = await prisma.review.create({
       data: {
         rating: rating,
         comment: comment,
-        course: course ? course.toUpperCase() : "General", 
+        course: course ? course.toUpperCase() : "General",
         facultyId: facultyId,
         userId: user.id,
-        status: "PENDING", 
+        status: "PENDING",
+      }, // <--- এই ব্র্যাকেটটি মিসিং ছিল আপনার কোডে
     });
 
     return NextResponse.json(newReview);
