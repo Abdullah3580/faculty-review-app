@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { z } from "zod";
 
-const bannedWords = ["bad", "worst", "useless", "stupid", "idiot", "fake", "baje", "faltu", "gali"]; 
+const bannedWords = ["bad", "worst", "useless", "stupid", "idiot", "fake", "baje", "faltu", "gali"];
 
 const reviewSchema = z.object({
   rating: z.coerce.number().min(1).max(5),
@@ -28,12 +28,11 @@ export async function POST(request: Request) {
     if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
 
     const json = await request.json();
-
     const validation = reviewSchema.safeParse(json);
-    
+
     if (!validation.success) {
       return NextResponse.json(
-        { error: "Invalid data! Comment must be 5-500 chars & Rating 1-5." }, 
+        { error: "Invalid data! Comment must be 5-500 chars & Rating 1-5." },
         { status: 400 }
       );
     }
@@ -53,19 +52,19 @@ export async function POST(request: Request) {
 
     if (recentReview) {
       return NextResponse.json(
-        { error: "Please wait 5 minutes before posting another review! ⏳" }, 
+        { error: "Please wait 5 minutes before posting another review! ⏳" },
         { status: 429 }
       );
     }
 
     // Moderation Check
-    const containsBadWord = bannedWords.some((word) => 
+    const containsBadWord = bannedWords.some((word) =>
       comment.toLowerCase().includes(word)
     );
 
     if (containsBadWord) {
       return NextResponse.json(
-        { error: "Review contains inappropriate language. Please be respectful. 🚫" }, 
+        { error: "Review contains inappropriate language. Please be respectful. 🚫" },
         { status: 400 }
       );
     }
@@ -73,17 +72,16 @@ export async function POST(request: Request) {
     // Save Review
     const newReview = await prisma.review.create({
       data: {
-        rating: rating,
-        comment: comment,
-        course: course ? course.toUpperCase() : "General",
-        facultyId: facultyId,
+        rating,
+        comment,
+        course: course ? course.toUpperCase() : "GENERAL",
+        facultyId,
         userId: user.id,
         status: "PENDING",
-      }, // <--- এই ব্র্যাকেটটি মিসিং ছিল আপনার কোডে
+      },
     });
 
     return NextResponse.json(newReview);
-
   } catch (error) {
     console.error("Review Error:", error);
     return NextResponse.json({ error: "Error submitting review" }, { status: 500 });
