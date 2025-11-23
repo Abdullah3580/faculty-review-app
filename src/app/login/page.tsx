@@ -47,7 +47,7 @@ export default function LoginPage() {
           Sign In / Register
         </h1>
         <p className="text-center text-gray-600">
-          Use your university email to get a magic link.
+          Use your university email to Sign in.
         </p>
         
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -62,7 +62,7 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               required
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black"
-              placeholder="e.g. your.name@bracuniversity.net"
+              placeholder="e.g. your.name@bscse.uiu.ac.bd"
             />
           </div>
 
