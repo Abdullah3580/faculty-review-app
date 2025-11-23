@@ -43,9 +43,7 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, user }) {
       if (session.user) {
-        // @ts-ignore
         session.user.id = user.id;
-        // @ts-ignore
         session.user.nickname = user.nickname;
         session.user.role = user.role;
       }
