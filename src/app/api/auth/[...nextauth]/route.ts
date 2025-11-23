@@ -1,11 +1,13 @@
+// src/app/api/auth/[...nextauth]/route.ts
 import NextAuth, { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "@/lib/prisma";
 import EmailProvider from "next-auth/providers/email";
 
-// --- আপনার ভার্সিটির ডোমেইন ---
-const ALLOWED_EMAIL_DOMAIN = "bscse.uiu.ac.bd"; 
-// -----------------------------
+// --- কনফিগারেশন ---
+const ADMIN_EMAIL = "mdabdullahalsiam358@gmail.com"; // আপনার জিমেইল (যেটা দিয়ে অ্যাডমিন লগইন করবেন)
+const VARSITY_DOMAIN = "bscse.uiu.ac.bd";            // ভার্সিটির ডোমেইন (ছাত্রদের জন্য)
+// ------------------
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -25,14 +27,18 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user }) {
       if (!user.email) return false;
-      
-      // ডোমেইন চেক (আপনি চাইলে এটি এখন অফ করে রাখতে পারেন সবার জন্য খোলার দিতে চাইলে)
-      // যদি শুধুমাত্র ভার্সিটির মেইল এলাউ করতে চান তবে নিচের লাইনটি রাখুন:
-      if (user.email.endsWith(`@${ALLOWED_EMAIL_DOMAIN}`)) {
+
+      // ১. যদি ইমেইলটি অ্যাডমিনের হয়, তবে অনুমতি দিন
+      if (user.email === ADMIN_EMAIL) {
         return true;
       }
-      // আর যদি সবাইকে (যেমন gmail, yahoo) এলাউ করতে চান, তবে উপরের if ব্লকটি মুছে শুধু "return true;" দিন।
-      
+
+      // ২. যদি ইমেইলটি ভার্সিটির ডোমেইন হয়, তবে অনুমতি দিন
+      if (user.email.endsWith(`@${VARSITY_DOMAIN}`)) {
+        return true;
+      }
+
+      // ৩. অন্যথায় এরর পেজে পাঠান
       return "/auth-error?error=InvalidEmailDomain";
     },
     async session({ session, user }) {
