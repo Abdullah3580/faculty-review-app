@@ -46,11 +46,13 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  nickname      String?   @unique // ডাকনাম 
-  semester      String?           // বর্তমান সেমিস্টার
-  role          String    @default("STUDENT") // "ADMIN" অথবা "STUDENT"
+  nickname      String?   @unique
+  semester      String?   
+  role          String    @default("STUDENT") 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now()) @updatedAt
+  password      String?   
+  studentId     String?   @unique 
   accounts      Account[]
   sessions      Session[]
   reviews       Review[]

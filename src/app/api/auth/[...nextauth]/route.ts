@@ -1,60 +1,78 @@
-// src/app/api/auth/[...nextauth]/route.ts
+//src\app\api\auth\[...nextauth]\route.ts"
 import NextAuth, { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "@/lib/prisma";
-import EmailProvider from "next-auth/providers/email";
-
-// --- কনফিগারেশন ---
-const ADMIN_EMAIL = "mdabdullahalsiam358@gmail.com"; // আপনার জিমেইল (যেটা দিয়ে অ্যাডমিন লগইন করবেন)
-const VARSITY_DOMAIN = "bscse.uiu.ac.bd";            // ভার্সিটির ডোমেইন (ছাত্রদের জন্য)
-// ------------------
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
+  session: {
+    strategy: "jwt",
+  },
   providers: [
-    EmailProvider({
-      server: {
-        host: process.env.EMAIL_SERVER_HOST,
-        port: Number(process.env.EMAIL_SERVER_PORT),
-        auth: {
-          user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD,
-        },
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" }
       },
-      from: process.env.EMAIL_FROM,
+      async authorize(credentials) {
+        // ১. ইনপুট চেক
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Please enter email and password");
+        }
+
+        const identifier = credentials.email; // এখানে email বা studentId আসবে
+
+        // ২. ইউজার খোঁজা (ইমেইল অথবা স্টুডেন্ট আইডি দিয়ে)
+        const user = await prisma.user.findFirst({
+          where: {
+            OR: [
+              { email: identifier },
+              { studentId: identifier }
+            ]
+          }
+        });
+
+        // ৩. ইউজার না পাওয়া গেলে বা পাসওয়ার্ড না থাকলে
+        if (!user || !user.password) {
+          console.log("❌ User not found or password missing");
+          throw new Error("User not found or password not set");
+        }
+
+        c
+      }
     }),
   ],
   callbacks: {
-    async signIn({ user }) {
-      if (!user.email) return false;
-
-      // ১. যদি ইমেইলটি অ্যাডমিনের হয়, তবে অনুমতি দিন
-      if (user.email === ADMIN_EMAIL) {
-        return true;
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.role = user.role;
+        token.nickname = user.nickname;
+        // @ts-ignore
+        token.studentId = user.studentId;
       }
-
-      // ২. যদি ইমেইলটি ভার্সিটির ডোমেইন হয়, তবে অনুমতি দিন
-      if (user.email.endsWith(`@${VARSITY_DOMAIN}`)) {
-        return true;
-      }
-
-      // ৩. অন্যথায় এরর পেজে পাঠান
-      return "/auth-error?error=InvalidEmailDomain";
+      return token;
     },
-    async session({ session, user }) {
+    async session({ session, token }) {
       if (session.user) {
-        session.user.id = user.id;
-        session.user.nickname = user.nickname;
-        session.user.role = user.role;
+        session.user.id = token.id as string;
+        session.user.role = token.role as string;
+        session.user.nickname = token.nickname as string;
+        // @ts-ignore
+        session.user.studentId = token.studentId as string;
       }
       return session;
     },
   },
   pages: {
     signIn: "/login",
-    verifyRequest: "/verify-request",
     error: "/auth-error",
   },
+  // ডিবাগিং অন রাখা হলো সমস্যা দেখার জন্য
+  debug: true,
 };
 
 const handler = NextAuth(authOptions);

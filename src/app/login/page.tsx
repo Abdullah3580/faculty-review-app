@@ -4,82 +4,80 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import Link from "next/link";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
 
-    try {
-      // Auth.js-কে বলা হচ্ছে 'email' provider দিয়ে সাইন ইন শুরু করতে
-      const result = await signIn("email", {
-        email: email,
-        redirect: false, // আমরা নিজেরা পেজ চেঞ্জ করবো
-        callbackUrl: "/", // লগইন সফল হলে হোম পেজে পাঠাবে
-      });
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
 
-      if (result?.error) {
-        // যদি authOptions-এর signIn callback false রিটার্ন করে (যেমন: @gmail.com)
-        setError("Invalid email domain. Please use your university email.");
-      } else if (result?.ok) {
-        // ইমেল সফলভাবে পাঠানো হয়েছে
-        // Auth.js নিজে থেকেই /verify-request পেজে পাঠিয়ে দেয়
-        // অথবা আপনি নিজে পাঠাতে পারেন:
-        router.push("/verify-request");
-      }
-    } catch (err) {
-      setError("An unexpected error occurred. Please try again.");
-    } finally {
-      setLoading(false);
+    setLoading(false);
+
+    if (result?.error) {
+      toast.error("Invalid email or password");
+    } else {
+      toast.success("Logged in successfully!");
+      router.push("/");
+      router.refresh();
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-900">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-center text-gray-900">
-          Sign In / Register
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
+      <div className="w-full max-w-md p-8 space-y-6 bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+        <h1 className="text-2xl font-bold text-center text-gray-900 dark:text-white">
+          Welcome Back
         </h1>
-        <p className="text-center text-gray-600">
-          Use your university email to Sign in.
-        </p>
         
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              University Email
-            </label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
             <input
-              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black"
-              placeholder="e.g. your.name@bscse.uiu.ac.bd"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm outline-none bg-white dark:bg-gray-700"
+              placeholder="e.g. name@bscse.uiu.ac.bd" 
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm outline-none bg-white dark:bg-gray-700"
+              placeholder="********" 
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+            className="w-full py-2 px-4 rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 transition"
           >
-            {loading ? "Sending..." : "Send Magic Link"}
+            {loading ? "Signing in..." : "Login"}
           </button>
-
-          {error && (
-            <p className="text-center text-sm text-red-600">
-              {error}
-            </p>
-          )}
         </form>
+
+        <div className="text-center text-sm mt-4">
+          <span className="text-gray-600 dark:text-gray-400">Don't have an account? </span>
+          <Link href="/register" className="font-medium text-indigo-600 hover:text-indigo-500">Sign up</Link>
+        </div>
       </div>
     </div>
   );
