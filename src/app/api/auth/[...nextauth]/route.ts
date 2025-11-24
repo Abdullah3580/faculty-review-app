@@ -17,15 +17,16 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" }
       },
-      async authorize(credentials) {
+
+            async authorize(credentials) {
         // ১. ইনপুট চেক
         if (!credentials?.email || !credentials?.password) {
           throw new Error("Please enter email and password");
         }
 
-        const identifier = credentials.email; // এখানে email বা studentId আসবে
+        const identifier = credentials.email; // email or studentId
 
-        // ২. ইউজার খোঁজা (ইমেইল অথবা স্টুডেন্ট আইডি দিয়ে)
+        // ২. ইউজার খোঁজা
         const user = await prisma.user.findFirst({
           where: {
             OR: [
@@ -35,14 +36,33 @@ export const authOptions: NextAuthOptions = {
           }
         });
 
-        // ৩. ইউজার না পাওয়া গেলে বা পাসওয়ার্ড না থাকলে
+        // ৩. ইউজার না পাওয়া গেলে
         if (!user || !user.password) {
           console.log("❌ User not found or password missing");
-          throw new Error("User not found or password not set");
+          return null; 
         }
 
-        c
+        // ৪. পাসওয়ার্ড মিলানো
+        const isValid = await bcrypt.compare(
+          credentials.password,
+          user.password
+        );
+
+        if (!isValid) {
+          console.log("❌ Password mismatch");
+          return null;
+        }
+
+        // ৫. সফল হলে user return
+        return {
+          id: user.id,
+          name: user.nickname || user.name,
+          email: user.email,
+          role: user.role,
+          studentId: user.studentId
+        };
       }
+
     }),
   ],
   callbacks: {
