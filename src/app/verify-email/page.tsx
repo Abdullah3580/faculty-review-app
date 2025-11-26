@@ -1,4 +1,4 @@
-"use client"; // পুরো page এখন client component
+"use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
