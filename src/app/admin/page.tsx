@@ -14,22 +14,34 @@ import AdminReportControls from "@/components/AdminReportControls";
 type ReportedReview = {
   id: string;
   reason: string;
-  reviewId: string;
   createdAt: Date;
+  userId: string;
+  reviewId: string;
+
   user: {
-    nickname: string;
+    nickname: string | null;
   };
+
   review: {
     id: string;
-    comment: string; // তোমার কোডে comment ব্যবহার হয়েছে, তাই এটা ধরে নিচ্ছি
+    userId: string;
+    facultyId: string;
+    status: string;
+    rating: number;
+    comment: string;
+    course: string;
+    createdAt: Date;
+
     user: {
-      nickname: string;
+      nickname: string | null;
     };
+
     faculty: {
       name: string;
     };
   };
 };
+
 
 
 export default async function AdminPage() {
