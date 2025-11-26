@@ -1,10 +1,11 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import toast from "react-hot-toast";
 
-export default function VerifyEmailPage() {
+// ১. মূল লজিকটি একটি আলাদা কম্পোনেন্টে রাখা হলো
+function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const router = useRouter();
@@ -49,5 +50,14 @@ export default function VerifyEmailPage() {
         <p className="text-gray-500 text-sm">Please wait while we verify your token.</p>
       </div>
     </div>
+  );
+}
+
+// ২. মেইন পেজ কম্পোনেন্টে Suspense র‍্যাপার যোগ করা হলো
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">Loading verification...</div>}>
+      <VerifyEmailContent />
+    </Suspense>
   );
 }
