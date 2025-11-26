@@ -110,7 +110,7 @@ export default async function AdminPage() {
               {reportedReviews.map((report: ReportedReview) => (
                 <div key={report.id} className="bg-white dark:bg-gray-800 p-4 rounded border border-red-200 dark:border-red-500/20">
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Reason: <span className="text-red-500 dark:text-red-300 font-bold">{report.reason}</span></p>
-                  <div className="p-3 bg-gray-50 dark:bg-gray-900 rounded text-sm italic text-gray-700 dark:text-gray-300">"{report.review.comment}"</div>
+                  <div className="p-3 bg-gray-50 dark:bg-gray-900 rounded text-sm italic text-gray-700 dark:text-gray-300">"{report.review.user.nickname ?? "Anonymous"}"</div>
                   <div className="mt-3 flex justify-end"><AdminReportControls reviewId={report.reviewId} /></div>
                 </div>
               ))}

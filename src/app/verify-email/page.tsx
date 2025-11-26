@@ -1,8 +1,10 @@
 "use client";
 
+
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+
 
 export default function VerifyEmailPage() {
   const searchParams = useSearchParams();
@@ -36,8 +38,11 @@ export default function VerifyEmailPage() {
           toast.error(data.error);
         }
       } catch (error) {
-        setStatus("❌ Something went wrong");
-      }
+          console.error(error);
+          setStatus("❌ Something went wrong");
+          toast.error("Something went wrong");
+          }
+
     };
 
     verify();
