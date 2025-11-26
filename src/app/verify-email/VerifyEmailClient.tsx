@@ -1,4 +1,3 @@
-// src/app/verify-email/VerifyEmailClient.tsx
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
@@ -36,9 +35,7 @@ export default function VerifyEmailClient() {
           toast.error(data.error);
         }
       } catch (error) {
-        console.error(error);
         setStatus("❌ Something went wrong");
-        toast.error("Something went wrong");
       }
     };
 
