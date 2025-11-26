@@ -11,6 +11,27 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import AdminReportControls from "@/components/AdminReportControls";
 
+type ReportedReview = {
+  id: string;
+  reason: string;
+  reviewId: string;
+  createdAt: Date;
+  user: {
+    nickname: string;
+  };
+  review: {
+    id: string;
+    comment: string; // তোমার কোডে comment ব্যবহার হয়েছে, তাই এটা ধরে নিচ্ছি
+    user: {
+      nickname: string;
+    };
+    faculty: {
+      name: string;
+    };
+  };
+};
+
+
 export default async function AdminPage() {
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.email) redirect("/");
@@ -72,7 +93,7 @@ export default async function AdminPage() {
               🚩 Reported Reviews ({reportedReviews.length})
             </h2>
             <div className="grid gap-4">
-              {reportedReviews.map((report) => (
+              {reportedReviews.map((report: ReportedReview) => (
                 <div key={report.id} className="bg-white dark:bg-gray-800 p-4 rounded border border-red-200 dark:border-red-500/20">
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Reason: <span className="text-red-500 dark:text-red-300 font-bold">{report.reason}</span></p>
                   <div className="p-3 bg-gray-50 dark:bg-gray-900 rounded text-sm italic text-gray-700 dark:text-gray-300">"{report.review.comment}"</div>
