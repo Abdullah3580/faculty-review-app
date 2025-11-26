@@ -10,37 +10,39 @@ import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import AdminReportControls from "@/components/AdminReportControls";
+import { ReportedReview } from "@/types";
 
-type ReportedReview = {
-  id: string;
-  reason: string;
-  createdAt: Date;
-  userId: string;
-  reviewId: string;
 
-  user: {
-    nickname: string | null;
-  };
+// type ReportedReview = {
+//   id: string;
+//   reason: string;
+//   createdAt: Date;
+//   userId: string;
+//   reviewId: string;
 
-  review: {
-    id: string;
-    userId: string;
-    facultyId: string;
-    status: string;
-    rating: number;
-    comment: string;
-    course: string;
-    createdAt: Date;
+//   user: {
+//     nickname: string | null;
+//   };
 
-    user: {
-      nickname: string | null;
-    };
+//   review: {
+//     id: string;
+//     userId: string;
+//     facultyId: string;
+//     status: string;
+//     rating: number;
+//     comment: string;
+//     course: string;
+//     createdAt: Date;
 
-    faculty: {
-      name: string;
-    };
-  };
-};
+//     user: {
+//       nickname: string | null;
+//     };
+
+//     faculty: {
+//       name: string;
+//     };
+//   };
+// };
 
 
 
