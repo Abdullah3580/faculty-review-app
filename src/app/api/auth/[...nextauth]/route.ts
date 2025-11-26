@@ -1,4 +1,3 @@
-//src\app\api\auth\[...nextauth]\route.ts"
 import NextAuth, { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "@/lib/prisma";
@@ -17,59 +16,56 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" }
       },
+      async authorize(credentials) {
+        const email = credentials?.email;
+        const password = credentials?.password;
 
-            async authorize(credentials) {
-        // ১. ইনপুট চেক
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error("Please enter email and password");
+        if (!email || !password) {
+          throw new Error("Please enter Email and Password");
         }
 
-        const identifier = credentials.email; // email or studentId
-
-        // ২. ইউজার খোঁজা
+        // ১. ইউজার খোঁজা
         const user = await prisma.user.findFirst({
           where: {
             OR: [
-              { email: identifier },
-              { studentId: identifier }
+              { email: email },
+              { studentId: email }
             ]
           }
         });
 
-        // ৩. ইউজার না পাওয়া গেলে
-        if (!user || !user.password) {
-          console.log("❌ User not found or password missing");
-          return null; 
+        if (!user) {
+          throw new Error("User not found");
         }
 
-        // ৪. পাসওয়ার্ড মিলানো
-        const isValid = await bcrypt.compare(
-          credentials.password,
-          user.password
-        );
+        if (!user.password) {
+          throw new Error("Please reset your password");
+        }
+
+        // 🔥 নতুন চেকপোস্ট: ইমেইল ভেরিফাইড কিনা চেক করা 🔥
+        if (!user.emailVerified) {
+          throw new Error("Please verify your email first! Check your inbox.");
+        }
+        // ------------------------------------------------
+
+        // ২. পাসওয়ার্ড চেক করা
+        const isValid = await bcrypt.compare(password, user.password);
 
         if (!isValid) {
-          console.log("❌ Password mismatch");
-          return null;
+          throw new Error("Invalid password");
         }
 
-        // ৫. সফল হলে user return
-        return {
-          id: user.id,
-          name: user.nickname || user.name,
-          email: user.email,
-          role: user.role,
-          studentId: user.studentId
-        };
+        return user;
       }
-
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        // @ts-ignore
         token.role = user.role;
+        // @ts-ignore
         token.nickname = user.nickname;
         // @ts-ignore
         token.studentId = user.studentId;
@@ -78,8 +74,11 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (session.user) {
+        // @ts-ignore
         session.user.id = token.id as string;
+        // @ts-ignore
         session.user.role = token.role as string;
+        // @ts-ignore
         session.user.nickname = token.nickname as string;
         // @ts-ignore
         session.user.studentId = token.studentId as string;
@@ -91,8 +90,7 @@ export const authOptions: NextAuthOptions = {
     signIn: "/login",
     error: "/auth-error",
   },
-  // ডিবাগিং অন রাখা হলো সমস্যা দেখার জন্য
-  debug: true,
+  debug: process.env.NODE_ENV === "development",
 };
 
 const handler = NextAuth(authOptions);

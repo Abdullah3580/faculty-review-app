@@ -14,6 +14,8 @@ export default function RegisterPage() {
     password: ""
   });
   const [loading, setLoading] = useState(false);
+  // একটি নতুন স্টেট ভেরিয়েবল যা ভেরিফিকেশন মেসেজ দেখাবে
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,8 +36,10 @@ export default function RegisterPage() {
       const data = await res.json();
 
       if (res.ok) {
-        toast.success("Registration successful! Please login.");
-        router.push("/login");
+        // টোস্ট মেসেজ দেখানো
+        toast.success("Registration successful! Please check your email.");
+        // সাকসেস মেসেজ দেখানোর জন্য স্টেট আপডেট
+        setShowSuccessMessage(true); 
       } else {
         toast.error(data.error || "Registration failed");
       }
@@ -45,6 +49,24 @@ export default function RegisterPage() {
       setLoading(false);
     }
   };
+
+  // যদি সফলভাবে রেজিস্টার হয়, তবে এই মেসেজটি দেখাবে
+  if (showSuccessMessage) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white p-4">
+        <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg text-center border border-gray-200 dark:border-gray-700 max-w-md w-full">
+          <h2 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 mb-4">Check Your Email 📧</h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-6">
+            We have sent a verification link to <strong>{formData.email}</strong>. 
+            Please check your inbox (and spam folder) to verify your account before logging in.
+          </p>
+          <Link href="/login" className="text-indigo-600 hover:underline font-medium">
+            Go to Login Page
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900 px-4 py-12">
