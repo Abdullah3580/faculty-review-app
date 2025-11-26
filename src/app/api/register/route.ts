@@ -1,29 +1,72 @@
+// src/app/api/register/route.ts
+
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-import { v4 as uuidv4 } from "uuid"; // টোকেন তৈরির জন্য
+import { v4 as uuidv4 } from "uuid";
 import { sendVerificationEmail } from "@/lib/email";
 
 export async function POST(request: Request) {
   try {
     const { name, nickname, studentId, email, password } = await request.json();
 
+    
     if (!name || !nickname || !studentId || !email || !password) {
-      return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+      return NextResponse.json({ error: "All fields are required." }, { status: 400 });
     }
 
-    // ডুপ্লিকেট চেক
+    
+    if (!email.endsWith("uiu.ac.bd")) {
+      return NextResponse.json(
+        { error: "Only uiu.ac.bd emails are allowed." },
+        { status: 400 }
+      );
+    }
+////////////////////////////////////
+    if (studentId.length < 10) {
+      return NextResponse.json(
+        { error: "Invalid Student Id" },
+        { status: 400 }
+      );
+    }
+///////////////////////////////
+    if (password.length < 8) {
+      return NextResponse.json(
+        { error: "Password must be at least 8 characters long." },
+        { status: 400 }
+      );
+    }
+
+    const strongPassword =
+      /[A-Z]/.test(password) && // uppercase
+      /[a-z]/.test(password) && // lowercase
+      /[0-9]/.test(password) && // number
+      /[^A-Za-z0-9]/.test(password); // symbol
+
+    if (!strongPassword) {
+      return NextResponse.json(
+        { error: "Password must include uppercase, lowercase, number and special character." },
+        { status: 400 }
+      );
+    }
+
+    
     const exists = await prisma.user.findFirst({
-      where: { OR: [{ email }, { studentId }, { nickname }] }
+      where: {
+        OR: [{ email }, { studentId }, { nickname }]
+      },
     });
 
     if (exists) {
-      return NextResponse.json({ error: "User already exists with this Email, ID or Nickname" }, { status: 409 });
+      return NextResponse.json(
+        { error: "User already exists with same email, ID or nickname." },
+        { status: 409 }
+      );
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // ১. ইউজার তৈরি (কিন্তু ভেরিফাইড না)
+    
     await prisma.user.create({
       data: {
         name,
@@ -32,15 +75,14 @@ export async function POST(request: Request) {
         email,
         password: hashedPassword,
         role: "STUDENT",
-        emailVerified: null, // এখন null থাকবে
+        emailVerified: null,
       },
     });
 
-    // ২. টোকেন তৈরি
+    
     const token = uuidv4();
-    const expires = new Date(new Date().getTime() + 24 * 60 * 60 * 1000); // ২৪ ঘণ্টা মেয়াদ
+    const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
 
-    // ৩. টোকেন ডাটাবেসে সেভ করা
     await prisma.verificationToken.create({
       data: {
         identifier: email,
@@ -49,13 +91,17 @@ export async function POST(request: Request) {
       },
     });
 
-    // ৪. ইমেইল পাঠানো
-    await sendVerificationEmail(email, token);
+        await sendVerificationEmail(email, token);
 
-    return NextResponse.json({ message: "Success! Please check your email to verify." });
+    return NextResponse.json({
+      message: "Registration successful. Please verify your email.",
+    });
 
   } catch (error) {
     console.error("Registration Error:", error);
-    return NextResponse.json({ error: "Registration failed" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Server error during registration." },
+      { status: 500 }
+    );
   }
 }
