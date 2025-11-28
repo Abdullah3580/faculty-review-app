@@ -114,8 +114,8 @@ export default function RegisterPage() {
           <input name="name" type="text" required placeholder="Full Name" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
           <input name="studentId" type="text" required placeholder="Student ID (e.g. 01123456)" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
           <input name="nickname" type="text" required placeholder="Anonymous Nickname" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
-          <input name="email" type="email" required placeholder="Varsity Email (@uiu.ac.bd)" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
-          <input name="password" type="password" required placeholder="Password" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
+          <input name="email" type="email" required placeholder="Varsity Email (....@bscse.uiu.ac.bd)" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
+          <input name="password" type="password" required placeholder="Password(Make an unique pass..)" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
 
           <button type="submit" disabled={loading} className="w-full bg-indigo-600 text-white p-3 rounded font-bold hover:bg-indigo-500 disabled:opacity-50 transition">
             {loading ? "Creating Account..." : "Sign Up"}
