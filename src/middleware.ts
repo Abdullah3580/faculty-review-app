@@ -33,7 +33,7 @@ function checkRateLimit(ip: string) {
 }
 
 export async function middleware(request: NextRequest) {
-  //const ip = request.ip || "127.0.0.1";
+  // আইপি পাওয়ার নিরাপদ উপায় (Vercel/Production এর জন্য)
   const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
   
   // ১. Rate Limit চেক (Security)
@@ -45,40 +45,40 @@ export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request });
   const { pathname } = request.nextUrl;
 
-  // লগইন করা থাকলে কেউ আর লগইন/রেজিস্টার পেজে যেতে পারবে না
+  // যে পেজগুলো পাবলিক (লগইন ছাড়াই দেখা যাবে)
+  // যেমন: লগইন, রেজিস্ট্রেশন, ইমেইল ভেরিফিকেশন এবং অথেনটিকেশন API
+  const isPublicPath = 
+    pathname === "/login" || 
+    pathname === "/register" || 
+    pathname.startsWith("/verify-email") || // ইমেইল ভেরিফিকেশন পেজ
+    pathname.startsWith("/api/auth") ||     // লগইন API
+    pathname === "/auth-error";
+
+  // লজিক ১: ইউজার যদি লগইন করা না থাকে এবং পাবলিক পেজে না থাকে -> লগইন পেজে পাঠাও
+  // এর ফলে হোমপেজ (/) সহ সব পেজ প্রটেক্টেড হয়ে যাবে
+  if (!token && !isPublicPath) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  // লজিক ২: ইউজার যদি লগইন করা থাকে এবং আবার লগইন/রেজিস্টার পেজে যেতে চায় -> হোমপেজে পাঠাও
   if (token && (pathname === "/login" || pathname === "/register")) {
-    return NextResponse.redirect(new URL("/profile", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // এডমিন পেজ প্রটেকশন
+  // লজিক ৩: এডমিন পেজ প্রটেকশন
   if (pathname.startsWith("/admin")) {
-    if (!token) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
     // @ts-ignore
-    if (token.role !== "ADMIN") {
-      return NextResponse.redirect(new URL("/auth-error?error=AccessDenied", request.url));
-    }
-  }
-
-  // ইউজার/প্রোফাইল পেজ প্রটেকশন
-  if (pathname.startsWith("/profile") || pathname.startsWith("/compare")) {
-    if (!token) {
-      return NextResponse.redirect(new URL("/login", request.url));
+    if (token?.role !== "ADMIN") {
+      // এডমিন না হলে হোমপেজে ফেরত পাঠাবে
+      return NextResponse.redirect(new URL("/", request.url));
     }
   }
 
   return NextResponse.next();
 }
 
-// কোন কোন পাথে এই মিডলওয়্যার কাজ করবে
+// কনফিগারেশন আপডেট: সব রাউট চেক করবে
 export const config = {
-  matcher: [
-    "/admin/:path*",
-    "/profile/:path*",
-    "/compare/:path*",
-    "/login",
-    "/register",
-    "/api/auth/:path*" 
-  ],
+  // এখানে বলা হয়েছে: _next/static, _next/image, favicon.ico ছাড়া সব পেজে মিডলওয়্যার চলবে
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
