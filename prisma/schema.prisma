@@ -1,5 +1,3 @@
-// prisma/schema.prisma
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,27 +5,24 @@ generator client {
 datasource db {
   provider     = "postgresql"
   url          = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  directUrl    = env("DIRECT_URL")
   relationMode = "foreignKeys"
 }
 
-// --- Auth Models (লগইন সিস্টেম) ---
-
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String? @db.Text
-  access_token       String? @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String? @db.Text
-  session_state      String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -41,28 +36,26 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
+  id            String     @id @default(cuid())
+  email         String?    @unique
   emailVerified DateTime?
   image         String?
-  nickname      String?   @unique
-  semester      String?   
-  role          String    @default("STUDENT") 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now()) @updatedAt
-  password      String?   
-  studentId     String?   @unique 
+  name          String?
+  nickname      String?    @unique
+  semester      String?
+  role          String     @default("STUDENT")
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @default(now()) @updatedAt
+  password      String?
+  studentId     String?    @unique
   accounts      Account[]
-  sessions      Session[]
-  reviews       Review[]
-  votes         Vote[]
-  questions     Question[]
   answers       Answer[]
+  questions     Question[]
   reports       Report[]
-
+  reviews       Review[]
+  sessions      Session[]
+  votes         Vote[]
 }
-
 
 model VerificationToken {
   identifier String
@@ -72,90 +65,76 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// --- Faculty & Review Models (নতুন যোগ করা হলো) ---
-
 model Faculty {
-  id          String   @id @default(cuid())
-  name        String
-  department  String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
-  status      String   @default("PENDING") // "PENDING", "APPROVED", "REJECTED"
-
-  reviews     Review[]
-  questions   Question[]
+  id         String     @id @default(cuid())
+  name       String
+  department String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  status     String     @default("PENDING")
+  questions  Question[]
+  reviews    Review[]
 }
 
 model Review {
   id        String   @id @default(cuid())
-  rating    Int      // 1 থেকে 5 স্টার
+  rating    Int
   comment   String
   createdAt DateTime @default(now())
-
-  status    String   @default("PENDING") // "PENDING", "APPROVED", "REJECTED"
-  course    String   @default("General")
   facultyId String
-  faculty   Faculty  @relation(fields: [facultyId], references: [id], onDelete: Cascade)
-
-  // কে রিভিউ দিয়েছে
   userId    String
+  status    String   @default("PENDING")
+  course    String   @default("General")
+  reports   Report[]
+  faculty   Faculty  @relation(fields: [facultyId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   votes     Vote[]
-  reports       Report[]
 }
-// ভোট মডেল (কে, কোথায় ভোট দিল)
 
 model Vote {
-  id        String   @id @default(cuid())
-  type      String   // "UP" অথবা "DOWN"
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  reviewId  String
-  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
-  @@unique([userId, reviewId]) // একজন ইউজার একটি রিভিউতে একবারই ভোট দিতে পারবে
+  id       String @id @default(cuid())
+  type     String
+  userId   String
+  reviewId String
+  review   Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, reviewId])
 }
-// --- Q/A Section Models ---
 
 model Question {
-  id          String   @id @default(cuid())
-  content     String
-  createdAt   DateTime @default(now())
-
-  facultyId   String
-  faculty     Faculty  @relation(fields: [facultyId], references: [id], onDelete: Cascade)
-
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  answers     Answer[]
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  facultyId String
+  userId    String
+  answers   Answer[]
+  faculty   Faculty  @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Answer {
-  id          String   @id @default(cuid())
-  content     String
-  createdAt   DateTime @default(now())
-
-  questionId  String
-  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         String   @id @default(cuid())
+  content    String
+  createdAt  DateTime @default(now())
+  questionId String
+  userId     String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Report {
   id        String   @id @default(cuid())
   reason    String
   createdAt DateTime @default(now())
-
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
   reviewId  String
   review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
 model Department {
   id        String   @id @default(cuid())
-  name      String   @unique // একই নামের ডিপার্টমেন্ট দুবার হবে না
+  name      String   @unique
   createdAt DateTime @default(now())
 }

@@ -2,7 +2,7 @@
 
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import bcrypt from "bcryptjs";
+import argon2 from "argon2"; // <-- NEW
 import { v4 as uuidv4 } from "uuid";
 import { sendVerificationEmail } from "@/lib/email";
 
@@ -10,26 +10,24 @@ export async function POST(request: Request) {
   try {
     const { name, nickname, studentId, email, password } = await request.json();
 
-    
     if (!name || !nickname || !studentId || !email || !password) {
       return NextResponse.json({ error: "All fields are required." }, { status: 400 });
     }
 
-    
     if (!email.endsWith("uiu.ac.bd")) {
       return NextResponse.json(
         { error: "Only uiu.ac.bd emails are allowed." },
         { status: 400 }
       );
     }
-////////////////////////////////////
+
     if (studentId.length < 10) {
       return NextResponse.json(
         { error: "Invalid Student Id" },
         { status: 400 }
       );
     }
-///////////////////////////////
+
     if (password.length < 8) {
       return NextResponse.json(
         { error: "Password must be at least 8 characters long." },
@@ -38,10 +36,10 @@ export async function POST(request: Request) {
     }
 
     const strongPassword =
-      /[A-Z]/.test(password) && // uppercase
-      /[a-z]/.test(password) && // lowercase
-      /[0-9]/.test(password) && // number
-      /[^A-Za-z0-9]/.test(password); // symbol
+      /[A-Z]/.test(password) &&
+      /[a-z]/.test(password) &&
+      /[0-9]/.test(password) &&
+      /[^A-Za-z0-9]/.test(password);
 
     if (!strongPassword) {
       return NextResponse.json(
@@ -50,7 +48,6 @@ export async function POST(request: Request) {
       );
     }
 
-    
     const exists = await prisma.user.findFirst({
       where: {
         OR: [{ email }, { studentId }, { nickname }]
@@ -64,9 +61,16 @@ export async function POST(request: Request) {
       );
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // -----------------------------
+    // 🔐 Argon2 Hashing (STRONG AF)
+    // -----------------------------
+    const hashedPassword = await argon2.hash(password, {
+      type: argon2.argon2id,   // best: hybrid resistant
+      memoryCost: 2 ** 16,     // 64MB
+      timeCost: 3,             // iterations
+      parallelism: 1           // single-thread (server-friendly)
+    });
 
-    
     await prisma.user.create({
       data: {
         name,
@@ -79,9 +83,8 @@ export async function POST(request: Request) {
       },
     });
 
-    
     const token = uuidv4();
-    const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+    const expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
     await prisma.verificationToken.create({
       data: {
@@ -91,7 +94,7 @@ export async function POST(request: Request) {
       },
     });
 
-        await sendVerificationEmail(email, token);
+    await sendVerificationEmail(email, token);
 
     return NextResponse.json({
       message: "Registration successful. Please verify your email.",
