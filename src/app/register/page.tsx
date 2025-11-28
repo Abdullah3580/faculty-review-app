@@ -1,3 +1,4 @@
+//sre/app/register/page.tsx
 "use client";
 
 import { useState } from "react";
@@ -16,21 +17,20 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   
-  // ✅ আপডেট: এখন আমরা একটি array (তালিকা) রাখব, শুধু একটি string না
+  // এরর মেসেজ দেখানোর জন্য স্টেট (Array)
   const [errorMessages, setErrorMessages] = useState<string[]>([]); 
   
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    // ইউজার টাইপ করা শুরু করলে এরর লিস্ট ক্লিয়ার করে দেব
     if (errorMessages.length > 0) setErrorMessages([]);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setErrorMessages([]); // সাবমিটের শুরুতে এরর রিসেট
+    setErrorMessages([]); 
 
     try {
       const res = await fetch("/api/register", {
@@ -50,13 +50,10 @@ export default function RegisterPage() {
         toast.success("Registration successful!");
         setShowSuccessMessage(true);
       } else {
-        // ✅ আপডেট: সার্ভার থেকে আসা 'errors' অ্যারে রিসিভ করা
         if (data.errors && Array.isArray(data.errors)) {
           setErrorMessages(data.errors);
-          // টোস্টে শুধু প্রথম এররটি দেখাবে, যাতে হিজিবিজি না হয়
           toast.error(data.errors[0]); 
         } else if (data.error) {
-           // যদি ব্যাকএন্ড ভুলবশত একটা string পাঠায়, তাও হ্যান্ডেল করব
            setErrorMessages([data.error]);
            toast.error(data.error);
         } else {
@@ -90,15 +87,27 @@ export default function RegisterPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900 px-4 py-12">
-      <div className="w-full max-w-md space-y-8 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+      <div className="w-full max-w-md space-y-6 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Create Account</h2>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            Join the community to review faculties
+            Join the community to review faculties anonymously
           </p>
         </div>
 
-        {/* ✅ আপডেট: এরর লিস্ট দেখানোর লজিক */}
+        {/* 🔒 Privacy Notice (নতুন যোগ করা হয়েছে) */}
+        <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800 p-4 rounded-lg flex gap-3 text-left shadow-sm">
+          <span className="text-xl">🔒</span>
+          <div className="text-xs text-indigo-900 dark:text-indigo-200">
+            <p className="font-bold mb-1">Your identity is hidden!</p>
+            <p className="opacity-90 leading-relaxed">
+              Your <span className="font-semibold">Name</span>, <span className="font-semibold">ID</span>, and <span className="font-semibold">Email</span> will remain completely <span className="font-bold underline">confidential</span>. 
+              Only your <strong>Anonymous Name</strong> will be visible to others.
+            </p>
+          </div>
+        </div>
+
+        {/* ⚠️ Error Messages List */}
         {errorMessages.length > 0 && (
           <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-300 p-4 rounded text-sm animate-pulse">
             <p className="font-bold mb-1">⚠️ Please fix the following:</p>
@@ -110,15 +119,21 @@ export default function RegisterPage() {
           </div>
         )}
 
-        <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
-          <input name="name" type="text" required placeholder="Full Name" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
-          <input name="studentId" type="text" required placeholder="Student ID (e.g. 01123456)" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
-          <input name="nickname" type="text" required placeholder="Anonymous Nickname" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
-          <input name="email" type="email" required placeholder="Varsity Email (....@bscse.uiu.ac.bd)" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
-          <input name="password" type="password" required placeholder="Password(Make an unique pass..)" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
+        <form className="mt-4 space-y-4" onSubmit={handleSubmit}>
+          <input name="name" type="text" required placeholder="Full Name  (Will be Hidden)" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
+          <input name="studentId" type="text" required placeholder="Student ID  (Will be Hidden)" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
+          
+          {/* নিকনেম ফিল্ডটি একটু হাইলাইট করা হয়েছে */}
+          <div className="relative">
+            <input name="nickname" type="text" required placeholder="Anonymous Name (Visible to Public)" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border-2 border-indigo-100 dark:border-indigo-800 outline-none focus:border-indigo-500 transition" />
+            <span className="absolute right-3 top-3.5 text-xs text-gray-400">Public</span>
+          </div>
 
-          <button type="submit" disabled={loading} className="w-full bg-indigo-600 text-white p-3 rounded font-bold hover:bg-indigo-500 disabled:opacity-50 transition">
-            {loading ? "Creating Account..." : "Sign Up"}
+          <input name="email" type="email" required placeholder="Varsity Email  (Hidden)" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
+          <input name="password" type="password" required placeholder="Password" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
+
+          <button type="submit" disabled={loading} className="w-full bg-indigo-600 text-white p-3 rounded font-bold hover:bg-indigo-500 disabled:opacity-50 transition shadow-lg shadow-indigo-500/30">
+            {loading ? "Creating Account..." : "Sign Up Securely"}
           </button>
         </form>
 
