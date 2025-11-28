@@ -1,3 +1,4 @@
+// src/lib/email.ts
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
@@ -10,9 +11,14 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendVerificationEmail = async (email: string, token: string) => {
+  // ডাইনামিক বেস URL নির্ধারণ
+  // ১. প্রথমে দেখবে NEXT_PUBLIC_FRONTEND_URL আছে কি না (ভারসেলের জন্য)
+  // ২. না থাকলে NEXTAUTH_URL দেখবে
+  // ৩. কিছুই না থাকলে localhost (ডেভেলপমেন্টের জন্য)
+  const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || process.env.NEXTAUTH_URL || "http://localhost:3000";
+
   // ভেরিফিকেশন লিংক তৈরি
-  // যেমন: http://localhost:3000/verify-email?token=abcd-1234
-  const confirmLink = `${process.env.NEXTAUTH_URL}/verify-email?token=${token}`;
+  const confirmLink = `${baseUrl}/verify-email?token=${token}`;
 
   await transporter.sendMail({
     from: process.env.EMAIL_FROM,
@@ -30,7 +36,9 @@ export const sendVerificationEmail = async (email: string, token: string) => {
         <p>Or copy and paste this link in your browser:</p>
         <p><a href="${confirmLink}">${confirmLink}</a></p>
         
-        <p style="color: #666; font-size: 12px; margin-top: 30px;">This link will expire in 24 hours.</p>
+        <p style="color: #666; font-size: 12px; margin-top: 30px;">
+           For security reasons, this link will expire in <strong>15 minutes</strong>.
+        </p>
       </div>
     `,
   });
