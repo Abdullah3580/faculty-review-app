@@ -69,6 +69,10 @@ model Faculty {
   id         String     @id @default(cuid())
   name       String
   department String
+  designation String   @default("Lecturer") 
+  initial     String?  
+  code        String?  
+  roomNumber  String?  
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
   status     String     @default("PENDING")

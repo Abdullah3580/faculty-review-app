@@ -2,22 +2,47 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 export default function AddFacultyForm() {
-  const [name, setName] = useState("");
-  const [department, setDepartment] = useState("");
-  const [departments, setDepartments] = useState<{ id: string, name: string }[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  
+  // ✅ ডায়নামিক ডিপার্টমেন্ট লিস্ট রাখার জন্য স্টেট
+  const [departments, setDepartments] = useState<{ id: string; name: string }[]>([]);
 
-  // ১. পেজ লোড হলে ডিপার্টমেন্ট লিস্ট নিয়ে আসা
+  // ফর্ম ডাটা স্টেট
+  const [formData, setFormData] = useState({
+    name: "",
+    department: "",
+    designation: "Lecturer",
+    initial: "",
+    code: ""
+  });
+
+  // ✅ কম্পোনেন্ট লোড হলে ডাটাবেজ থেকে ডিপার্টমেন্ট নিয়ে আসবে
   useEffect(() => {
-    fetch("/api/department")
-      .then((res) => res.json())
-      .then((data) => setDepartments(data));
-  }, []);
+    const fetchDepartments = async () => {
+      try {
+        const res = await fetch("/api/departments");
+        if (res.ok) {
+          const data = await res.json();
+          setDepartments(data);
+        }
+      } catch (error) {
+        console.error("Failed to load departments");
+      }
+    };
+
+    // যখনই মডাল ওপেন হবে, তখনই লিস্ট আনবে (বা একবারও আনা যায়)
+    if (isOpen) {
+      fetchDepartments();
+    }
+  }, [isOpen]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,65 +52,108 @@ export default function AddFacultyForm() {
       const res = await fetch("/api/faculty", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, department }),
+        body: JSON.stringify(formData),
       });
 
-      const data = await res.json();
-
       if (res.ok) {
-        setName("");
-        setDepartment("");
-        router.refresh();
-        toast.success("Request sent! Faculty will appear after Admin approval. 🛡️");
+        toast.success("Faculty added successfully!");
+        setIsOpen(false);
+        // রিসেট
+        setFormData({ name: "", department: "", designation: "Lecturer", initial: "", code: "" });
+        window.location.reload();
       } else {
-        toast.error(data.error || "Failed to add faculty.");
+        const data = await res.json();
+        toast.error(data.error || "Failed to add faculty");
       }
     } catch (error) {
-      console.error(error);
-      toast.error("Something went wrong.");
+      toast.error("Something went wrong");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 p-6 rounded-lg mb-8 w-full max-w-xl border border-gray-200 dark:border-gray-700 shadow-lg">
-      <h2 className="text-xl font-bold mb-4 text-indigo-600 dark:text-indigo-400">Add New Faculty</h2>
-      <div className="flex flex-col md:flex-row gap-4">
-        <input
-          type="text"
-          placeholder="Faculty Name (e.g. Dr. Kamal)"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="flex-1 p-2 rounded bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:border-indigo-500 outline-none"
-          required
-        />
-        
-        {/* ২. টেক্সট ইনপুট সরিয়ে সিলেক্ট বসানো হলো */}
-        <select
-          value={department}
-          onChange={(e) => setDepartment(e.target.value)}
-          className="w-full md:w-1/3 p-2 rounded bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:border-indigo-500 outline-none"
-          required
-        >
-          <option value="">Select Dept</option>
-          {departments.length === 0 ? (
-            <option disabled>Loading...</option>
-          ) : (
-            departments.map((d) => (
-              <option key={d.id} value={d.name}>{d.name}</option>
-            ))
-          )}
-        </select>
-        
+    <div className="w-full max-w-2xl mx-auto mb-8">
+      {!isOpen ? (
         <button
-          type="submit"
-          disabled={loading}
-          className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-500 disabled:opacity-50 transition font-medium"
+          onClick={() => setIsOpen(true)}
+          className="w-full py-3 bg-white dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg text-gray-500 hover:text-indigo-600 hover:border-indigo-400 transition font-bold"
         >
-          {loading ? "Adding..." : "Add"}
+          + Add New Faculty
         </button>
-      </div>
-    </form>
+      ) : (
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold text-gray-800 dark:text-white">Add Faculty</h2>
+            <button onClick={() => setIsOpen(false)} className="text-gray-500 hover:text-red-500">✖</button>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            
+            {/* ১. নাম */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Faculty Name <span className="text-red-500">*</span></label>
+              <input name="name" type="text" required placeholder="e.g. Dr. Abul Kashem" value={formData.name} onChange={handleChange} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              
+              {/* ২. ডিপার্টমেন্ট (ডাটাবেজ থেকে আসা ডায়নামিক লিস্ট) ✅ */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Department <span className="text-red-500">*</span></label>
+                <select 
+                  name="department" 
+                  required 
+                  value={formData.department} 
+                  onChange={handleChange} 
+                  className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                >
+                  <option value="" disabled>Select Department</option>
+                  
+                  {/* লোডিং বা খালি অবস্থা হ্যান্ডেল করা */}
+                  {departments.length === 0 ? (
+                    <option disabled>Loading departments...</option>
+                  ) : (
+                    departments.map((dept) => (
+                      <option key={dept.id} value={dept.name}>{dept.name}</option>
+                    ))
+                  )}
+                </select>
+              </div>
+
+              {/* ৩. ডেজিগনেশন */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Designation</label>
+                <select name="designation" value={formData.designation} onChange={handleChange} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600">
+                  <option value="Lecturer">Lecturer</option>
+                  <option value="Senior Lecturer">Senior Lecturer</option>
+                  <option value="Assistant Professor">Assistant Professor</option>
+                  <option value="Associate Professor">Associate Professor</option>
+                  <option value="Professor">Professor</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* ৪. ইনিশিয়াল */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Initial (Optional)</label>
+                <input name="initial" type="text" placeholder="e.g. MSA" value={formData.initial} onChange={handleChange} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+              </div>
+
+              {/* ৫. কোড */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Code / Room (Optional)</label>
+                <input name="code" type="text" placeholder="e.g. 1234" value={formData.code} onChange={handleChange} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+              </div>
+            </div>
+
+            <button type="submit" disabled={loading} className="w-full bg-indigo-600 text-white p-2 rounded hover:bg-indigo-700 disabled:opacity-50 font-bold">
+              {loading ? "Adding..." : "Submit Faculty"}
+            </button>
+          </form>
+        </div>
+      )}
+    </div>
   );
 }
