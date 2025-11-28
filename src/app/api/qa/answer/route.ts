@@ -23,6 +23,25 @@ export async function POST(request: Request) {
         userId: user.id,
       },
     });
+
+    const question = await prisma.question.findUnique({ where: { id: questionId } });
+
+    if (question && question.userId !== user.id) {
+      try {
+        await prisma.notification.create({
+          data: {
+            userId: question.userId, 
+            type: "REPLY",
+            message: `💬 @${user.nickname || "Someone"} replied to your question.`,
+            link: `/faculty/${question.facultyId}`,
+            isRead: false,
+          },
+        });
+      } catch (notifError) {
+        console.error("Notification failed", notifError);
+      }
+    }
+
     return NextResponse.json(newAnswer);
   } catch (error) {
     return NextResponse.json({ error: "Error posting answer" }, { status: 500 });

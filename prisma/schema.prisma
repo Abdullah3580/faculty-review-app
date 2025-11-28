@@ -55,6 +55,7 @@ model User {
   reviews       Review[]
   sessions      Session[]
   votes         Vote[]
+  notifications Notification[]
 }
 
 model VerificationToken {
@@ -151,4 +152,16 @@ model PasswordResetToken {
   createdAt DateTime @default(now())
 
   @@unique([email, token])
+}
+// নোটিফিকেশন মডেল (সবার জন্য)
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String   
+  type      String   
+  message   String   
+  link      String? 
+  isRead    Boolean  @default(false) 
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

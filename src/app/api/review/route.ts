@@ -39,7 +39,6 @@ export async function POST(request: Request) {
 
     const { facultyId, rating, comment, course } = validation.data;
 
-    // Spam Check
     const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
     const recentReview = await prisma.review.findFirst({
       where: {
@@ -57,7 +56,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Moderation Check
     const containsBadWord = bannedWords.some((word) =>
       comment.toLowerCase().includes(word)
     );
@@ -69,7 +67,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Save Review
     const newReview = await prisma.review.create({
       data: {
         rating,
@@ -80,6 +77,28 @@ export async function POST(request: Request) {
         status: "PENDING",
       },
     });
+
+    
+    try {
+      const admins = await prisma.user.findMany({
+        where: { role: "ADMIN" },
+        select: { id: true }
+      });
+
+      if (admins.length > 0) {
+        await prisma.notification.createMany({
+          data: admins.map((admin) => ({
+            userId: admin.id,
+            type: "SYSTEM", 
+            message: `📝 New review posted by @${user.nickname || "Student"}. Needs approval.`,
+            link: `/admin`, 
+            isRead: false,
+          })),
+        });
+      }
+    } catch (notifError) {
+      console.error("Failed to send admin notifications:", notifError);
+    }
 
     return NextResponse.json(newReview);
   } catch (error) {

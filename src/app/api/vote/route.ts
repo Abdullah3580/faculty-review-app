@@ -10,13 +10,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // ইউজার খুঁজে বের করা
+
   const user = await prisma.user.findUnique({ where: { email: session.user.email } });
   if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
 
-  const { reviewId, type } = await request.json(); // type হবে "UP" বা "DOWN"
+  const { reviewId, type } = await request.json(); 
 
-  // আগে ভোট দিয়েছে কিনা চেক করা
   const existingVote = await prisma.vote.findUnique({
     where: {
       userId_reviewId: {
@@ -28,14 +27,12 @@ export async function POST(request: Request) {
 
   try {
     if (existingVote) {
-      // যদি ইউজার একই বাটনে আবার চাপ দেয়, তাহলে ভোট রিমুভ হবে (Toggle)
       if (existingVote.type === type) {
         await prisma.vote.delete({
           where: { id: existingVote.id },
         });
         return NextResponse.json({ message: "Vote removed" });
       } else {
-        // যদি ভোট চেঞ্জ করে (UP থেকে DOWN বা উল্টো), তাহলে আপডেট হবে
         await prisma.vote.update({
           where: { id: existingVote.id },
           data: { type },
@@ -43,7 +40,6 @@ export async function POST(request: Request) {
         return NextResponse.json({ message: "Vote updated" });
       }
     } else {
-      // নতুন ভোট দেওয়া
       await prisma.vote.create({
         data: {
           userId: user.id,
@@ -51,6 +47,29 @@ export async function POST(request: Request) {
           type,
         },
       });
+
+     
+      if (type === "UP") {
+        const review = await prisma.review.findUnique({ where: { id: reviewId } });
+
+        
+        if (review && review.userId !== user.id) {
+          try {
+            await prisma.notification.create({
+              data: {
+                userId: review.userId, 
+                type: "VOTE",
+                message: `👍 Someone liked your review!`,
+                link: `/faculty/${review.facultyId}`, 
+                isRead: false,
+              },
+            });
+          } catch (notifError) {
+            console.error("Notification failed", notifError);
+          }
+        }
+      }
+
       return NextResponse.json({ message: "Vote added" });
     }
   } catch (error) {

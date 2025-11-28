@@ -10,10 +10,11 @@ import ReportButton from "@/components/ReportButton";
 import Pagination from "@/components/Pagination";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import Link from "next/link";
+import UserBadge from "@/components/UserBadge"; // ✅ ১. নতুন ইমপোর্ট
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import NotificationBell from "@/components/NotificationBell";
 
-// Vercel এ সার্চ এবং ডাইনামিক রেন্ডারিং ঠিক রাখার জন্য
 export const dynamic = "force-dynamic";
 
 interface Props {
@@ -61,7 +62,16 @@ export default async function HomePage(props: Props) {
         where: { status: "APPROVED" },
         orderBy: { createdAt: "desc" },
         include: {
-          user: { select: { id: true, nickname: true, semester: true } },
+          // ✅ ২. ইউজারের role এবং রিভিউ সংখ্যা (_count) আনা হয়েছে
+          user: { 
+            select: { 
+              id: true, 
+              nickname: true, 
+              semester: true, 
+              role: true, 
+              _count: { select: { reviews: true } } 
+            } 
+          },
           votes: true,
           reports: true
         }
@@ -94,35 +104,32 @@ export default async function HomePage(props: Props) {
 
   return (
     <div className="min-h-screen p-8">
-      {/* --- Header (Updated) --- */}
+      {/* --- Header --- */}
       <header className="flex flex-col md:flex-row justify-between items-center mb-10 max-w-6xl mx-auto border-b border-gray-200 dark:border-gray-800 pb-6 gap-6">
-        
-        {/* 1. Logo / Title */}
-        <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-cyan-600 dark:from-indigo-400 dark:to-cyan-400 shrink-0">
-          Faculty Review
-        </h1>
-        
-        {/* 2. Search Box (এখন মাঝখানে) */}
-        <div className="w-full md:max-w-md mx-auto order-3 md:order-2">
-           <SearchBox />
-        </div>
+          <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-cyan-600 dark:from-indigo-400 dark:to-cyan-400 shrink-0">
+            Faculty Review
+          </h1>
+          <div className="w-full md:max-w-md mx-auto order-3 md:order-2">
+            <SearchBox />
+          </div>
+          <div className="flex items-center gap-4 order-2 md:order-3 shrink-0">
+            <ThemeSwitcher />
+            
+            <a href="/compare" className="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white text-sm font-medium border border-gray-300 dark:border-gray-600 px-3 py-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+              ⚖️ Compare
+            </a>
 
-        {/* 3. Action Buttons */}
-        <div className="flex items-center gap-4 order-2 md:order-3 shrink-0">
-           <ThemeSwitcher />
-           
-           <a href="/compare" className="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white text-sm font-medium border border-gray-300 dark:border-gray-600 px-3 py-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition">
-             ⚖️ Compare
-           </a>
-           {isAdmin && (
-             <a href="/admin" className="bg-red-600 text-white px-3 py-1 rounded text-sm font-bold hover:bg-red-500">
-               Admin
-             </a>
-           )}
-           <AuthButtons />
-        </div>
-      </header>
-      {/* ------------------------ */}
+            {/* ✅ এই লাইনটি যোগ করুন (শুধু লগইন থাকলে দেখাবে) */}
+            {session && <NotificationBell />}
+
+            {isAdmin && (
+              <a href="/admin" className="bg-red-600 text-white px-3 py-1 rounded text-sm font-bold hover:bg-red-500">
+                Admin
+              </a>
+            )}
+            <AuthButtons />
+          </div>
+        </header>
 
       <main className="flex flex-col items-center w-full">
         
@@ -140,14 +147,11 @@ export default async function HomePage(props: Props) {
                     : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                 }`}>
                   {index === 0 && <div className="absolute top-0 right-0 bg-yellow-500 text-black text-xs px-2 py-1 font-bold">#1 Choice</div>}
-                  
-                  {/* ✅ নামের ওপর লিংক যোগ করা হয়েছে */}
                   <Link href={`/faculty/${faculty.id}`}>
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white hover:text-indigo-600 cursor-pointer transition">
                         {faculty.name}
                     </h3>
                   </Link>
-                  
                   <div className="flex flex-wrap gap-1 mt-1 mb-2">
                     {faculty.tags.map((tag, i) => (
                       <span key={i} className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${tag.color}`}>
@@ -155,7 +159,6 @@ export default async function HomePage(props: Props) {
                       </span>
                     ))}
                   </div>
-
                   <p className="text-sm text-gray-600 dark:text-gray-400">{faculty.department}</p>
                   <div className="mt-2 flex items-center gap-2">
                     <span className="text-2xl font-bold text-gray-900 dark:text-white">{faculty.avgRating.toFixed(1)}</span>
@@ -183,20 +186,17 @@ export default async function HomePage(props: Props) {
             paginatedFaculties.map((faculty) => (
               <div key={faculty.id} className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-indigo-500/30 transition shadow-lg group relative">
                 
-                {/* ✅ View Profile বাটন (Absolute Positioned) */}
                 <Link href={`/faculty/${faculty.id}`} className="absolute top-6 right-6 text-xs font-semibold text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800 px-2 py-1 rounded hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition">
                     View Profile ↗
                 </Link>
 
-                <div className="flex justify-between items-start mb-2 pr-20"> {/* pr-20 দেওয়া হয়েছে যাতে বাটন টেক্সটের উপর না আসে */}
+                <div className="flex justify-between items-start mb-2 pr-20">
                   <div>
-                    {/* ✅ নামের ওপর লিংক যোগ করা হয়েছে */}
                     <Link href={`/faculty/${faculty.id}`}>
                         <h2 className="text-2xl font-semibold text-gray-900 dark:text-white hover:text-indigo-600 transition cursor-pointer">
                             {faculty.name}
                         </h2>
                     </Link>
-
                     <div className="flex flex-wrap gap-2 mt-2 mb-1">
                       {faculty.tags.map((tag, i) => (
                         <span key={i} className={`text-xs px-2 py-1 rounded font-medium ${tag.color}`}>
@@ -208,7 +208,6 @@ export default async function HomePage(props: Props) {
                   </div>
                 </div>
 
-                {/* Stats Row */}
                 <div className="flex justify-between items-center mt-3 border-b border-gray-100 dark:border-gray-700 pb-3 mb-3">
                      <span className="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs px-2 py-1 rounded">
                       {faculty.reviews.length} Reviews
@@ -220,7 +219,7 @@ export default async function HomePage(props: Props) {
                     )}
                 </div>
 
-                {/* Review List (Existing Code) */}
+                {/* Review List */}
                 <div className="space-y-4 max-h-60 overflow-y-auto mb-4 pr-2 custom-scrollbar mt-4">
                   {faculty.reviews.length === 0 && (
                     <p className="text-gray-500 text-sm italic">No reviews yet.</p>
@@ -228,18 +227,24 @@ export default async function HomePage(props: Props) {
                   
                   {faculty.reviews.map((review) => (
                     <div key={review.id} className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg text-sm border border-gray-200 dark:border-gray-700">
-                      <div className="flex justify-between items-start mb-1">
+                      <div className="flex flex-wrap justify-between items-start mb-1 gap-2">
                         <div className="flex items-center gap-2">
                           <span className="text-yellow-500 dark:text-yellow-400 text-xs">{"★".repeat(review.rating)}</span>
                           <span className="text-[10px] bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-200 px-1.5 py-0.5 rounded border border-indigo-200 dark:border-indigo-500/30">
                             {review.course}
                           </span>
                         </div>
-                        <Link href={`/student/${review.user.id}`} className="group">
-                          <span className="text-xs text-gray-500 dark:text-gray-400 font-mono bg-gray-200 dark:bg-gray-800 px-2 py-0.5 rounded-full group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition cursor-pointer">
-                            {review.user.nickname ? `@${review.user.nickname}` : "Anonymous"} 
-                          </span>
-                        </Link>
+                        
+                        {/* ✅ ৩. নিকনেম এবং ব্যাজ একসাথে */}
+                        <div className="flex items-center gap-2">
+                          <Link href={`/student/${review.user.id}`} className="group">
+                            <span className="text-xs text-gray-500 dark:text-gray-400 font-mono bg-gray-200 dark:bg-gray-800 px-2 py-0.5 rounded-full group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition cursor-pointer">
+                              {review.user.nickname ? `@${review.user.nickname}` : "Anonymous"} 
+                            </span>
+                          </Link>
+                          {/* ব্যাজ শো করা */}
+                          <UserBadge reviewCount={review.user._count.reviews} role={review.user.role} />
+                        </div>
                       </div>
                       
                       <p className="text-gray-700 dark:text-gray-200 mt-1 leading-relaxed">{review.comment}</p>
