@@ -1,9 +1,11 @@
-//src/app/faculty/[id]/page.tsx
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import FacultyRatingChart from "@/components/FacultyRatingChart";
-import UserBadge from "@/components/UserBadge"; // ✅ ১. নতুন ইমপোর্ট
+import UserBadge from "@/components/UserBadge";
+import ReviewForm from "@/components/ReviewForm"; // ✅ ১. ReviewForm ইমপোর্ট
+import { getServerSession } from "next-auth"; // ✅ ২. সেশন ইমপোর্ট
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -11,13 +13,13 @@ interface Props {
 
 export default async function FacultyProfilePage(props: Props) {
   const params = await props.params;
+  const session = await getServerSession(authOptions); // ✅ ৩. সেশন চেক
 
   const faculty = await prisma.faculty.findUnique({
     where: { id: params.id },
     include: {
       reviews: {
         include: {
-          // ✅ ২. ইউজারের role এবং রিভিউ সংখ্যা (_count) আনা হয়েছে
           user: { 
             select: { 
               id: true, 
@@ -79,12 +81,8 @@ export default async function FacultyProfilePage(props: Props) {
                 </div>
               </div>
             </div>
-            <Link 
-              href={`/review/new?facultyId=${faculty.id}`}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition transform hover:scale-105"
-            >
-              Write a Review ✍️
-            </Link>
+            
+            {/* ❌ আগের লিংক বাটনটি সরানো হয়েছে কারণ ফর্ম নিচে দেওয়া হয়েছে */}
           </div>
         </div>
 
@@ -101,6 +99,21 @@ export default async function FacultyProfilePage(props: Props) {
           </div>
 
           <div className="md:col-span-2">
+            
+            {/* ✅ ৪. এখানে Review Form বসানো হয়েছে (সরাসরি পেজে) */}
+            <div className="mb-8">
+              {session ? (
+                 <ReviewForm facultyId={faculty.id} />
+              ) : (
+                <div className="bg-indigo-50 dark:bg-indigo-900/20 p-6 rounded-lg border border-indigo-100 dark:border-indigo-800 text-center">
+                  <p className="text-gray-600 dark:text-gray-300 mb-4 font-medium">Want to share your experience?</p>
+                  <Link href="/login" className="bg-indigo-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-indigo-700 transition shadow-md">
+                    Login to Write a Review
+                  </Link>
+                </div>
+              )}
+            </div>
+
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
               Student Reviews <span className="text-base font-normal text-gray-500">({totalReviews})</span>
             </h2>
@@ -120,7 +133,6 @@ export default async function FacultyProfilePage(props: Props) {
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
-                            {/* ✅ ৩. নিকনেম এবং ব্যাজ একসাথে */}
                             <Link href={`/student/${review.user.id}`} className="font-bold text-gray-800 dark:text-white hover:text-indigo-500">
                                 @{review.user?.nickname || "Anonymous"}
                             </Link>

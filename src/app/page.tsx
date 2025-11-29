@@ -1,4 +1,5 @@
 // src/app/page.tsx
+import AdminReviewDeleteButton from "@/components/AdminReviewDeleteButton";
 import prisma from "@/lib/prisma";
 import AuthButtons from "@/components/AuthButtons";
 import AddFacultyForm from "@/components/AddFacultyForm";
@@ -106,10 +107,8 @@ export default async function HomePage(props: Props) {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 font-sans">
       
-      {/* ================= HERO SECTION (NEW DESIGN) ================= */}
       <div className="relative overflow-hidden bg-slate-900 text-white pb-24 pt-10 px-4 rounded-b-[2.5rem] shadow-2xl mb-12">
         
-        {/* Navbar inside Hero */}
         <header className="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto mb-16 relative z-20 gap-4">
           <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white flex items-center gap-2">
             <span className="text-4xl">🎓</span> Faculty Review
@@ -174,7 +173,6 @@ export default async function HomePage(props: Props) {
           </div>
         </div>
       </div>
-      {/* ================= END HERO ================= */}
 
 
       <main className="flex flex-col items-center w-full px-4 md:px-8 max-w-7xl mx-auto">
@@ -313,7 +311,13 @@ export default async function HomePage(props: Props) {
                       
                       <div className="mt-3 flex items-center justify-between border-t border-gray-200 dark:border-gray-600/50 pt-2">
                         <VoteButtons reviewId={review.id} initialVotes={review.votes} currentUserId={currentUserId} />
-                        <ReportButton reviewId={review.id} />
+
+                        {isAdmin ? (
+                                  <AdminReviewDeleteButton reviewId={review.id} />
+                                ) : (
+                                  <ReportButton reviewId={review.id} />
+                                )}
+
                       </div>
                     </div>
                   ))}

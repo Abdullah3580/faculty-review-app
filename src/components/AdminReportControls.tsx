@@ -1,52 +1,57 @@
-// src/components/AdminReportControls.tsx
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import AdminReviewDeleteButton from "./AdminReviewDeleteButton"; // ✅ এটি ইমপোর্ট নিশ্চিত করুন
 
-export default function AdminReportControls({ reviewId }: { reviewId: string }) {
-  const router = useRouter();
+interface Props {
+  reviewId: string;
+}
+
+export default function AdminReportControls({ reviewId }: Props) {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  const handleAction = async (action: "approve_report" | "reject_report") => {
+  // রিপোর্ট ডিসমিস করা (অর্থাৎ রিভিউ ডিলিট হবে না, রিপোর্ট মুছে যাবে)
+  const handleDismiss = async () => {
     setLoading(true);
-    const res = await fetch("/api/admin/review", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ reviewId, action }),
-    });
-    
-    setLoading(false);
-    if (res.ok) {
-        if(action === "approve_report") toast.success("Report Approved. Review Deleted. 🗑️");
-        else toast.success("Report Rejected. Review Kept. ✅");
+    try {
+      // ✅ আপডেট: সঠিক API রুটে কল করা হচ্ছে
+      const res = await fetch("/api/admin/report/dismiss", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reviewId }),
+      });
+
+      if (res.ok) {
+        toast.success("Report dismissed! Review kept. ✅");
         router.refresh();
-    } else {
-        toast.error("Failed to update");
+      } else {
+        toast.error("Failed to dismiss.");
+      }
+    } catch (error) {
+      toast.error("Error occurred.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex gap-2 mt-2">
-      {/* Approve Report = Delete Review */}
+    <div className="flex gap-3 items-center mt-2">
+      {/* ১. রিভিউ ডিলিট বাটন (সাথে ওয়ার্নিং পপ-আপ ফিচার) */}
+      <div title="Delete Review & Warn User">
+        <AdminReviewDeleteButton reviewId={reviewId} />
+      </div>
+      
+      {/* ২. রিপোর্ট ইগনোর করার বাটন */}
       <button
-        onClick={() => handleAction("approve_report")}
+        onClick={handleDismiss}
         disabled={loading}
-        className="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-500 transition font-bold"
-        title="This implies the report is TRUE, so the review will be DELETED."
+        className="text-xs bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 px-3 py-1 rounded text-gray-700 dark:text-gray-300 font-bold transition"
+        title="Ignore report and keep the review"
       >
-        {loading ? "..." : "Approve Report (Delete Review)"}
-      </button>
-
-      {/* Reject Report = Keep Review */}
-      <button
-        onClick={() => handleAction("reject_report")}
-        disabled={loading}
-        className="bg-gray-600 text-white px-3 py-1 rounded text-xs hover:bg-gray-500 transition"
-        title="This implies the report is FALSE, so the review will STAY."
-      >
-        {loading ? "..." : "Reject Report (Keep Review)"}
+        {loading ? "..." : "Dismiss Report"}
       </button>
     </div>
   );

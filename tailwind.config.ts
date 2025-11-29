@@ -1,3 +1,4 @@
+//tailwind.config.ts
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -9,10 +10,18 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        // আমাদের কাস্টম ফন্ট ভেরিয়েবল লিঙ্ক করা হলো
+        sans: ["var(--font-inter)", "sans-serif"],
+        display: ["var(--font-jakarta)", "sans-serif"],
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      },
+      animation: {
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
     },
   },
