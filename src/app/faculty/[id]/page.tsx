@@ -3,18 +3,19 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import FacultyRatingChart from "@/components/FacultyRatingChart";
 import UserBadge from "@/components/UserBadge";
-import ReviewForm from "@/components/ReviewForm"; // ✅ ১. ReviewForm ইমপোর্ট
-import { getServerSession } from "next-auth"; // ✅ ২. সেশন ইমপোর্ট
+import ReviewForm from "@/components/ReviewForm";
+import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import type { Metadata } from "next"; //
+import type { Metadata } from "next"; // ✅ সংশোধিত ইমপোর্ট
 
 interface Props {
   params: Promise<{ id: string }>;
 }
+
+// ✅ ১. ডায়নামিক মেটাডাটা (সঠিক জায়গায় আছে)
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
 
-  // ডাটাবেজ থেকে শুধু নাম আর ডিটেইলস আনা হচ্ছে টাইটেলের জন্য
   const faculty = await prisma.faculty.findUnique({
     where: { id },
     select: { name: true, designation: true, department: true }
@@ -31,9 +32,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: `Read honest reviews about ${faculty.name} (${faculty.designation}, ${faculty.department}). Share your experience anonymously.`,
   };
 }
+
+// ✅ ২. মেইন কম্পোনেন্ট
 export default async function FacultyProfilePage(props: Props) {
   const params = await props.params;
-  const session = await getServerSession(authOptions); // ✅ ৩. সেশন চেক
+  const session = await getServerSession(authOptions);
 
   const faculty = await prisma.faculty.findUnique({
     where: { id: params.id },
@@ -101,8 +104,6 @@ export default async function FacultyProfilePage(props: Props) {
                 </div>
               </div>
             </div>
-            
-            {/* ❌ আগের লিংক বাটনটি সরানো হয়েছে কারণ ফর্ম নিচে দেওয়া হয়েছে */}
           </div>
         </div>
 
@@ -120,7 +121,7 @@ export default async function FacultyProfilePage(props: Props) {
 
           <div className="md:col-span-2">
             
-            {/* ✅ ৪. এখানে Review Form বসানো হয়েছে (সরাসরি পেজে) */}
+            {/* Review Form Section */}
             <div className="mb-8">
               {session ? (
                  <ReviewForm facultyId={faculty.id} />
