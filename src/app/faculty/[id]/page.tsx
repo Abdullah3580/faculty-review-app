@@ -16,6 +16,9 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
 
+  // 👇 এই লাইনটি যোগ করুন
+  console.log("Generating metadata for ID:", id);
+
   const faculty = await prisma.faculty.findUnique({
     where: { id },
     select: { name: true, designation: true, department: true }

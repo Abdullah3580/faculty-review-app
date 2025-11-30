@@ -19,7 +19,10 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Faculty Review App",
+  title: {
+    template: '%s | Faculty Review App', 
+    default: 'Faculty Review App',       
+  },
   description: "Review your university faculty members anonymously",
 };
 
