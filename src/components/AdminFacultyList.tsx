@@ -4,6 +4,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function AdminFacultyList({ faculties }: { faculties: any[] }) {
   const [search, setSearch] = useState("");
@@ -49,9 +50,14 @@ export default function AdminFacultyList({ faculties }: { faculties: any[] }) {
 
       <div className="grid gap-2 max-h-96 overflow-y-auto custom-scrollbar">
         {filteredFaculties.map((faculty) => (
-          <div key={faculty.id} className="flex justify-between items-center bg-gray-900 p-3 rounded border border-gray-700">
+          <div key={faculty.id} className="flex justify-between items-center bg-gray-900 p-3 rounded border border-gray-700 hover:bg-gray-700/50">
             <div>
+              <Link href={`/faculty/${faculty.id}`}>
               <h3 className="font-bold text-white">{faculty.name}</h3>
+            </Link>
+
+
+
               <p className="text-xs text-gray-400">{faculty.department} • {faculty.reviews.length} Reviews</p>
             </div>
             <button 

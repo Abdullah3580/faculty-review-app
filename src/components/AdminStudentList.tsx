@@ -4,6 +4,8 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+
 
 export default function AdminStudentList({ students }: { students: any[] }) {
   const [search, setSearch] = useState("");
@@ -61,7 +63,11 @@ export default function AdminStudentList({ students }: { students: any[] }) {
           <tbody>
             {filteredStudents.slice(0, 10).map((student) => ( // প্রথম ১০ জন দেখাবে (Pagination ছাড়া সিম্পল রাখার জন্য)
               <tr key={student.id} className="border-b border-gray-700 hover:bg-gray-700/50">
-                <td className="px-4 py-3 text-white font-bold">@{student.nickname || "Anon"}</td>
+                <td className="px-4 py-3 text-white font-bold">
+                  <Link href={`/student/${student.id}`}>
+                      @{student.nickname || "Anon"}
+                  </Link>
+                </td>                 
                 <td className="px-4 py-3">{student.email}</td>
                 <td className="px-4 py-3">{student.reviews.length}</td>
                 <td className="px-4 py-3">{new Date(student.createdAt).toLocaleDateString()}</td>

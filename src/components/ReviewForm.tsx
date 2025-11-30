@@ -24,7 +24,7 @@ export default function ReviewForm({ facultyId }: { facultyId: string }) {
         facultyId, 
         rating, 
         comment, 
-        course: course.toUpperCase() // কোর্স কোড সবসময় বড় হাতের হবে (যেমন: CSE101)
+        course: course.toUpperCase() 
       }),
     });
 
@@ -52,12 +52,11 @@ export default function ReviewForm({ facultyId }: { facultyId: string }) {
       </button>
     );
   }
-
   return (
     <form onSubmit={handleSubmit} className="mt-4 bg-gray-900 p-5 rounded-lg border border-gray-700 shadow-lg">
       <h3 className="text-white font-bold mb-3">Rate this Faculty</h3>
       
-      {/* কোর্স ইনপুট (নতুন) */}
+     
       <div className="mb-3">
         <label className="block text-gray-400 text-xs mb-1 uppercase tracking-wide">Course Name</label>
         <input
