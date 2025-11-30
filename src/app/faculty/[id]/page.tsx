@@ -6,11 +6,31 @@ import UserBadge from "@/components/UserBadge";
 import ReviewForm from "@/components/ReviewForm"; // ✅ ১. ReviewForm ইমপোর্ট
 import { getServerSession } from "next-auth"; // ✅ ২. সেশন ইমপোর্ট
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import type { Metadata } from "next"; //
 
 interface Props {
   params: Promise<{ id: string }>;
 }
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
 
+  // ডাটাবেজ থেকে শুধু নাম আর ডিটেইলস আনা হচ্ছে টাইটেলের জন্য
+  const faculty = await prisma.faculty.findUnique({
+    where: { id },
+    select: { name: true, designation: true, department: true }
+  });
+
+  if (!faculty) {
+    return {
+      title: "Faculty Not Found",
+    };
+  }
+
+  return {
+    title: `Review of ${faculty.name} | Faculty Review App`,
+    description: `Read honest reviews about ${faculty.name} (${faculty.designation}, ${faculty.department}). Share your experience anonymously.`,
+  };
+}
 export default async function FacultyProfilePage(props: Props) {
   const params = await props.params;
   const session = await getServerSession(authOptions); // ✅ ৩. সেশন চেক
