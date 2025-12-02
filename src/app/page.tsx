@@ -248,7 +248,8 @@ export default async function HomePage(props: Props) {
 
                 {/* Faculty Header */}
                 <div className="mb-4 pr-24">
-                  <Link href={`/faculty/${faculty.id}`}>
+                  <Link href={`/faculty/${faculty.id}`}
+                      title={`View profile of ${faculty.name}`} >
                       <h2 className="text-2xl font-bold text-gray-900 dark:text-white hover:text-indigo-600 transition cursor-pointer mb-1">
                           {faculty.name}
                       </h2>
