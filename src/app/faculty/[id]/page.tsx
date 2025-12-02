@@ -6,18 +6,15 @@ import UserBadge from "@/components/UserBadge";
 import ReviewForm from "@/components/ReviewForm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import type { Metadata } from "next"; // ✅ সংশোধিত ইমপোর্ট
+import type { Metadata } from "next";
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
-// ✅ ১. ডায়নামিক মেটাডাটা (সঠিক জায়গায় আছে)
+// ✅ ১. এই পুরো ফাংশনটি আপডেট করা হয়েছে (সোশ্যাল মিডিয়া প্রিভিউ ঠিক করার জন্য)
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-
-  // 👇 এই লাইনটি যোগ করুন
-  console.log("Generating metadata for ID:", id);
 
   const faculty = await prisma.faculty.findUnique({
     where: { id },
@@ -30,13 +27,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const title = `Review of ${faculty.name} | Faculty Review App`;
+  const description = `Read honest reviews about ${faculty.name} (${faculty.designation}, ${faculty.department}). 100% Anonymous.`;
+
   return {
-    title: `Review of ${faculty.name} | Faculty Review App`,
-    description: `Read honest reviews about ${faculty.name} (${faculty.designation}, ${faculty.department}). Share your experience anonymously.`,
+    title: title,
+    description: description,
+    
+    // 👇 ফেসবুক/মেসেঞ্জার/টেলিগ্রাম এর জন্য এই অংশটি জরুরি
+    openGraph: {
+      title: title,
+      description: description,
+      type: "website",
+      siteName: "Faculty Review App",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: title,
+      description: description,
+    },
   };
 }
 
-// ✅ ২. মেইন কম্পোনেন্ট
+// ✅ ২. মেইন কম্পোনেন্ট (নিচে যা ছিল তাই থাকবে)
 export default async function FacultyProfilePage(props: Props) {
   const params = await props.params;
   const session = await getServerSession(authOptions);
