@@ -14,8 +14,9 @@ import UserBadge from "@/components/UserBadge";
 import NotificationBell from "@/components/NotificationBell"; 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import SearchBox from "@/components/SearchBox"; // SearchBox কম্পোনেন্ট থাকলেও আমরা হিরো সেকশনে কাস্টম ইনপুট ব্যবহার করেছি ডিজাইনের জন্য
-
+import FadeIn from "@/components/FadeIn";
+import SearchBox from "@/components/SearchBox"; 
+import ProfileMenu from "@/components/ProfileMenu";
 export const dynamic = "force-dynamic";
 
 interface Props {
@@ -117,19 +118,15 @@ export default async function HomePage(props: Props) {
           <div className="flex items-center gap-4">
             <ThemeSwitcher />
             
-            <Link href="/compare" className="hidden md:inline-flex items-center gap-2 text-gray-300 hover:text-white transition font-medium bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm hover:bg-white/20">
-              ⚖️ Compare
-            </Link>
-
-            {/* ✅ Notification Bell */}
+            {/* Notification Bell (সবার জন্য দৃশ্যমান থাকবে) */}
             {session && <NotificationBell />}
 
-            {isAdmin && (
-              <Link href="/admin" className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg transition">
-                Admin
-              </Link>
+            {/* Login থাকলে মেনু দেখাবে, না থাকলে Login বাটন দেখাবে */}
+            {session?.user ? (
+              <ProfileMenu user={session.user} isAdmin={isAdmin} />
+            ) : (
+              <AuthButtons />
             )}
-            <AuthButtons />
           </div>
         </header>
 
@@ -231,108 +228,112 @@ export default async function HomePage(props: Props) {
         {session && !query && <AddFacultyForm />}
 
         {/* --- Main Faculty List --- */}
-        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          {paginatedFaculties.length === 0 ? (
-            <div className="col-span-1 lg:col-span-2 text-center py-20 bg-white dark:bg-gray-800 rounded-2xl border border-dashed border-gray-300 dark:border-gray-700">
-              <p className="text-gray-500 dark:text-gray-400 text-xl font-medium">No faculty found matching "{query}"</p>
-              <p className="text-gray-400 mt-2">Try searching by Department or Initial.</p>
-              {query && <a href="/" className="text-indigo-500 hover:underline mt-4 inline-block font-bold">Clear Search</a>}
-            </div>
-          ) : (
-            paginatedFaculties.map((faculty) => (
-              <div key={faculty.id} className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-indigo-500/50 dark:hover:border-indigo-500/50 transition-all duration-300 shadow-lg hover:shadow-xl group relative flex flex-col">
-                
-                <Link href={`/faculty/${faculty.id}`} className="absolute top-6 right-6 text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-3 py-1.5 rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition">
-                    View Profile &rarr;
-                </Link>
-
-                {/* Faculty Header */}
-                <div className="mb-4 pr-24">
-                  <Link href={`/faculty/${faculty.id}`}
-                      title={`View profile of ${faculty.name}`} >
-                      <h2 className="text-2xl font-bold text-gray-900 dark:text-white hover:text-indigo-600 transition cursor-pointer mb-1">
-                          {faculty.name}
-                      </h2>
-                  </Link>
-                  <p className="text-indigo-600 dark:text-indigo-400 text-sm font-semibold">{faculty.department} &bull; {faculty.designation}</p>
-                  
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {faculty.tags.map((tag, i) => (
-                      <span key={i} className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${tag.color}`}>
-                        {tag.label}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Rating Bar */}
-                <div className="flex justify-between items-center bg-gray-50 dark:bg-gray-700/30 p-3 rounded-xl mb-6">
-                     <span className="text-gray-600 dark:text-gray-300 text-xs font-bold uppercase tracking-wide">
-                      Total Reviews: {faculty.reviews.length}
-                    </span>
-                    {faculty.reviews.length > 0 && (
-                      <span className="text-yellow-500 text-base font-black flex items-center gap-1">
-                        ★ {faculty.avgRating.toFixed(1)}
-                      </span>
-                    )}
-                </div>
-
-                {/* Review List */}
-                <div className="space-y-4 max-h-80 overflow-y-auto mb-6 pr-2 custom-scrollbar flex-1">
-                  {faculty.reviews.length === 0 && (
-                    <div className="text-center py-6">
-                      <p className="text-gray-400 text-sm italic">No reviews yet. Be the first!</p>
+                <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                  {paginatedFaculties.length === 0 ? (
+                    <div className="col-span-1 lg:col-span-2 text-center py-20 bg-white dark:bg-gray-800 rounded-2xl border border-dashed border-gray-300 dark:border-gray-700">
+                      <p className="text-gray-500 dark:text-gray-400 text-xl font-medium">No faculty found matching "{query}"</p>
+                      <p className="text-gray-400 mt-2">Try searching by Department or Initial.</p>
+                      {query && <a href="/" className="text-indigo-500 hover:underline mt-4 inline-block font-bold">Clear Search</a>}
                     </div>
-                  )}
-                  
-                  {faculty.reviews.map((review) => (
-                    <div key={review.id} className="bg-gray-50 dark:bg-gray-700/30 p-4 rounded-xl text-sm border border-gray-100 dark:border-gray-700/50">
-                      <div className="flex flex-wrap justify-between items-start mb-2 gap-2">
-                        <div className="flex items-center gap-2">
-                          <span className="text-yellow-500 text-xs font-bold">{"★".repeat(review.rating)}</span>
-                          <span className="text-[10px] bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-200 px-2 py-0.5 rounded-full font-bold">
-                            {review.course}
-                          </span>
-                        </div>
+                  ) : (
+                    paginatedFaculties.map((faculty, index) => (
+                      // ✅ FadeIn কম্পোনেন্ট যোগ করা হয়েছে
+                      <FadeIn key={faculty.id} delay={index * 0.1}>
                         
-                        {/* ✅ User Badge Added Here */}
-                        <div className="flex items-center gap-2">
-                          <Link href={`/student/${review.user.id}`} className="group">
-                            <span className="text-xs text-gray-500 dark:text-gray-400 font-mono group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition cursor-pointer">
-                              @{review.user.nickname || "Anonymous"} 
-                            </span>
+                        <div className="glass-card p-6 md:p-8 rounded-2xl transition-all duration-300 group relative flex flex-col h-full hover:-translate-y-1">
+                          
+                          <Link href={`/faculty/${faculty.id}`} className="absolute top-6 right-6 text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-3 py-1.5 rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition">
+                              View Profile &rarr;
                           </Link>
-                          <UserBadge reviewCount={review.user._count.reviews} role={review.user.role} />
+
+                          {/* Faculty Header */}
+                          <div className="mb-4 pr-24">
+                            <Link href={`/faculty/${faculty.id}`}
+                                title={`View profile of ${faculty.name}`} >
+                                <h2 className="text-2xl font-bold text-gray-900 dark:text-white hover:text-indigo-600 transition cursor-pointer mb-1">
+                                    {faculty.name}
+                                </h2>
+                            </Link>
+                            <p className="text-indigo-600 dark:text-indigo-400 text-sm font-semibold">{faculty.department} &bull; {faculty.designation}</p>
+                            
+                            <div className="flex flex-wrap gap-2 mt-3">
+                              {faculty.tags.map((tag, i) => (
+                                <span key={i} className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${tag.color}`}>
+                                  {tag.label}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Rating Bar */}
+                          <div className="flex justify-between items-center bg-gray-50 dark:bg-gray-700/30 p-3 rounded-xl mb-6">
+                              <span className="text-gray-600 dark:text-gray-300 text-xs font-bold uppercase tracking-wide">
+                                Total Reviews: {faculty.reviews.length}
+                              </span>
+                              {faculty.reviews.length > 0 && (
+                                <span className="text-yellow-500 text-base font-black flex items-center gap-1">
+                                  ★ {faculty.avgRating.toFixed(1)}
+                                </span>
+                              )}
+                          </div>
+
+                          {/* Review List */}
+                          <div className="space-y-4 max-h-80 overflow-y-auto mb-6 pr-2 custom-scrollbar flex-1">
+                            {faculty.reviews.length === 0 && (
+                              <div className="text-center py-6">
+                                <p className="text-gray-400 text-sm italic">No reviews yet. Be the first!</p>
+                              </div>
+                            )}
+                            
+                            {faculty.reviews.map((review) => (
+                              <div key={review.id} className="bg-gray-50 dark:bg-gray-700/30 p-4 rounded-xl text-sm border border-gray-100 dark:border-gray-700/50">
+                                <div className="flex flex-wrap justify-between items-start mb-2 gap-2">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-yellow-500 text-xs font-bold">{"★".repeat(review.rating)}</span>
+                                    <span className="text-[10px] bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-200 px-2 py-0.5 rounded-full font-bold">
+                                      {review.course}
+                                    </span>
+                                  </div>
+                                  
+                                  {/* User Badge Added Here */}
+                                  <div className="flex items-center gap-2">
+                                    <Link href={`/student/${review.user.id}`} className="group">
+                                      <span className="text-xs text-gray-500 dark:text-gray-400 font-mono group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition cursor-pointer">
+                                        @{review.user.nickname || "Anonymous"} 
+                                      </span>
+                                    </Link>
+                                    <UserBadge reviewCount={review.user._count.reviews} role={review.user.role} />
+                                  </div>
+                                </div>
+                                
+                                <p className="text-gray-700 dark:text-gray-200 mt-1 leading-relaxed">
+                                  {review.comment}
+                                </p>
+                                
+                                <div className="mt-3 flex items-center justify-between border-t border-gray-200 dark:border-gray-600/50 pt-2">
+                                  <VoteButtons reviewId={review.id} initialVotes={review.votes} currentUserId={currentUserId} />
+
+                                  {isAdmin ? (
+                                            <AdminReviewDeleteButton reviewId={review.id} />
+                                          ) : (
+                                            <ReportButton reviewId={review.id} />
+                                          )}
+
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+
+                          <div className="mt-auto">
+                            {session && <ReviewForm facultyId={faculty.id} />}
+                            <QASection facultyId={faculty.id} questions={faculty.questions} session={session} />
+                          </div>
+
                         </div>
-                      </div>
-                      
-                      <p className="text-gray-700 dark:text-gray-200 mt-1 leading-relaxed">
-                        {review.comment}
-                      </p>
-                      
-                      <div className="mt-3 flex items-center justify-between border-t border-gray-200 dark:border-gray-600/50 pt-2">
-                        <VoteButtons reviewId={review.id} initialVotes={review.votes} currentUserId={currentUserId} />
-
-                        {isAdmin ? (
-                                  <AdminReviewDeleteButton reviewId={review.id} />
-                                ) : (
-                                  <ReportButton reviewId={review.id} />
-                                )}
-
-                      </div>
-                    </div>
-                  ))}
+                      </FadeIn>
+                    ))
+                  )}
                 </div>
-
-                <div className="mt-auto">
-                   {session && <ReviewForm facultyId={faculty.id} />}
-                   <QASection facultyId={faculty.id} questions={faculty.questions} session={session} />
-                </div>
-
-              </div>
-            ))
-          )}
-        </div>
 
         <Pagination totalItems={facultiesWithStats.length} itemsPerPage={itemsPerPage} currentPage={page} />
       </main>

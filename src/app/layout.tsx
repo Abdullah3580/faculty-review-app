@@ -4,8 +4,8 @@ import "./globals.css";
 import AuthProvider from "@/components/AuthProvider";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/providers/ThemeProvider";
-import Footer from "@/components/Footer"; // ✅ ১. Footer ইমপোর্ট করা হলো
-
+import Footer from "@/components/Footer";
+import ContentProtector from "@/components/ContentProtector";
 // ১. বডি ফন্ট
 const inter = Inter({ 
   subsets: ["latin"], 
@@ -36,6 +36,7 @@ export default function RootLayout({
       <body className={`${inter.variable} ${jakarta.variable} bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white transition-colors duration-300 font-sans`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProvider>
+            <ContentProtector />
             <Toaster position="bottom-right" toastOptions={{ 
               duration: 4000,
               style: {

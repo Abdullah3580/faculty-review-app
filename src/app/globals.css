@@ -65,3 +65,29 @@ html {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-600;
   }
 }
+@layer components {
+  /* প্রিমিয়াম গ্লাস কার্ড ডিজাইন */
+  .glass-card {
+    @apply bg-white/80 dark:bg-gray-800/60 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 shadow-xl;
+  }
+}
+  /* হোভার করলে একটু গ্লো করবে */
+  .glass-card:hover {
+    @apply border-indigo-500/30 dark:border-indigo-400/30 shadow-2xl;
+  }
+
+/* পুরো বডিতে টেক্সট সিলেক্ট বন্ধ */
+body {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* IE/Edge */
+  user-select: none;         /* Standard */
+}
+
+/* ইনপুট ফিল্ড এবং টেক্সট এরিয়াতে লেখা বা এডিট করার অনুমতি */
+input, textarea {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}

@@ -1,4 +1,3 @@
-// src/app/admin/page.tsx
 import prisma from "@/lib/prisma";
 import AdminReviewControls from "@/components/AdminReviewControls";
 import AdminFacultyControls from "@/components/AdminFacultyControls";
@@ -10,7 +9,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ReportedReview } from "@/types";
 
 export const dynamic = "force-dynamic";
 
@@ -54,7 +52,7 @@ export default async function AdminPage() {
     }
   });
 
-  // ৩. ফুল ডাটাবেস লিস্ট (ম্যানেজমেন্টের জন্য)
+  // ৩. ফুল ডাটাবেস লিস্ট
   const allStudents = await prisma.user.findMany({
     orderBy: { createdAt: "desc" },
     include: { reviews: true }
@@ -82,12 +80,12 @@ export default async function AdminPage() {
             </h1>
             <p className="text-gray-500 dark:text-gray-400 mt-1">Manage users, reviews, and content.</p>
           </div>
-          <Link href="/" className="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-5 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition font-medium shadow-sm">
+          <Link href="/" className="glass-card px-5 py-2.5 rounded-lg hover:scale-105 transition font-medium text-gray-700 dark:text-gray-300">
             ⬅ Back to Home
           </Link>
         </header>
 
-        {/* --- Stats Cards (New) --- */}
+        {/* --- Stats Cards --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <StatCard title="Total Students" count={userCount} icon="👥" color="bg-blue-500" />
           <StatCard title="Active Faculties" count={facultyCount} icon="👨‍🏫" color="bg-purple-500" />
@@ -131,8 +129,8 @@ export default async function AdminPage() {
               )}
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Pending Faculties */}
-                <section className="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm">
+                {/* Pending Faculties (Updated with Glass Effect) */}
+                <section className="glass-card p-6 rounded-2xl hover:scale-[1.005] transition-transform">
                   <h3 className="text-lg mb-4 text-indigo-600 dark:text-indigo-400 font-bold flex items-center gap-2">
                     📢 Faculty Requests ({pendingFaculties.length})
                   </h3>
@@ -153,8 +151,8 @@ export default async function AdminPage() {
                   )}
                 </section>
 
-                {/* Pending Reviews */}
-                <section className="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm">
+                {/* Pending Reviews (Updated with Glass Effect) */}
+                <section className="glass-card p-6 rounded-2xl hover:scale-[1.005] transition-transform">
                   <h3 className="text-lg mb-4 text-yellow-600 dark:text-yellow-400 font-bold flex items-center gap-2">
                     📝 Review Approvals ({pendingReviews.length})
                   </h3>
@@ -190,7 +188,7 @@ export default async function AdminPage() {
             <div className="grid grid-cols-1 gap-10">
               
               {/* Department Manager */}
-              <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm">
+              <div className="glass-card p-6 rounded-xl hover:scale-[1.01] transition-transform duration-300">
                 <div className="mb-6">
                   <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-1">Departments</h3>
                   <p className="text-sm text-gray-500">Manage university departments list.</p>
@@ -198,17 +196,21 @@ export default async function AdminPage() {
                 <AdminDepartmentManager departments={allDepartments} />
               </div>
 
-              {/* Student & Faculty Lists (Tabs or Split) */}
+              {/* Student & Faculty Lists */}
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+                
+                {/* Student List */}
+                <div className="glass-card p-6 rounded-xl hover:scale-[1.01] transition-transform duration-300">
                    <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-4">Users / Students</h3>
                    <AdminStudentList students={allStudents} />
                 </div>
                 
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+                {/* Faculty List (Fixed the structure here) */}
+                <div className="glass-card p-6 rounded-xl hover:scale-[1.01] transition-transform duration-300">
                    <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-4">Faculties Database</h3>
                    <AdminFacultyList faculties={allFaculties} />
                 </div>
+
               </div>
 
             </div>
@@ -220,10 +222,10 @@ export default async function AdminPage() {
   );
 }
 
-// Stats Card Component
+// Stats Card Component (Updated)
 function StatCard({ title, count, icon, color }: any) {
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 flex items-center justify-between hover:shadow-md transition">
+    <div className="glass-card p-6 rounded-xl hover:scale-[1.05] transition-transform duration-300 flex items-center justify-between">
       <div>
         <p className="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider">{title}</p>
         <p className="text-3xl font-black text-gray-900 dark:text-white mt-1">{count}</p>

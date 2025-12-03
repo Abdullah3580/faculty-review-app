@@ -7,52 +7,46 @@ import ReviewForm from "@/components/ReviewForm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import type { Metadata } from "next";
+import FadeIn from "@/components/FadeIn"; // ✅ FadeIn ইমপোর্ট
+import FollowButton from "@/components/FollowButton";
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
-// ✅ ১. এই পুরো ফাংশনটি আপডেট করা হয়েছে (সোশ্যাল মিডিয়া প্রিভিউ ঠিক করার জন্য)
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-
   const faculty = await prisma.faculty.findUnique({
     where: { id },
     select: { name: true, designation: true, department: true }
   });
 
-  if (!faculty) {
-    return {
-      title: "Faculty Not Found",
-    };
-  }
+  if (!faculty) return { title: "Faculty Not Found" };
 
   const title = `Review of ${faculty.name} | Faculty Review App`;
   const description = `Read honest reviews about ${faculty.name} (${faculty.designation}, ${faculty.department}). 100% Anonymous.`;
 
   return {
-    title: title,
-    description: description,
-    
-    // 👇 ফেসবুক/মেসেঞ্জার/টেলিগ্রাম এর জন্য এই অংশটি জরুরি
-    openGraph: {
-      title: title,
-      description: description,
-      type: "website",
-      siteName: "Faculty Review App",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: title,
-      description: description,
-    },
+    title,
+    description,
+    openGraph: { title, description, type: "website", siteName: "Faculty Review App" },
+    twitter: { card: "summary_large_image", title, description },
   };
 }
 
-// ✅ ২. মেইন কম্পোনেন্ট (নিচে যা ছিল তাই থাকবে)
 export default async function FacultyProfilePage(props: Props) {
   const params = await props.params;
   const session = await getServerSession(authOptions);
+
+  // ফলো স্ট্যাটাস চেক
+  let isFollowing = false;
+  if (session?.user?.email) {
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      include: { followedFaculties: { where: { id: params.id } } }
+    });
+    if (user && user.followedFaculties.length > 0) isFollowing = true;
+  }
 
   const faculty = await prisma.faculty.findUnique({
     where: { id: params.id },
@@ -60,28 +54,18 @@ export default async function FacultyProfilePage(props: Props) {
       reviews: {
         include: {
           user: { 
-            select: { 
-              id: true, 
-              nickname: true, 
-              role: true, 
-              _count: { select: { reviews: true } } 
-            } 
+            select: { id: true, nickname: true, role: true, _count: { select: { reviews: true } } } 
           },
         },
-        orderBy: {
-          createdAt: "desc",
-        },
+        orderBy: { createdAt: "desc" },
       },
     },
   });
 
-  if (!faculty) {
-    return notFound();
-  }
+  if (!faculty) return notFound();
 
   const totalReviews = faculty.reviews.length;
-  const averageRating =
-    totalReviews > 0
+  const averageRating = totalReviews > 0
       ? (faculty.reviews.reduce((acc, r) => acc + r.rating, 0) / totalReviews).toFixed(1)
       : "0.0";
 
@@ -92,53 +76,61 @@ export default async function FacultyProfilePage(props: Props) {
           &larr; Back to Faculty List
         </Link>
 
-        {/* --- Header --- */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 md:p-8 mb-8">
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-            <div className="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-4xl text-white font-bold shadow-md">
-              {faculty.name.charAt(0)}
-            </div>
-            <div className="flex-1 text-center md:text-left">
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                {faculty.name}
-              </h1>
-              <p className="text-gray-600 dark:text-gray-400 text-lg mb-4">
-                {faculty.designation} &bull; {faculty.department}
-              </p>
-              <div className="flex items-center justify-center md:justify-start gap-4">
-                <div className="bg-indigo-50 dark:bg-indigo-900/30 px-4 py-2 rounded-lg border border-indigo-100 dark:border-indigo-800">
-                  <span className="block text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-                    {averageRating} <span className="text-base text-yellow-500">★</span>
-                  </span>
-                  <span className="text-xs text-gray-500 uppercase font-semibold">Avg Rating</span>
+        {/* ✅ হেডার (ফিক্সড): ক্লাসটি সরাসরি FadeIn এ দেওয়া হয়েছে */}
+        <FadeIn className="glass-card rounded-2xl p-6 md:p-8 mb-8">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+              <div className="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-4xl text-white font-bold shadow-md">
+                {faculty.name.charAt(0)}
+              </div>
+              <div className="flex-1 text-center md:text-left">
+                <div className="flex flex-col md:flex-row justify-between items-center md:items-start">
+                  <div>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                      {faculty.name}
+                    </h1>
+                    <p className="text-gray-600 dark:text-gray-400 text-lg mb-4">
+                      {faculty.designation} &bull; {faculty.department}
+                    </p>
+                  </div>
+                  <div className="mt-4 md:mt-0">
+                    <FollowButton facultyId={faculty.id} initialIsFollowing={isFollowing} />
+                  </div>
                 </div>
-                <div className="bg-gray-50 dark:bg-gray-700/30 px-4 py-2 rounded-lg border border-gray-100 dark:border-gray-700">
-                  <span className="block text-2xl font-bold text-gray-800 dark:text-white">
-                    {totalReviews}
-                  </span>
-                  <span className="text-xs text-gray-500 uppercase font-semibold">Total Reviews</span>
+
+                <div className="flex items-center justify-center md:justify-start gap-4 mt-2">
+                  <div className="bg-indigo-50 dark:bg-indigo-900/30 px-4 py-2 rounded-lg border border-indigo-100 dark:border-indigo-800">
+                    <span className="block text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+                      {averageRating} <span className="text-base text-yellow-500">★</span>
+                    </span>
+                    <span className="text-xs text-gray-500 uppercase font-semibold">Avg Rating</span>
+                  </div>
+                  <div className="bg-gray-50 dark:bg-gray-700/30 px-4 py-2 rounded-lg border border-gray-100 dark:border-gray-700">
+                    <span className="block text-2xl font-bold text-gray-800 dark:text-white">
+                      {totalReviews}
+                    </span>
+                    <span className="text-xs text-gray-500 uppercase font-semibold">Total Reviews</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+        </FadeIn>
 
         {/* --- Content Grid --- */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="md:col-span-1 space-y-6">
+          
+          <FadeIn delay={0.2} className="md:col-span-1 space-y-6">
              <FacultyRatingChart reviews={faculty.reviews} />
-             <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border border-gray-200 dark:border-gray-700">
+             <div className="glass-card p-6 rounded-xl hover:scale-[1.01] transition-transform duration-300">
                 <h3 className="font-bold text-gray-700 dark:text-gray-300 mb-2">💡 Quick Tip</h3>
                 <p className="text-sm text-gray-500">
-                  This chart shows how students rated this faculty. A balanced distribution usually means fair grading.
+                  Follow this faculty to get notified when new reviews are posted!
                 </p>
              </div>
-          </div>
+          </FadeIn>
 
           <div className="md:col-span-2">
             
-            {/* Review Form Section */}
-            <div className="mb-8">
+            <FadeIn delay={0.3} className="mb-8">
               {session ? (
                  <ReviewForm facultyId={faculty.id} />
               ) : (
@@ -149,7 +141,7 @@ export default async function FacultyProfilePage(props: Props) {
                   </Link>
                 </div>
               )}
-            </div>
+            </FadeIn>
 
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
               Student Reviews <span className="text-base font-normal text-gray-500">({totalReviews})</span>
@@ -161,40 +153,41 @@ export default async function FacultyProfilePage(props: Props) {
                   <p className="text-gray-500 text-lg">No reviews yet. Be the first to review!</p>
                 </div>
               ) : (
-                faculty.reviews.map((review) => (
-                  <div key={review.id} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition">
-                    <div className="flex justify-between items-start mb-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-sm">
-                          👤
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <Link href={`/student/${review.user.id}`} className="font-bold text-gray-800 dark:text-white hover:text-indigo-500">
-                                @{review.user?.nickname || "Anonymous"}
-                            </Link>
-                            <UserBadge reviewCount={review.user?._count?.reviews || 0} role={review.user?.role} />
+                faculty.reviews.map((review, index) => (
+                  // ✅ রিভিউ কার্ড (ফিক্সড): ক্লাসটি সরাসরি FadeIn এ দেওয়া হয়েছে
+                  <FadeIn 
+                    key={review.id} 
+                    delay={index * 0.1} 
+                    className="glass-card p-6 rounded-xl hover:scale-[1.01] transition-transform duration-300"
+                  >
+                      <div className="flex justify-between items-start mb-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-sm">👤</div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <Link href={`/student/${review.user.id}`} className="font-bold text-gray-800 dark:text-white hover:text-indigo-500">
+                                  @{review.user?.nickname || "Anonymous"}
+                              </Link>
+                              <UserBadge reviewCount={review.user?._count?.reviews || 0} role={review.user?.role} />
+                            </div>
+                            <p className="text-xs text-gray-500">{new Date(review.createdAt).toLocaleDateString()}</p>
                           </div>
-                          <p className="text-xs text-gray-500">
-                            {new Date(review.createdAt).toLocaleDateString()}
-                          </p>
+                        </div>
+                        <div className="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 px-2 py-1 rounded text-sm font-bold">
+                          ★ {review.rating}
                         </div>
                       </div>
-                      <div className="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 px-2 py-1 rounded text-sm font-bold">
-                        ★ {review.rating}
+
+                      <div className="mb-2">
+                        <span className="text-xs font-semibold bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 px-2 py-0.5 rounded">
+                          Course: {review.course}
+                        </span>
                       </div>
-                    </div>
 
-                    <div className="mb-2">
-                       <span className="text-xs font-semibold bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 px-2 py-0.5 rounded">
-                         Course: {review.course}
-                       </span>
-                    </div>
-
-                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
-                      {review.comment}
-                    </p>
-                  </div>
+                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
+                        {review.comment}
+                      </p>
+                  </FadeIn>
                 ))
               )}
             </div>

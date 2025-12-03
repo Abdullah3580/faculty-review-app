@@ -56,6 +56,7 @@ model User {
   sessions      Session[]
   votes         Vote[]
   notifications Notification[]
+  followedFaculties Faculty[] @relation("UserFollows")
 }
 
 model VerificationToken {
@@ -79,6 +80,7 @@ model Faculty {
   status     String     @default("PENDING")
   questions  Question[]
   reviews    Review[]
+  followers     User[]    @relation("UserFollows")
 }
 
 model Review {
