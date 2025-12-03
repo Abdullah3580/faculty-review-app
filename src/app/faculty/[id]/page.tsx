@@ -7,7 +7,8 @@ import ReviewForm from "@/components/ReviewForm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import type { Metadata } from "next";
-import FadeIn from "@/components/FadeIn"; // ✅ FadeIn ইমপোর্ট
+import FadeIn from "@/components/FadeIn"; 
+import ReviewModalButton from "@/components/ReviewModalButton";
 import FollowButton from "@/components/FollowButton";
 
 interface Props {
@@ -132,7 +133,13 @@ export default async function FacultyProfilePage(props: Props) {
             
             <FadeIn delay={0.3} className="mb-8">
               {session ? (
-                 <ReviewForm facultyId={faculty.id} />
+                  <div className="bg-indigo-50 dark:bg-indigo-900/10 p-6 rounded-2xl border border-indigo-100 dark:border-indigo-800 flex flex-col items-center text-center">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Have you taken a course?</h3>
+                    <p className="text-gray-500 dark:text-gray-400 mb-4 text-sm">Share your experience to help others.</p>
+                    <div className="w-full max-w-xs">
+                      <ReviewModalButton facultyId={faculty.id} />
+                    </div>
+                  </div>
               ) : (
                 <div className="bg-indigo-50 dark:bg-indigo-900/20 p-6 rounded-lg border border-indigo-100 dark:border-indigo-800 text-center">
                   <p className="text-gray-600 dark:text-gray-300 mb-4 font-medium">Want to share your experience?</p>

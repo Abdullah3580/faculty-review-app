@@ -6,13 +6,14 @@ import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import Footer from "@/components/Footer";
 import ContentProtector from "@/components/ContentProtector";
-// ১. বডি ফন্ট
+import ThemeSwitcher from "@/components/ThemeSwitcher";
+import Navbar from "@/components/Navbar";
+
 const inter = Inter({ 
   subsets: ["latin"], 
   variable: "--font-inter" 
 });
 
-// ২. হেডিং ফন্ট
 const jakarta = Plus_Jakarta_Sans({ 
   subsets: ["latin"], 
   variable: "--font-jakarta" 
@@ -46,20 +47,13 @@ export default function RootLayout({
               }
             }} />
             
-            {/* ✅ Sticky Footer লেআউট স্ট্রাকচার */}
             <div className="flex flex-col min-h-screen">
-              
-              {/* মেইন কন্টেন্ট (ফ্লেক্স গ্রো দিয়ে বাকি জায়গা নিবে) */}
+              <Navbar />
               <main className="flex-grow">
                 {children}
               </main>
-
-              {/* ফুটার সবার নিচে থাকবে */}
               <Footer />
             </div>
-
-            {/* নোট: ThemeSwitcher এখান থেকে সরিয়ে দেওয়া হয়েছে কারণ এটি এখন হেডার বা হোম পেজে আছে */}
-            
           </AuthProvider>
         </ThemeProvider>
       </body>

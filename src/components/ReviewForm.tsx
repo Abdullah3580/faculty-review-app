@@ -1,117 +1,120 @@
-// src/components/ReviewForm.tsx
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-export default function ReviewForm({ facultyId }: { facultyId: string }) {
-  const [rating, setRating] = useState("5");
+interface Props {
+  facultyId: string;
+}
+
+export default function ReviewForm({ facultyId }: Props) {
+  // ❌ আগের isExpanded বা isOpen স্টেটটি মুছে ফেলা হলো
+  const [rating, setRating] = useState(0);
+  const [course, setCourse] = useState("");
   const [comment, setComment] = useState("");
-  const [course, setCourse] = useState(""); // নতুন স্টেট
   const [loading, setLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (rating === 0) {
+      toast.error("Please give a rating ⭐");
+      return;
+    }
+    
     setLoading(true);
 
-    const res = await fetch("/api/review", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ 
-        facultyId, 
-        rating, 
-        comment, 
-        course: course.toUpperCase() 
-      }),
-    });
+    try {
+      const res = await fetch("/api/review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ facultyId, rating, course, comment }),
+      });
 
-    const data = await res.json();
-    setLoading(false);
-
-    if (res.ok) {
-      setComment("");
-      setCourse("");
-      setIsOpen(false);
-      router.refresh();
-      toast.success("Review submitted for Admin approval! 🛡️");
-    } else {
-      toast.error(data.error || "Something went wrong");
+      if (res.ok) {
+        toast.success("Review submitted for approval! 🎉");
+        setRating(0);
+        setCourse("");
+        setComment("");
+        router.refresh();
+        
+        // ফর্ম সাবমিট হলে পেজ রিলোড বা মডাল বন্ধের লজিক প্যারেন্ট হ্যান্ডেল করবে
+      } else {
+        const errorData = await res.json();
+        toast.error(errorData.error || "Failed to submit.");
+      }
+    } catch (error) {
+      toast.error("Something went wrong.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (!isOpen) {
-    return (
-      <button
-        onClick={() => setIsOpen(true)}
-        className="mt-4 text-sm text-indigo-400 hover:underline font-medium"
-      >
-        ✍️ Write a Review
-      </button>
-    );
-  }
   return (
-    <form onSubmit={handleSubmit} className="mt-4 bg-gray-900 p-5 rounded-lg border border-gray-700 shadow-lg">
-      <h3 className="text-white font-bold mb-3">Rate this Faculty</h3>
+    // ❌ আগে এখানে বাটন ছিল, এখন সরাসরি ফর্ম রিটার্ন করবে
+    <form onSubmit={handleSubmit} className="space-y-4">
       
-     
-      <div className="mb-3">
-        <label className="block text-gray-400 text-xs mb-1 uppercase tracking-wide">Course Name</label>
+      {/* 1. Star Rating */}
+      <div>
+        <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
+          Rating
+        </label>
+        <div className="flex gap-2">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <button
+              key={star}
+              type="button"
+              onClick={() => setRating(star)}
+              className={`text-2xl transition transform hover:scale-110 ${
+                star <= rating ? "text-yellow-400" : "text-gray-300 dark:text-gray-600"
+              }`}
+            >
+              ★
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 2. Course Name */}
+      <div>
+        <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
+          Course Taken (e.g. CSE101)
+        </label>
         <input
           type="text"
           value={course}
           onChange={(e) => setCourse(e.target.value)}
-          placeholder="e.g. CSE101, PHY102"
-          className="w-full p-2 bg-gray-800 text-white rounded border border-gray-600 focus:border-indigo-500 outline-none text-sm"
+          placeholder="Enter course code"
+          className="w-full p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 focus:border-indigo-500 outline-none transition"
           required
         />
       </div>
 
-      <div className="mb-3">
-        <label className="block text-gray-400 text-xs mb-1 uppercase tracking-wide">Rating</label>
-        <select
-          value={rating}
-          onChange={(e) => setRating(e.target.value)}
-          className="w-full p-2 bg-gray-800 text-white rounded border border-gray-600 focus:border-indigo-500 outline-none text-sm"
-        >
-          <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
-          <option value="4">⭐⭐⭐⭐ (Good)</option>
-          <option value="3">⭐⭐⭐ (Average)</option>
-          <option value="2">⭐⭐ (Poor)</option>
-          <option value="1">⭐ (Terrible)</option>
-        </select>
-      </div>
-
-      <div className="mb-4">
-        <label className="block text-gray-400 text-xs mb-1 uppercase tracking-wide">Comment</label>
+      {/* 3. Comment */}
+      <div>
+        <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
+          Review
+        </label>
         <textarea
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          className="w-full p-2 bg-gray-800 text-white rounded border border-gray-600 focus:border-indigo-500 outline-none text-sm"
-          rows={3}
+          placeholder="Share your honest experience..."
+          rows={4}
+          className="w-full p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 focus:border-indigo-500 outline-none transition"
           required
-          placeholder="Share your experience..."
         />
       </div>
 
-      <div className="flex gap-2">
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-indigo-600 text-white px-4 py-1.5 rounded text-sm hover:bg-indigo-500 font-medium"
-        >
-          {loading ? "Submitting..." : "Submit Review"}
-        </button>
-        <button
-          type="button"
-          onClick={() => setIsOpen(false)}
-          className="text-gray-400 px-3 py-1.5 rounded text-sm hover:text-white"
-        >
-          Cancel
-        </button>
-      </div>
+      {/* Submit Button */}
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition shadow-lg hover:shadow-indigo-500/30 disabled:opacity-50"
+      >
+        {loading ? "Submitting..." : "Submit Review"}
+      </button>
+
     </form>
   );
 }

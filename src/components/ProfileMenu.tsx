@@ -5,6 +5,7 @@ import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useTheme } from "next-themes"; // ✅ থিম হুক ইমপোর্ট
 
 interface Props {
   user: any;
@@ -14,8 +15,8 @@ interface Props {
 export default function ProfileMenu({ user, isAdmin }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { theme, setTheme } = useTheme(); // ✅ থিম কন্ট্রোল
 
-  // মেনুর বাইরে ক্লিক করলে বন্ধ হয়ে যাবে
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -26,15 +27,18 @@ export default function ProfileMenu({ user, isAdmin }: Props) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // থিম টগল ফাংশন
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
+
   return (
     <div className="relative" ref={menuRef}>
       
-      {/* 1. Profile Avatar Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 focus:outline-none transition transform hover:scale-105"
       >
-        {/* ইউজারের ছবি থাকলে দেখাবে, না থাকলে নামের প্রথম অক্ষর */}
         {user?.image ? (
           <Image
             src={user.image}
@@ -50,7 +54,6 @@ export default function ProfileMenu({ user, isAdmin }: Props) {
         )}
       </button>
 
-      {/* 2. Dropdown Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -58,54 +61,45 @@ export default function ProfileMenu({ user, isAdmin }: Props) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-3 w-56 glass-card rounded-xl overflow-hidden z-50 p-2 shadow-2xl origin-top-right bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700"
+            className="absolute right-0 mt-3 w-60 glass-card rounded-xl overflow-hidden z-50 p-2 shadow-2xl origin-top-right bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700"
           >
             
-            {/* User Info Header */}
             <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700/50 mb-2">
               <p className="text-sm font-bold text-gray-900 dark:text-white truncate">{user?.name}</p>
               <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user?.email}</p>
             </div>
 
-            {/* Menu Items */}
             <div className="flex flex-col gap-1">
               
-              {/* Compare Button */}
-              <Link
-                href="/compare"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition"
-              >
+              <Link href="/compare" onClick={() => setIsOpen(false)} className="menu-item">
                 <span>⚖️</span> Compare Faculty
               </Link>
 
-              {/* Edit Profile */}
-              <Link
-                href="/profile"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition"
-              >
+              <Link href="/profile" onClick={() => setIsOpen(false)} className="menu-item">
                 <span>✏️</span> Edit Profile
               </Link>
 
-              {/* ✅ Admin Only Button */}
               {isAdmin && (
-                <Link
-                  href="/admin"
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-3 px-4 py-2 text-sm font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition"
-                >
+                <Link href="/admin" onClick={() => setIsOpen(false)} className="menu-item text-red-600 dark:text-red-400">
                   <span>🛡️</span> Admin Dashboard
                 </Link>
               )}
 
+              {/* ✅ Theme Switcher Option */}
+              <button onClick={toggleTheme} className="menu-item justify-between w-full">
+                <span className="flex items-center gap-3">
+                  <span>{theme === 'dark' ? '🌙' : '☀️'}</span> 
+                  {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+                </span>
+                {/* Toggle Switch Visual */}
+                <div className={`w-8 h-4 flex items-center bg-gray-300 dark:bg-gray-600 rounded-full p-1 duration-300 ${theme === 'dark' ? 'justify-end bg-indigo-500' : ''}`}>
+                  <div className="bg-white w-3 h-3 rounded-full shadow-md transform duration-300"></div>
+                </div>
+              </button>
+
               <div className="h-px bg-gray-100 dark:bg-gray-700 my-1"></div>
 
-              {/* Logout Button */}
-              <button
-                onClick={() => signOut()}
-                className="flex items-center gap-3 px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition w-full text-left font-bold"
-              >
+              <button onClick={() => signOut()} className="menu-item text-red-600 dark:text-red-400 w-full text-left">
                 <span>🚪</span> Log Out
               </button>
             </div>
