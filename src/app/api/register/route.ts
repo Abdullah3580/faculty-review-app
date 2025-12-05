@@ -3,12 +3,13 @@ import prisma from "@/lib/prisma";
 import argon2 from "argon2";
 import { v4 as uuidv4 } from "uuid";
 import { sendVerificationEmail } from "@/lib/email";
+// ✅ ১. নতুন ইমপোর্ট
+import { validate } from "deep-email-validator";
 
 export async function POST(request: Request) {
   try {
     const { name, nickname, studentId, email, password } = await request.json();
 
-    // 1. ভ্যালিডেশন এরর রাখার জন্য একটি তালিকা (Array)
     const validationErrors = [];
 
     // --- চেকিং শুরু ---
@@ -17,7 +18,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ errors: ["All fields are required."] }, { status: 400 });
     }
 
-    // ইমেইল চেক
+    // ডোমেইন চেক
     if (!email.endsWith("uiu.ac.bd")) {
       validationErrors.push("Use only UIU email.");
     }
@@ -27,12 +28,12 @@ export async function POST(request: Request) {
       validationErrors.push("Student ID must be at least 10 digits long.");
     }
 
-    // পাসওয়ার্ড লেন্থ চেক
+    // পাসওয়ার্ড লেন্থ চেক
     if (password.length < 8) {
       validationErrors.push("Password must be at least 8 characters long.");
     }
 
-    // পাসওয়ার্ড স্ট্রেন্থ চেক
+    // পাসওয়ার্ড স্ট্রেন্থ চেক
     const strongPassword =
       /[A-Z]/.test(password) &&
       /[a-z]/.test(password) &&
@@ -40,15 +41,46 @@ export async function POST(request: Request) {
       /[^A-Za-z0-9]/.test(password);
 
     if (!strongPassword) {
-      validationErrors.push("Password must actain: Uppercase, Lowercase, Number & Special char.");
+      validationErrors.push("Password must contain: Uppercase, Lowercase, Number & Special char.");
     }
 
-    // --- যদি বেসিক ভ্যালিডেশনে কোনো ভুল থাকে, তবে ডাটাবেজ চেক করার দরকার নেই ---
+    // ------------------------------------------------------------------------
+    // ✅ ২. রিয়েল ইমেইল চেকিং (SMTP Validation) - নতুন অংশ
+    // ------------------------------------------------------------------------
+    // যদি উপরের সব শর্ত ঠিক থাকে এবং UIU ইমেইল হয়, তখন আমরা চেক করব ইনবক্স আছে কি না
+    if (email.endsWith("uiu.ac.bd") && validationErrors.length === 0) {
+      
+      const res = await validate({
+        email: email,
+        sender: email, // অনেক সময় sender মেইল সেইম দিলে সার্ভার রেসপন্স ভালো দেয়
+        validateRegex: true,
+        validateMx: true,
+        validateTypo: false,
+        validateDisposable: true,
+        validateSMTP: true, // ⚠️ এটিই আসল চেক (ইনবক্স আছে কি না)
+      });
+
+      // যদি মেইল ভ্যালিড না হয়
+      if (!res.valid) {
+        if (res.reason === "smtp") {
+            // ইনবক্স পাওয়া না গেলে এই মেসেজ দেখাবে
+            validationErrors.push("এই ইমেইলটি এক্সিস্ট করে না। ভেলিড মেইল দিন।");
+        } else if (res.reason === "mx") {
+            validationErrors.push("Invalid email domain. Mail server not found.");
+        } else {
+            validationErrors.push("Invalid email address provided.");
+        }
+      }
+    }
+    // ------------------------------------------------------------------------
+
+
+    // --- যদি কোনো ভ্যালিডেশন এরর থাকে ---
     if (validationErrors.length > 0) {
       return NextResponse.json({ errors: validationErrors }, { status: 400 });
     }
 
-    // 2. ডাটাবেজ ডুপ্লিকেট চেক (এটি আলাদা কারণ এটি অ্যাসিঙ্ক্রোনাস)
+    // 2. ডাটাবেজ ডুপ্লিকেট চেক
     const exists = await prisma.user.findFirst({
       where: {
         OR: [{ email }, { studentId }, { nickname }]
@@ -56,11 +88,10 @@ export async function POST(request: Request) {
     });
 
     if (exists) {
-      // নির্দিষ্ট করে বলা যে কোনটি ডুপ্লিকেট হয়েছে
       const dbErrors = [];
       if (exists.email === email) dbErrors.push("Email already exists.");
       if (exists.studentId === studentId) dbErrors.push("This Student ID already exists.");
-      if (exists.nickname === nickname) dbErrors.push("This Nickname already taken.Use different Nickname");
+      if (exists.nickname === nickname) dbErrors.push("This Nickname already taken. Use different Nickname");
       
       return NextResponse.json({ errors: dbErrors }, { status: 409 });
     }

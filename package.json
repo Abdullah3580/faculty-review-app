@@ -14,6 +14,7 @@
     "@prisma/client": "^6.19.0",
     "argon2": "^0.44.0",
     "bcrypt": "^6.0.0",
+    "deep-email-validator": "^0.1.21",
     "dotenv": "^17.2.3",
     "dotenv-cli": "^11.0.0",
     "framer-motion": "^12.23.25",
