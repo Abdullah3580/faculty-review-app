@@ -1,10 +1,11 @@
+//src/app/api/register/route.ts
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import argon2 from "argon2";
 import { v4 as uuidv4 } from "uuid";
 import { sendVerificationEmail } from "@/lib/email";
-// ✅ ১. নতুন ইমপোর্ট
-import { validate } from "deep-email-validator";
+
+// ❌ deep-email-validator বাদ দেওয়া হয়েছে (Vercel এ কাজ করে না)
 
 export async function POST(request: Request) {
   try {
@@ -12,28 +13,24 @@ export async function POST(request: Request) {
 
     const validationErrors = [];
 
-    // --- চেকিং শুরু ---
+    // --- ১. ইনপুট ভ্যালিডেশন ---
 
     if (!name || !nickname || !studentId || !email || !password) {
       return NextResponse.json({ errors: ["All fields are required."] }, { status: 400 });
     }
 
-    // ডোমেইন চেক
     if (!email.endsWith("uiu.ac.bd")) {
       validationErrors.push("Use only UIU email.");
     }
 
-    // স্টুডেন্ট আইডি চেক
     if (studentId.length < 10) {
       validationErrors.push("Student ID must be at least 10 digits long.");
     }
 
-    // পাসওয়ার্ড লেন্থ চেক
     if (password.length < 8) {
       validationErrors.push("Password must be at least 8 characters long.");
     }
 
-    // পাসওয়ার্ড স্ট্রেন্থ চেক
     const strongPassword =
       /[A-Z]/.test(password) &&
       /[a-z]/.test(password) &&
@@ -45,31 +42,34 @@ export async function POST(request: Request) {
     }
 
     // ------------------------------------------------------------------------
-    // ✅ ২. রিয়েল ইমেইল চেকিং (SMTP Validation) - নতুন অংশ
+    // ✅ ২. রিয়েল ইনবক্স চেকিং (Abstract API দিয়ে)
     // ------------------------------------------------------------------------
-    // যদি উপরের সব শর্ত ঠিক থাকে এবং UIU ইমেইল হয়, তখন আমরা চেক করব ইনবক্স আছে কি না
+    // যদি উপরের সব শর্ত ঠিক থাকে, তখন আমরা API কল করব
     if (email.endsWith("uiu.ac.bd") && validationErrors.length === 0) {
-      
-      const res = await validate({
-        email: email,
-        sender: email, // অনেক সময় sender মেইল সেইম দিলে সার্ভার রেসপন্স ভালো দেয়
-        validateRegex: true,
-        validateMx: true,
-        validateTypo: false,
-        validateDisposable: true,
-        validateSMTP: true, // ⚠️ এটিই আসল চেক (ইনবক্স আছে কি না)
-      });
+      try {
+        const apiKey = process.env.ABSTRACT_API_KEY;
 
-      // যদি মেইল ভ্যালিড না হয়
-      if (!res.valid) {
-        if (res.reason === "smtp") {
-            // ইনবক্স পাওয়া না গেলে এই মেসেজ দেখাবে
-            validationErrors.push("এই ইমেইলটি এক্সিস্ট করে না। ভেলিড মেইল দিন।");
-        } else if (res.reason === "mx") {
-            validationErrors.push("Invalid email domain. Mail server not found.");
+        if (apiKey) {
+            // API কল করা হচ্ছে
+            const response = await fetch(`https://emailvalidation.abstractapi.com/v1/?api_key=${apiKey}&email=${email}`);
+            const data = await response.json();
+
+            // 👇 আপনার দেওয়া JSON ফরম্যাট অনুযায়ী লজিক
+            if (data.email_deliverability && data.email_deliverability.status === "UNDELIVERABLE") {
+                validationErrors.push("এই ইমেইলটি খুঁজে পাওয়া যায়নি। সঠিক ইমেইল দিন।");
+            } 
+            
+            // ডিসপোজেবল মেইল চেক
+            if (data.email_quality && data.email_quality.is_disposable === true) {
+                validationErrors.push("ফেক/ডিসপোজেবল মেইল ব্যবহার করা যাবে না।");
+            }
         } else {
-            validationErrors.push("Invalid email address provided.");
+            console.warn("API Key পাওয়া যায়নি। ভ্যালিডেশন স্কিপ করা হচ্ছে...");
         }
+
+      } catch (err) {
+        console.error("Email Validation API Error:", err);
+        // API তে সমস্যা হলে আমরা ইউজারকে আটকাবো না
       }
     }
     // ------------------------------------------------------------------------
@@ -80,7 +80,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ errors: validationErrors }, { status: 400 });
     }
 
-    // 2. ডাটাবেজ ডুপ্লিকেট চেক
+    // --- ৩. ডাটাবেজ ডুপ্লিকেট চেক ---
     const exists = await prisma.user.findFirst({
       where: {
         OR: [{ email }, { studentId }, { nickname }]
@@ -96,7 +96,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ errors: dbErrors }, { status: 409 });
     }
 
-    // 3. সব ঠিক থাকলে রেজিস্ট্রেশন সম্পন্ন করা
+    // --- ৪. রেজিস্ট্রেশন সম্পন্ন করা ---
     const hashedPassword = await argon2.hash(password, {
       type: argon2.argon2id,
       memoryCost: 2 ** 16,
@@ -126,6 +126,7 @@ export async function POST(request: Request) {
       },
     });
 
+    // মেইল পাঠানো (Nodemailer)
     await sendVerificationEmail(email, token);
 
     return NextResponse.json({
