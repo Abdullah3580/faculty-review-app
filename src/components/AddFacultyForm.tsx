@@ -121,11 +121,11 @@ export default function AddFacultyForm() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Designation</label>
                 <select name="designation" value={formData.designation} onChange={handleChange} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600">
-                  <option value="Lecturer">Lecturer</option>
-                  <option value="Senior Lecturer">Senior Lecturer</option>
-                  <option value="Assistant Professor">Assistant Professor</option>
+                  <option value="Vice Chancellor">Vice Chancellor</option>
                   <option value="Associate Professor">Associate Professor</option>
+                  <option value="Assistant Professor">Assistant Professor</option>
                   <option value="Professor">Professor</option>
+                  <option value="Lecturer">Lecturer</option>
                 </select>
               </div>
             </div>
