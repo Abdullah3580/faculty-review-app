@@ -1,4 +1,4 @@
-// src/components/Pagination.tsx
+
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
@@ -15,11 +15,11 @@ export default function Pagination({ totalItems, itemsPerPage, currentPage }: Pr
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  // যদি ১টির বেশি পেজ না থাকে, তবে বাটন দেখানোর দরকার নেই
+  
   if (totalPages <= 1) return null;
 
   const handlePageChange = (page: number) => {
-    // বর্তমান URL এর প্যারামিটারগুলো (যেমন সার্চ কুয়েরি) ধরে রাখা
+    
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", page.toString());
     router.push(`/?${params.toString()}`);
@@ -27,7 +27,6 @@ export default function Pagination({ totalItems, itemsPerPage, currentPage }: Pr
 
   return (
     <div className="flex justify-center items-center gap-2 mt-8 mb-12">
-      {/* Previous Button */}
       <button
         disabled={currentPage === 1}
         onClick={() => handlePageChange(currentPage - 1)}
@@ -36,7 +35,6 @@ export default function Pagination({ totalItems, itemsPerPage, currentPage }: Pr
         Prev
       </button>
 
-      {/* Page Numbers */}
       {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
         <button
           key={page}
@@ -51,7 +49,6 @@ export default function Pagination({ totalItems, itemsPerPage, currentPage }: Pr
         </button>
       ))}
 
-      {/* Next Button */}
       <button
         disabled={currentPage === totalPages}
         onClick={() => handlePageChange(currentPage + 1)}

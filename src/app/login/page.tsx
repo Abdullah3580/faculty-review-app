@@ -5,11 +5,16 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; 
 
 export default function LoginPage() {
   const [identifier, setIdentifier] = useState(""); 
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  
+  
+  const [showPassword, setShowPassword] = useState(false);
+  
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -57,15 +62,26 @@ export default function LoginPage() {
           
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition focus:border-indigo-500"
-              placeholder="********" 
-            />
-            {/* ✅ নতুন লিংক যোগ করা হলো */}
+            
+            {/* ✅ ৩. পাসওয়ার্ড ইনপুট সেকশন আপডেট */}
+            <div className="relative mt-1">
+              <input
+                type={showPassword ? "text" : "password"} 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition focus:border-indigo-500 pr-10" 
+                placeholder="********" 
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-indigo-600 dark:text-gray-400 transition"
+              >
+                {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+              </button>
+            </div>
+
             <div className="text-right mt-1">
               <Link href="/forgot-password" className="text-xs text-indigo-600 hover:text-indigo-500 hover:underline">
                 Forgot Password?

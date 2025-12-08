@@ -20,9 +20,8 @@ export default function ForgotPasswordPage() {
         body: JSON.stringify({ email }),
       });
 
-      // আমরা সফল বা ব্যর্থ—যাই হোক, এই মেসেজটিই দেখাব (সিকিউরিটি প্র্যাকটিস)
       toast.success("If an account exists, a reset link has been sent to your email.");
-      setEmail(""); // ইনপুট ক্লিয়ার
+      setEmail(""); 
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
     } finally {

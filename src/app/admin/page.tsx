@@ -19,7 +19,6 @@ export default async function AdminPage() {
   const user = await prisma.user.findUnique({ where: { email: session.user.email } });
   if (!user || user.role !== "ADMIN") redirect("/");
 
-  // ১. স্ট্যাটাস কাউন্ট (Stats)
   const [userCount, facultyCount, reviewCount, departmentCount] = await Promise.all([
     prisma.user.count(),
     prisma.faculty.count({ where: { status: "APPROVED" } }),
@@ -27,7 +26,7 @@ export default async function AdminPage() {
     prisma.department.count(),
   ]);
 
-  // ২. পেন্ডিং ডাটা ফেচিং
+ 
   const pendingReviews = await prisma.review.findMany({
     where: { status: "PENDING" },
     orderBy: { createdAt: "desc" },
@@ -52,7 +51,7 @@ export default async function AdminPage() {
     }
   });
 
-  // ৩. ফুল ডাটাবেস লিস্ট
+
   const allStudents = await prisma.user.findMany({
     orderBy: { createdAt: "desc" },
     include: { reviews: true }
@@ -72,7 +71,7 @@ export default async function AdminPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 p-6 md:p-10 font-sans">
       <div className="max-w-7xl mx-auto">
         
-        {/* --- Header --- */}
+      
         <header className="flex flex-col md:flex-row justify-between items-center mb-10 pb-6 border-b border-gray-200 dark:border-gray-800 gap-4">
           <div>
             <h1 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
@@ -85,7 +84,7 @@ export default async function AdminPage() {
           </Link>
         </header>
 
-        {/* --- Stats Cards --- */}
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <StatCard title="Total Students" count={userCount} icon="👥" color="bg-blue-500" />
           <StatCard title="Active Faculties" count={facultyCount} icon="👨‍🏫" color="bg-purple-500" />
@@ -95,14 +94,13 @@ export default async function AdminPage() {
 
         <div className="space-y-12">
           
-          {/* --- 1. URGENT ACTIONS (Reports & Pending) --- */}
+
           {(reportedReviews.length > 0 || pendingReviews.length > 0 || pendingFaculties.length > 0) && (
             <div className="space-y-8">
               <h2 className="text-2xl font-bold text-gray-800 dark:text-white border-l-4 border-red-500 pl-3">
                 ⚠️ Action Required
               </h2>
 
-              {/* Reports Section */}
               {reportedReviews.length > 0 && (
                 <section className="bg-red-50 dark:bg-red-900/10 p-6 rounded-2xl border border-red-200 dark:border-red-500/30 shadow-sm">
                   <h3 className="text-lg mb-4 text-red-700 dark:text-red-400 font-bold flex items-center gap-2">
@@ -129,7 +127,6 @@ export default async function AdminPage() {
               )}
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Pending Faculties (Updated with Glass Effect) */}
                 <section className="glass-card p-6 rounded-2xl hover:scale-[1.005] transition-transform">
                   <h3 className="text-lg mb-4 text-indigo-600 dark:text-indigo-400 font-bold flex items-center gap-2">
                     📢 Faculty Requests ({pendingFaculties.length})
@@ -151,7 +148,6 @@ export default async function AdminPage() {
                   )}
                 </section>
 
-                {/* Pending Reviews (Updated with Glass Effect) */}
                 <section className="glass-card p-6 rounded-2xl hover:scale-[1.005] transition-transform">
                   <h3 className="text-lg mb-4 text-yellow-600 dark:text-yellow-400 font-bold flex items-center gap-2">
                     📝 Review Approvals ({pendingReviews.length})
@@ -179,7 +175,6 @@ export default async function AdminPage() {
             </div>
           )}
 
-          {/* --- 2. SYSTEM MANAGEMENT --- */}
           <div className="pt-8 border-t border-gray-200 dark:border-gray-800">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 flex items-center gap-2">
               ⚙️ System Management
@@ -187,7 +182,6 @@ export default async function AdminPage() {
             
             <div className="grid grid-cols-1 gap-10">
               
-              {/* Department Manager */}
               <div className="glass-card p-6 rounded-xl hover:scale-[1.01] transition-transform duration-300">
                 <div className="mb-6">
                   <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-1">Departments</h3>
@@ -196,16 +190,14 @@ export default async function AdminPage() {
                 <AdminDepartmentManager departments={allDepartments} />
               </div>
 
-              {/* Student & Faculty Lists */}
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
                 
-                {/* Student List */}
                 <div className="glass-card p-6 rounded-xl hover:scale-[1.01] transition-transform duration-300">
                    <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-4">Users / Students</h3>
                    <AdminStudentList students={allStudents} />
                 </div>
                 
-                {/* Faculty List (Fixed the structure here) */}
+                
                 <div className="glass-card p-6 rounded-xl hover:scale-[1.01] transition-transform duration-300">
                    <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-4">Faculties Database</h3>
                    <AdminFacultyList faculties={allFaculties} />
@@ -222,7 +214,7 @@ export default async function AdminPage() {
   );
 }
 
-// Stats Card Component (Updated)
+
 function StatCard({ title, count, icon, color }: any) {
   return (
     <div className="glass-card p-6 rounded-xl hover:scale-[1.05] transition-transform duration-300 flex items-center justify-between">

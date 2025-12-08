@@ -20,7 +20,6 @@ export default function AdminFacultyList({ faculties }: { faculties: any[] }) {
     if (!confirm("⚠️ Warning! This will delete the faculty and ALL reviews associated with them.")) return;
     
     setLoadingId(facultyId);
-    // আমরা আগের existing API টাই ব্যবহার করবো (action: reject মানেই ডিলিট)
     const res = await fetch("/api/admin/faculty", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },

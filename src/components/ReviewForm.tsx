@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function ReviewForm({ facultyId }: Props) {
-  // ❌ আগের isExpanded বা isOpen স্টেটটি মুছে ফেলা হলো
+  
   const [rating, setRating] = useState(0);
   const [course, setCourse] = useState("");
   const [comment, setComment] = useState("");
@@ -39,7 +39,7 @@ export default function ReviewForm({ facultyId }: Props) {
         setComment("");
         router.refresh();
         
-        // ফর্ম সাবমিট হলে পেজ রিলোড বা মডাল বন্ধের লজিক প্যারেন্ট হ্যান্ডেল করবে
+        
       } else {
         const errorData = await res.json();
         toast.error(errorData.error || "Failed to submit.");
@@ -52,10 +52,9 @@ export default function ReviewForm({ facultyId }: Props) {
   };
 
   return (
-    // ❌ আগে এখানে বাটন ছিল, এখন সরাসরি ফর্ম রিটার্ন করবে
+    
     <form onSubmit={handleSubmit} className="space-y-4">
       
-      {/* 1. Star Rating */}
       <div>
         <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
           Rating
@@ -76,7 +75,6 @@ export default function ReviewForm({ facultyId }: Props) {
         </div>
       </div>
 
-      {/* 2. Course Name */}
       <div>
         <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
           Course Taken (e.g. CSE101)
@@ -91,7 +89,6 @@ export default function ReviewForm({ facultyId }: Props) {
         />
       </div>
 
-      {/* 3. Comment */}
       <div>
         <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
           Review
@@ -106,7 +103,6 @@ export default function ReviewForm({ facultyId }: Props) {
         />
       </div>
 
-      {/* Submit Button */}
       <button
         type="submit"
         disabled={loading}

@@ -1,4 +1,4 @@
-// src/app/compare/page.tsx
+
 import prisma from "@/lib/prisma";
 import CompareView from "@/components/CompareView";
 import Link from "next/link";
@@ -10,7 +10,7 @@ export default async function ComparePage() {
   });
 
   return (
-    <div className="min-h-screen p-8"> {/* Removed dark bg */}
+    <div className="min-h-screen p-8">
       <header className="mb-8 max-w-6xl mx-auto">
         <Link href="/" className="text-indigo-600 dark:text-indigo-400 hover:underline mb-4 block">← Back to Home</Link>
       </header>

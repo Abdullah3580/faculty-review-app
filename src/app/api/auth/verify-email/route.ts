@@ -5,7 +5,7 @@ export async function POST(request: Request) {
   try {
     const { token } = await request.json();
 
-    // ১. টোকেন খোঁজা
+    
     const existingToken = await prisma.verificationToken.findUnique({
       where: { token },
     });
@@ -14,12 +14,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid or expired token" }, { status: 400 });
     }
 
-    // ২. মেয়াদ চেক
+    
     if (new Date() > existingToken.expires) {
       return NextResponse.json({ error: "Token expired" }, { status: 400 });
     }
 
-    // ৩. ইউজার আপডেট করা
+    
     const existingUser = await prisma.user.findUnique({
       where: { email: existingToken.identifier },
     });
@@ -31,11 +31,11 @@ export async function POST(request: Request) {
     await prisma.user.update({
       where: { id: existingUser.id },
       data: { 
-        emailVerified: new Date(), // ভেরিফাই টাইম সেট করা হলো
+        emailVerified: new Date(),
       },
     });
 
-    // ৪. টোকেন ডিলিট করা (যাতে আর ব্যবহার না হয়)
+    
     await prisma.verificationToken.delete({
       where: { token },
     });

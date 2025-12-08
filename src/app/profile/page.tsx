@@ -34,9 +34,8 @@ export default async function ProfileDashboard() {
   if (reputationScore < 0) reputationScore = 0;
 
   return (
-    <div className="min-h-screen p-8"> {/* আগে এখানে bg-gray-900 ছিল, এখন নেই */}
+    <div className="min-h-screen p-8"> 
       <div className="max-w-6xl mx-auto">
-        {/* Header Section */}
         <header className="mb-8 border-b border-gray-200 dark:border-gray-800 pb-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">My Dashboard</h1>
@@ -46,22 +45,18 @@ export default async function ProfileDashboard() {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Left Column */}
           <div className="space-y-6">
-            {/* Reputation Card */}
             <div className="bg-gradient-to-br from-indigo-500 to-purple-600 p-6 rounded-lg shadow-lg text-center text-white">
               <h3 className="text-indigo-100 text-sm font-bold uppercase tracking-wider mb-2">Reputation Score</h3>
               <div className="text-5xl font-bold mb-1">{reputationScore}</div>
               <p className="text-xs text-indigo-100 opacity-80">Points earned from helpful reviews</p>
             </div>
 
-            {/* Edit Profile Form */}
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
                <ProfileEditForm initialNickname={user.nickname} initialSemester={user.semester} />
             </div>
           </div>
 
-          {/* Right Column: My Reviews */}
           <div className="md:col-span-2">
             <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
               My Reviews <span className="bg-gray-200 dark:bg-gray-700 text-xs px-2 py-1 rounded-full text-gray-700 dark:text-gray-300">{user.reviews.length}</span>

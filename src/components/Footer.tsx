@@ -6,7 +6,6 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           
-          {/* Logo & Copyright */}
           <div className="text-center md:text-left">
             <h2 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2 justify-center md:justify-start">
               <span className="text-2xl">🎓</span> Faculty Review
@@ -16,7 +15,6 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Quick Links */}
           <div className="flex gap-6 text-sm font-medium text-gray-600 dark:text-gray-400">
             <Link href="/" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition">
               Home

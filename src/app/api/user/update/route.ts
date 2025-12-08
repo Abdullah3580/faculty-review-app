@@ -1,4 +1,4 @@
-// src/app/api/user/update/route.ts
+
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
@@ -13,12 +13,12 @@ export async function PUT(request: Request) {
 
   const { nickname, semester } = await request.json();
 
-  // ডাকনাম ইউনিক কিনা চেক করা (যদিও ডেটাবেসও আটকাবে)
+  
   const existingUser = await prisma.user.findUnique({
     where: { nickname },
   });
 
-  // যদি অন্য কেউ এই নাম নিয়ে থাকে
+  
   if (existingUser && existingUser.email !== session.user.email) {
     return NextResponse.json({ error: "Nickname already taken!" }, { status: 400 });
   }

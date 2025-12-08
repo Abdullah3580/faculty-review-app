@@ -10,7 +10,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// ১. ভেরিফিকেশন ইমেইল ফাংশন (আগেরটি)
 export const sendVerificationEmail = async (email: string, token: string) => {
   const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || process.env.NEXTAUTH_URL || "http://localhost:3000";
   const confirmLink = `${baseUrl}/verify-email?token=${token}`;
@@ -39,7 +38,6 @@ export const sendVerificationEmail = async (email: string, token: string) => {
   });
 };
 
-// ২. পাসওয়ার্ড রিসেট ইমেইল ফাংশন (নতুন যোগ করা হলো) ✅
 export const sendPasswordResetEmail = async (email: string, token: string) => {
   const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || process.env.NEXTAUTH_URL || "http://localhost:3000";
   const resetLink = `${baseUrl}/reset-password?token=${token}`;

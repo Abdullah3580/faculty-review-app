@@ -1,10 +1,10 @@
-//sre/app/register/page.tsx
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; 
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -17,9 +17,10 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   
-  // এরর মেসেজ দেখানোর জন্য স্টেট (Array)
-  const [errorMessages, setErrorMessages] = useState<string[]>([]); 
   
+  const [showPassword, setShowPassword] = useState(false);
+  
+  const [errorMessages, setErrorMessages] = useState<string[]>([]); 
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,7 +96,7 @@ export default function RegisterPage() {
           </p>
         </div>
 
-        {/* 🔒 Privacy Notice (নতুন যোগ করা হয়েছে) */}
+        {/* 🔒 Privacy Notice */}
         <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800 p-4 rounded-lg flex gap-3 text-left shadow-sm">
           <span className="text-xl">🔒</span>
           <div className="text-xs text-indigo-900 dark:text-indigo-200">
@@ -123,14 +124,31 @@ export default function RegisterPage() {
           <input name="name" type="text" required placeholder="Full Name  (Will be Hidden)" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
           <input name="studentId" type="text" required placeholder="Student ID  (Will be Hidden)" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
           
-          {/* নিকনেম ফিল্ডটি একটু হাইলাইট করা হয়েছে */}
           <div className="relative">
             <input name="nickname" type="text" required placeholder="Anonymous Name (Visible to Public)" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border-2 border-indigo-100 dark:border-indigo-800 outline-none focus:border-indigo-500 transition" />
             <span className="absolute right-3 top-3.5 text-xs text-gray-400">Public</span>
           </div>
 
           <input name="email" type="email" required placeholder="Varsity Email  (Hidden)" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
-          <input name="password" type="password" required placeholder="Password" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
+          
+          {/* ✅ ৩. পাসওয়ার্ড ইনপুট ফিল্ড আপডেট (শো/হাইড ফিচার সহ) */}
+          <div className="relative">
+            <input 
+              name="password" 
+              type={showPassword ? "text" : "password"} 
+              required 
+              placeholder="Password" 
+              onChange={handleChange} 
+              className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition pr-10" 
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-indigo-600 dark:text-gray-400 transition"
+            >
+              {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+            </button>
+          </div>
 
           <button type="submit" disabled={loading} className="w-full bg-indigo-600 text-white p-3 rounded font-bold hover:bg-indigo-500 disabled:opacity-50 transition shadow-lg shadow-indigo-500/30">
             {loading ? "Creating Account..." : "Sign Up Securely"}

@@ -39,7 +39,7 @@ export default async function FacultyProfilePage(props: Props) {
   const params = await props.params;
   const session = await getServerSession(authOptions);
 
-  // ফলো স্ট্যাটাস চেক
+  
   let isFollowing = false;
   if (session?.user?.email) {
     const user = await prisma.user.findUnique({
@@ -161,7 +161,7 @@ export default async function FacultyProfilePage(props: Props) {
                 </div>
               ) : (
                 faculty.reviews.map((review, index) => (
-                  // ✅ রিভিউ কার্ড (ফিক্সড): ক্লাসটি সরাসরি FadeIn এ দেওয়া হয়েছে
+                  
                   <FadeIn 
                     key={review.id} 
                     delay={index * 0.1} 

@@ -14,7 +14,7 @@ export default function AdminReviewDeleteButton({ reviewId }: Props) {
   const [warningReason, setWarningReason] = useState("");
   const router = useRouter();
 
-  // ডিলিট ফাংশন
+  
   const handleDelete = async (withWarning: boolean) => {
     setLoading(true);
     try {
@@ -31,7 +31,7 @@ export default function AdminReviewDeleteButton({ reviewId }: Props) {
       if (res.ok) {
         toast.success(withWarning ? "Deleted & User Warned! ⚠️" : "Review Deleted! 🗑️");
         setIsOpen(false);
-        router.refresh(); // পেজ রিফ্রেশ করে ডিলিট হওয়া রিভিউ সরিয়ে দেবে
+        router.refresh(); 
       } else {
         toast.error("Failed to delete.");
       }
@@ -44,7 +44,6 @@ export default function AdminReviewDeleteButton({ reviewId }: Props) {
 
   return (
     <>
-      {/* ১. ডিলিট আইকন বাটন */}
       <button
         onClick={() => setIsOpen(true)}
         className="text-gray-400 hover:text-red-500 transition p-1 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20"
@@ -53,7 +52,6 @@ export default function AdminReviewDeleteButton({ reviewId }: Props) {
         🗑️
       </button>
 
-      {/* ২. পপ-আপ মডাল (Modal) */}
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-md border border-gray-200 dark:border-gray-700 animation-fade-in-up">
@@ -63,7 +61,6 @@ export default function AdminReviewDeleteButton({ reviewId }: Props) {
               This action cannot be undone. How would you like to proceed?
             </p>
 
-            {/* ওয়ার্নিং রিজন ইনপুট */}
             <div className="mb-4">
               <label className="text-xs font-semibold text-gray-500 uppercase">Warning Reason (Optional)</label>
               <textarea
@@ -75,10 +72,8 @@ export default function AdminReviewDeleteButton({ reviewId }: Props) {
               />
             </div>
 
-            {/* অ্যাকশন বাটনস */}
             <div className="flex flex-col gap-2">
               
-              {/* অপশন ১: ডিলিট + ওয়ার্নিং */}
               <button
                 onClick={() => handleDelete(true)}
                 disabled={loading}
@@ -87,7 +82,6 @@ export default function AdminReviewDeleteButton({ reviewId }: Props) {
                 {loading ? "Processing..." : "⚠️ Delete & Warn User"}
               </button>
 
-              {/* অপশন ২: শুধু ডিলিট */}
               <button
                 onClick={() => handleDelete(false)}
                 disabled={loading}
@@ -96,7 +90,6 @@ export default function AdminReviewDeleteButton({ reviewId }: Props) {
                 Just Delete Review
               </button>
 
-              {/* ক্যানসেল */}
               <button
                 onClick={() => setIsOpen(false)}
                 className="mt-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-400 text-sm underline"

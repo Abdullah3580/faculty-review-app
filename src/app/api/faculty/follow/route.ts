@@ -15,7 +15,7 @@ export async function POST(request: Request) {
 
   if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
 
-  // চেক করি ইউজার কি অলরেডি ফলো করছে?
+  
   const existingFollow = await prisma.user.findFirst({
     where: {
       id: user.id,
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
   });
 
   if (existingFollow) {
-    // যদি ফলো করা থাকে, তবে আন-ফলো (Unfollow) করবে
+    
     await prisma.user.update({
       where: { id: user.id },
       data: {
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     });
     return NextResponse.json({ message: "Unfollowed", isFollowing: false });
   } else {
-    // যদি ফলো না করা থাকে, তবে ফলো (Follow) করবে
+    
     await prisma.user.update({
       where: { id: user.id },
       data: {

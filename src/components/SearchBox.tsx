@@ -42,7 +42,7 @@ export default function SearchBox() {
           type="text"
           value={term}
           onChange={(e) => setTerm(e.target.value)}
-          placeholder="Search by Name, Initial (MSA), Code or Dept..."
+          placeholder="Search by Name or Dept..."
           className="flex-1 p-4 text-gray-900 dark:text-white dark:bg-gray-800 outline-none placeholder-gray-500 dark:placeholder-gray-400 text-lg bg-transparent"
         />
 

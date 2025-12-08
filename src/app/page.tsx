@@ -109,13 +109,11 @@ export default async function HomePage(props: Props) {
       
       <div className="relative overflow-hidden bg-slate-900 text-white pb-24 pt-10 px-4 rounded-b-[2.5rem] shadow-2xl mb-12">
         
-        {/* Animated Background Blobs */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
           <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-purple-600/30 rounded-full blur-[120px] animate-pulse"></div>
           <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-indigo-600/30 rounded-full blur-[120px] animate-pulse delay-1000"></div>
         </div>
 
-        {/* Hero Content */}
         <div className="relative z-10 max-w-4xl mx-auto text-center">
           <span className="inline-block py-1.5 px-4 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs md:text-sm font-bold mb-6 uppercase tracking-wider">
             🚀 The #1 Review Platform for Students
@@ -132,12 +130,10 @@ export default async function HomePage(props: Props) {
             Share your honest feedback anonymously, help juniors choose the best courses, and build a transparent community.
           </p>
 
-          {/* Modern Search Bar */}
           <div className="mt-8 mb-4">
             <SearchBox />
           </div>
 
-          {/* Stats Badges */}
           <div className="mt-10 flex flex-wrap justify-center gap-6 text-sm font-medium text-gray-400">
             <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
               <span className="w-2 h-2 bg-green-400 rounded-full shadow-[0_0_10px_rgba(74,222,128,0.5)]"></span> 100% Anonymous
@@ -152,7 +148,6 @@ export default async function HomePage(props: Props) {
 
       <main className="flex flex-col items-center w-full px-4 md:px-8 max-w-7xl mx-auto">
         
-        {/* --- Leaderboard --- */}
         {page === 1 && !query && topFaculties.length > 0 && topFaculties[0].avgRating > 0 && (
           <div className="w-full mb-16">
             <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6 flex items-center gap-2">
@@ -205,17 +200,15 @@ export default async function HomePage(props: Props) {
 
         {session && !query && <AddFacultyForm />}
 
-        {/* --- Main Faculty List --- */}
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           {paginatedFaculties.length === 0 ? (
             <div className="col-span-1 lg:col-span-2 text-center py-20 bg-white dark:bg-gray-800 rounded-2xl border border-dashed border-gray-300 dark:border-gray-700">
               <p className="text-gray-500 dark:text-gray-400 text-xl font-medium">No faculty found matching "{query}"</p>
-              <p className="text-gray-400 mt-2">Try searching by Department or Initial.</p>
+              <p className="text-gray-400 mt-2">Try searching by Department.</p>
               {query && <a href="/" className="text-indigo-500 hover:underline mt-4 inline-block font-bold">Clear Search</a>}
             </div>
           ) : (
             paginatedFaculties.map((faculty, index) => (
-              // ✅ FadeIn কম্পোনেন্টে ক্লাস পাস করা হয়েছে (Glass Card এর জন্য)
               <FadeIn 
                 key={faculty.id} 
                 delay={index * 0.1}
@@ -225,7 +218,6 @@ export default async function HomePage(props: Props) {
                       View Profile &rarr;
                   </Link>
 
-                  {/* Faculty Header */}
                   <div className="mb-4 pr-24">
                     <Link href={`/faculty/${faculty.id}`} title={`View profile of ${faculty.name}`} >
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white hover:text-indigo-600 transition cursor-pointer mb-1">
@@ -243,7 +235,6 @@ export default async function HomePage(props: Props) {
                     </div>
                   </div>
 
-                  {/* Rating Bar */}
                   <div className="flex justify-between items-center bg-gray-50 dark:bg-gray-700/30 p-3 rounded-xl mb-6">
                       <span className="text-gray-600 dark:text-gray-300 text-xs font-bold uppercase tracking-wide">
                         Total Reviews: {faculty.reviews.length}
@@ -255,7 +246,6 @@ export default async function HomePage(props: Props) {
                       )}
                   </div>
 
-                  {/* Review List */}
                   <div className="space-y-4 max-h-80 overflow-y-auto mb-6 pr-2 custom-scrollbar flex-1">
                     {faculty.reviews.length === 0 && (
                       <div className="text-center py-6">
@@ -273,7 +263,6 @@ export default async function HomePage(props: Props) {
                             </span>
                           </div>
                           
-                          {/* User Badge */}
                           <div className="flex items-center gap-2">
                             <Link href={`/student/${review.user.id}`} className="group">
                               <span className="text-xs text-gray-500 dark:text-gray-400 font-mono group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition cursor-pointer">

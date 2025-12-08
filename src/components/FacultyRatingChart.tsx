@@ -17,7 +17,6 @@ interface Props {
 }
 
 export default function FacultyRatingChart({ reviews }: Props) {
-  // ১. রেটিং ক্যালকুলেশন (কোন স্টার কতজন দিয়েছে)
   const ratingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
 
   reviews.forEach((review) => {
@@ -28,13 +27,12 @@ export default function FacultyRatingChart({ reviews }: Props) {
     }
   });
 
-  // ২. চার্টের জন্য ডাটা সাজানো
   const data = [
-    { name: "5 ★", count: ratingCounts[5], color: "#22c55e" }, // Green
-    { name: "4 ★", count: ratingCounts[4], color: "#84cc16" }, // Lime
-    { name: "3 ★", count: ratingCounts[3], color: "#eab308" }, // Yellow
-    { name: "2 ★", count: ratingCounts[2], color: "#f97316" }, // Orange
-    { name: "1 ★", count: ratingCounts[1], color: "#ef4444" }, // Red
+    { name: "5 ★", count: ratingCounts[5], color: "#22c55e" }, 
+    { name: "4 ★", count: ratingCounts[4], color: "#84cc16" },
+    { name: "3 ★", count: ratingCounts[3], color: "#eab308" }, 
+    { name: "2 ★", count: ratingCounts[2], color: "#f97316" },
+    { name: "1 ★", count: ratingCounts[1], color: "#ef4444" }, 
   ];
 
   if (reviews.length === 0) {

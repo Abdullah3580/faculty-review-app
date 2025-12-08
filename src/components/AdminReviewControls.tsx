@@ -15,7 +15,6 @@ export default function AdminReviewControls({ reviewId }: Props) {
   const handleAction = async (action: "APPROVE" | "REJECT") => {
     setLoading(true);
     try {
-      // ✅ আপডেট: সঠিক API রুটে কল করা হচ্ছে
       const res = await fetch("/api/admin/review/action", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

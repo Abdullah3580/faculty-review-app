@@ -11,7 +11,6 @@ export async function GET() {
     return NextResponse.json({ error: "Not logged in" }, { status: 401 });
   }
 
-  // যে লগইন করে আছে, তাকেই ADMIN বানিয়ে দেবে
   await prisma.user.update({
     where: { email: session.user.email },
     data: { role: "ADMIN" },

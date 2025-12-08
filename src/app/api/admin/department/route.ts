@@ -4,7 +4,6 @@ import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/route";
 
-// ডিপার্টমেন্ট অ্যাড করা
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -16,7 +15,7 @@ export async function POST(request: Request) {
 
   try {
     const newDept = await prisma.department.create({
-      data: { name: name.toUpperCase() }, // সবসময় বড় হাতের অক্ষরে সেভ হবে (যেমন: CSE)
+      data: { name: name.toUpperCase() }, 
     });
     return NextResponse.json(newDept);
   } catch (error) {
@@ -24,7 +23,6 @@ export async function POST(request: Request) {
   }
 }
 
-// ডিপার্টমেন্ট ডিলিট করা
 export async function DELETE(request: Request) {
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

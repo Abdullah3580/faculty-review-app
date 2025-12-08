@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import AdminReviewDeleteButton from "./AdminReviewDeleteButton"; // ✅ এটি ইমপোর্ট নিশ্চিত করুন
+import AdminReviewDeleteButton from "./AdminReviewDeleteButton"; 
 
 interface Props {
   reviewId: string;
@@ -13,11 +13,9 @@ export default function AdminReportControls({ reviewId }: Props) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // রিপোর্ট ডিসমিস করা (অর্থাৎ রিভিউ ডিলিট হবে না, রিপোর্ট মুছে যাবে)
   const handleDismiss = async () => {
     setLoading(true);
     try {
-      // ✅ আপডেট: সঠিক API রুটে কল করা হচ্ছে
       const res = await fetch("/api/admin/report/dismiss", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
@@ -39,12 +37,10 @@ export default function AdminReportControls({ reviewId }: Props) {
 
   return (
     <div className="flex gap-3 items-center mt-2">
-      {/* ১. রিভিউ ডিলিট বাটন (সাথে ওয়ার্নিং পপ-আপ ফিচার) */}
       <div title="Delete Review & Warn User">
         <AdminReviewDeleteButton reviewId={reviewId} />
       </div>
       
-      {/* ২. রিপোর্ট ইগনোর করার বাটন */}
       <button
         onClick={handleDismiss}
         disabled={loading}

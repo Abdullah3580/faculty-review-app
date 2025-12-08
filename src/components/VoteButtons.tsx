@@ -1,4 +1,4 @@
-// src/components/VoteButtons.tsx
+
 "use client";
 
 import { useState } from "react";
@@ -6,18 +6,18 @@ import { useRouter } from "next/navigation";
 
 interface VoteProps {
   reviewId: string;
-  initialVotes: any[]; // সার্ভার থেকে আসা সব ভোটের লিস্ট
-  currentUserId?: string; // বর্তমান ইউজার
+  initialVotes: any[]; 
+  currentUserId?: string; 
 }
 
 export default function VoteButtons({ reviewId, initialVotes, currentUserId }: VoteProps) {
   const router = useRouter();
   
-  // ভোট গণনা করা
+  
   const upvotes = initialVotes.filter((v) => v.type === "UP").length;
   const downvotes = initialVotes.filter((v) => v.type === "DOWN").length;
   
-  // আমি কি ভোট দিয়েছি?
+  
   const myVote = initialVotes.find((v) => v.userId === currentUserId)?.type;
 
   const [loading, setLoading] = useState(false);
@@ -36,12 +36,11 @@ export default function VoteButtons({ reviewId, initialVotes, currentUserId }: V
     });
 
     setLoading(false);
-    router.refresh(); // পেজ রিফ্রেশ করে নতুন কাউন্ট দেখাবে
+    router.refresh(); 
   };
 
   return (
     <div className="flex items-center gap-2 mt-2">
-      {/* Upvote Button */}
       <button
         onClick={() => handleVote("UP")}
         disabled={loading}
@@ -54,7 +53,6 @@ export default function VoteButtons({ reviewId, initialVotes, currentUserId }: V
         👍 {upvotes}
       </button>
 
-      {/* Downvote Button */}
       <button
         onClick={() => handleVote("DOWN")}
         disabled={loading}

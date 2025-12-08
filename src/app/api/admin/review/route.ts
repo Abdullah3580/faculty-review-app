@@ -19,31 +19,24 @@ export async function PUT(request: Request) {
   const { reviewId, action } = await request.json(); 
 
   try {
-    // --- CASE 1: Pending Review ---
     if (action === "approve") {
-      // পেন্ডিং রিভিউ অ্যাপ্রুভ (পাবলিশ) করা
       await prisma.review.update({
         where: { id: reviewId },
         data: { status: "APPROVED" },
       });
     } 
     else if (action === "reject") {
-      // পেন্ডিং রিভিউ রিজেক্ট (ডিলিট) করা
       await prisma.review.delete({
         where: { id: reviewId },
       });
     }
 
-    // --- CASE 2: Reported Review (আপনার নতুন লজিক) ---
     else if (action === "approve_report") {
-      // Report সত্য (Approve): তাই রিভিউটি ডিলিট করে দিলাম
-      // (Review ডিলিট করলে Report-ও অটোমেটিক ডিলিট হয়ে যাবে Cascade এর কারণে)
       await prisma.review.delete({
         where: { id: reviewId },
       });
     }
     else if (action === "reject_report") {
-      // Report মিথ্যা (Reject): তাই শুধু রিপোর্টগুলো ডিলিট করবো, রিভিউ থাকবে
       await prisma.report.deleteMany({
         where: { reviewId: reviewId }
       });

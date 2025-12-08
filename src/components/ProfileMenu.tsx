@@ -5,7 +5,7 @@ import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { useTheme } from "next-themes"; // ✅ থিম হুক ইমপোর্ট
+import { useTheme } from "next-themes"; 
 
 interface Props {
   user: any;
@@ -15,8 +15,7 @@ interface Props {
 export default function ProfileMenu({ user, isAdmin }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const { theme, setTheme } = useTheme(); // ✅ থিম কন্ট্রোল
-
+  const { theme, setTheme } = useTheme(); 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -27,7 +26,7 @@ export default function ProfileMenu({ user, isAdmin }: Props) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // থিম টগল ফাংশন
+  
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
@@ -85,13 +84,11 @@ export default function ProfileMenu({ user, isAdmin }: Props) {
                 </Link>
               )}
 
-              {/* ✅ Theme Switcher Option */}
               <button onClick={toggleTheme} className="menu-item justify-between w-full">
                 <span className="flex items-center gap-3">
                   <span>{theme === 'dark' ? '🌙' : '☀️'}</span> 
                   {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
                 </span>
-                {/* Toggle Switch Visual */}
                 <div className={`w-8 h-4 flex items-center bg-gray-300 dark:bg-gray-600 rounded-full p-1 duration-300 ${theme === 'dark' ? 'justify-end bg-indigo-500' : ''}`}>
                   <div className="bg-white w-3 h-3 rounded-full shadow-md transform duration-300"></div>
                 </div>

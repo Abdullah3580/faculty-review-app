@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
-import UserBadge from "@/components/UserBadge"; // ✅ ১. নতুন ইমপোর্ট
+import UserBadge from "@/components/UserBadge"; 
 
 interface Props {
   params: Promise<{ userId: string }>;
@@ -18,7 +18,6 @@ export default async function StudentProfilePage(props: Props) {
     redirect("/login");
   }
 
-  // ১. প্রোফাইল ডাটা আনা
   const profileUser = await prisma.user.findUnique({
     where: { 
       id: params.userId 
@@ -38,7 +37,6 @@ export default async function StudentProfilePage(props: Props) {
     return notFound();
   }
 
-  // ২. কারেন্ট ইউজার চেক
   const currentUser = await prisma.user.findUnique({
     where: { email: session.user?.email! },
   });
@@ -47,12 +45,10 @@ export default async function StudentProfilePage(props: Props) {
   const isOwnProfile = currentUser?.id === profileUser.id;
   const canViewSensitiveData = isAdmin || isOwnProfile;
 
-  // ✅ ৩. রিভিউ সংখ্যা বের করা
   const reviewCount = profileUser.reviews.length;
 
   return (
     <div className="min-h-screen p-8 max-w-4xl mx-auto">
-      {/* --- Profile Header Card --- */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8 mb-8">
         <div className="flex flex-col md:flex-row items-center gap-6">
           
@@ -62,12 +58,10 @@ export default async function StudentProfilePage(props: Props) {
 
           <div className="flex-1 text-center md:text-left space-y-2">
             
-            {/* ✅ ৪. নিকনেম এবং ব্যাজ এরিয়া */}
             <div className="flex flex-col md:flex-row items-center gap-3 justify-center md:justify-start">
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
                 @{profileUser.nickname || "Anonymous"}
               </h1>
-              {/* ব্যাজ কম্পোনেন্ট কল করা হলো */}
               <UserBadge reviewCount={reviewCount} role={profileUser.role} />
             </div>
 
@@ -75,7 +69,6 @@ export default async function StudentProfilePage(props: Props) {
               {profileUser.role} &bull; Joined {new Date(profileUser.createdAt).toLocaleDateString()}
             </p>
             
-            {/* 🔒 Sensitive Data Section */}
             <div className="mt-4 bg-gray-50 dark:bg-gray-700/30 p-4 rounded-lg border border-gray-100 dark:border-gray-700">
               {canViewSensitiveData ? (
                 <div className="space-y-2 text-sm">
@@ -98,7 +91,6 @@ export default async function StudentProfilePage(props: Props) {
         </div>
       </div>
 
-      {/* --- User's Reviews History --- */}
       <div className="flex items-center justify-between mb-6 border-b border-gray-200 dark:border-gray-700 pb-2">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
           Reviews History
@@ -117,7 +109,6 @@ export default async function StudentProfilePage(props: Props) {
           profileUser.reviews.map((review) => (
             <div key={review.id} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="flex justify-between items-start mb-2">
-                {/* ✅ ৫. ফ্যাকাল্টির নামের ওপর লিংক যোগ করা হয়েছে */}
                 <Link href={`/faculty/${review.facultyId}`} className="hover:underline">
                   <h3 className="text-lg font-bold text-indigo-600 dark:text-indigo-400">
                     {review.faculty.name}

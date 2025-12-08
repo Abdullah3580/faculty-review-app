@@ -1,4 +1,4 @@
-// src/components/AdminStudentList.tsx
+
 "use client";
 
 import { useState } from "react";
@@ -12,7 +12,7 @@ export default function AdminStudentList({ students }: { students: any[] }) {
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const router = useRouter();
 
-  // সার্চ ফিল্টার
+  
   const filteredStudents = students.filter(s => 
     s.email?.toLowerCase().includes(search.toLowerCase()) ||
     s.nickname?.toLowerCase().includes(search.toLowerCase())
@@ -61,7 +61,7 @@ export default function AdminStudentList({ students }: { students: any[] }) {
             </tr>
           </thead>
           <tbody>
-            {filteredStudents.slice(0, 10).map((student) => ( // প্রথম ১০ জন দেখাবে (Pagination ছাড়া সিম্পল রাখার জন্য)
+            {filteredStudents.slice(0, 10).map((student) => ( 
               <tr key={student.id} className="border-b border-gray-700 hover:bg-gray-700/50">
                 <td className="px-4 py-3 text-white font-bold">
                   <Link href={`/student/${student.id}`}>

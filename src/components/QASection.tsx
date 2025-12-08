@@ -1,4 +1,4 @@
-// src/components/QASection.tsx
+
 "use client";
 
 import { useState } from "react";
@@ -27,14 +27,14 @@ interface Question {
 }
 
 export default function QASection({ facultyId, questions, session }: { facultyId: string, questions: Question[], session: any }) {
-  const [isOpen, setIsOpen] = useState(false); // Q/A সেকশন খোলা/বন্ধ রাখার জন্য
+  const [isOpen, setIsOpen] = useState(false); 
   const [newQuestion, setNewQuestion] = useState("");
-  const [replyText, setReplyText] = useState<{ [key: string]: string }>({}); // কোন প্রশ্নের উত্তরে কী লিখছেন
-  const [replyOpen, setReplyOpen] = useState<{ [key: string]: boolean }>({}); // রিপ্লাই বক্স খোলা কিনা
+  const [replyText, setReplyText] = useState<{ [key: string]: string }>({}); 
+  const [replyOpen, setReplyOpen] = useState<{ [key: string]: boolean }>({}); 
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // প্রশ্ন সাবমিট করা
+  
   const handlePostQuestion = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newQuestion.trim()) return;
@@ -49,7 +49,7 @@ export default function QASection({ facultyId, questions, session }: { facultyId
     router.refresh();
   };
 
-  // উত্তর সাবমিট করা
+  
   const handlePostAnswer = async (questionId: string) => {
     if (!replyText[questionId]?.trim()) return;
     setLoading(true);

@@ -51,7 +51,6 @@ export default function AdminDepartmentManager({ departments }: { departments: a
     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
       <h2 className="text-xl font-bold mb-4 text-indigo-600 dark:text-indigo-400">Manage Departments</h2>
 
-      {/* Add Form */}
       <form onSubmit={handleAdd} className="flex gap-2 mb-6">
         <input
           type="text"
@@ -69,7 +68,6 @@ export default function AdminDepartmentManager({ departments }: { departments: a
         </button>
       </form>
 
-      {/* List */}
       <div className="flex flex-wrap gap-2">
         {departments.length === 0 && <p className="text-gray-500 text-sm">No departments added yet.</p>}
         

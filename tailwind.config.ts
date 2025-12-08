@@ -1,4 +1,4 @@
-//tailwind.config.ts
+
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -11,7 +11,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        // আমাদের কাস্টম ফন্ট ভেরিয়েবল লিঙ্ক করা হলো
+        
         sans: ["var(--font-inter)", "sans-serif"],
         display: ["var(--font-jakarta)", "sans-serif"],
       },

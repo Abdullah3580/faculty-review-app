@@ -1,4 +1,4 @@
-// src/components/AddFacultyForm.tsx
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -8,10 +8,10 @@ export default function AddFacultyForm() {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   
-  // ✅ ডায়নামিক ডিপার্টমেন্ট লিস্ট রাখার জন্য স্টেট
+  
   const [departments, setDepartments] = useState<{ id: string; name: string }[]>([]);
 
-  // ফর্ম ডাটা স্টেট
+  
   const [formData, setFormData] = useState({
     name: "",
     department: "",
@@ -20,7 +20,7 @@ export default function AddFacultyForm() {
     code: ""
   });
 
-  // ✅ কম্পোনেন্ট লোড হলে ডাটাবেজ থেকে ডিপার্টমেন্ট নিয়ে আসবে
+  
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
@@ -34,7 +34,7 @@ export default function AddFacultyForm() {
       }
     };
 
-    // যখনই মডাল ওপেন হবে, তখনই লিস্ট আনবে (বা একবারও আনা যায়)
+    
     if (isOpen) {
       fetchDepartments();
     }
@@ -58,7 +58,7 @@ export default function AddFacultyForm() {
       if (res.ok) {
         toast.success("Faculty added successfully!");
         setIsOpen(false);
-        // রিসেট
+        
         setFormData({ name: "", department: "", designation: "Lecturer", initial: "", code: "" });
         window.location.reload();
       } else {
@@ -90,7 +90,6 @@ export default function AddFacultyForm() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             
-            {/* ১. নাম */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Faculty Name <span className="text-red-500">*</span></label>
               <input name="name" type="text" required placeholder="e.g. Dr. Abul Kashem" value={formData.name} onChange={handleChange} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
@@ -98,7 +97,6 @@ export default function AddFacultyForm() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               
-              {/* ২. ডিপার্টমেন্ট (ডাটাবেজ থেকে আসা ডায়নামিক লিস্ট) ✅ */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Department <span className="text-red-500">*</span></label>
                 <select 
@@ -110,7 +108,6 @@ export default function AddFacultyForm() {
                 >
                   <option value="" disabled>Select Department</option>
                   
-                  {/* লোডিং বা খালি অবস্থা হ্যান্ডেল করা */}
                   {departments.length === 0 ? (
                     <option disabled>Loading departments...</option>
                   ) : (
@@ -121,7 +118,6 @@ export default function AddFacultyForm() {
                 </select>
               </div>
 
-              {/* ৩. ডেজিগনেশন */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Designation</label>
                 <select name="designation" value={formData.designation} onChange={handleChange} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600">
@@ -135,13 +131,11 @@ export default function AddFacultyForm() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* ৪. ইনিশিয়াল */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Initial (Optional)</label>
                 <input name="initial" type="text" placeholder="e.g. MSA" value={formData.initial} onChange={handleChange} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
               </div>
 
-              {/* ৫. কোড */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Code / Room (Optional)</label>
                 <input name="code" type="text" placeholder="e.g. 1234" value={formData.code} onChange={handleChange} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />

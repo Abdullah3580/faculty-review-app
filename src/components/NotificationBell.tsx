@@ -18,7 +18,7 @@ export default function NotificationBell() {
   const [unreadCount, setUnreadCount] = useState(0);
   const router = useRouter();
 
-  // ১. নোটিফিকেশন লোড করা
+  
   const fetchNotifications = async () => {
     try {
       const res = await fetch("/api/notifications");
@@ -34,33 +34,31 @@ export default function NotificationBell() {
 
   useEffect(() => {
     fetchNotifications();
-    // প্রতি ৩০ সেকেন্ড পর পর অটো রিফ্রেশ হবে (Polling)
+    
     const interval = setInterval(fetchNotifications, 30000);
     return () => clearInterval(interval);
   }, []);
 
-  // ২. নোটিফিকেশনে ক্লিক করলে যা হবে
+  
   const handleNotificationClick = async (notification: Notification) => {
-    // রিড মার্ক করা
+    
     if (!notification.isRead) {
       await fetch("/api/notifications", {
         method: "PATCH",
         body: JSON.stringify({ id: notification.id }),
       });
-      // লোকাল স্টেট আপডেট (দ্রুত রেসপন্সের জন্য)
+      
       setNotifications(prev => prev.map(n => n.id === notification.id ? { ...n, isRead: true } : n));
       setUnreadCount(prev => Math.max(0, prev - 1));
     }
 
     setIsOpen(false);
     
-    // লিংকে নিয়ে যাওয়া
     if (notification.link) {
       router.push(notification.link);
     }
   };
 
-  // ৩. সব 'Read' মার্ক করা
   const markAllAsRead = async () => {
     await fetch("/api/notifications", { method: "PATCH", body: JSON.stringify({}) });
     setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
@@ -69,7 +67,6 @@ export default function NotificationBell() {
 
   return (
     <div className="relative">
-      {/* Bell Icon Button */}
       <button 
         onClick={() => setIsOpen(!isOpen)} 
         className="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-600 dark:text-gray-300"
@@ -82,7 +79,6 @@ export default function NotificationBell() {
         )}
       </button>
 
-      {/* Dropdown Menu */}
       {isOpen && (
         <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 overflow-hidden">
           <div className="flex justify-between items-center px-4 py-3 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
@@ -121,7 +117,6 @@ export default function NotificationBell() {
         </div>
       )}
 
-      {/* Outside click close handling (Optional backdrop) */}
       {isOpen && (
         <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)}></div>
       )}

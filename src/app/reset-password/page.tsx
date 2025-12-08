@@ -1,16 +1,16 @@
-//src/app/reset-password/page.tsx
 "use client";
 
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; 
 
-// ফর্ম কম্পোনেন্ট
 function ResetForm() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -37,7 +37,6 @@ function ResetForm() {
         toast.success("Password updated successfully! Please login.");
         router.push("/login");
       } else {
-        // ব্যাকএন্ড থেকে আসা পাসওয়ার্ড পলিসি এরর এখানে দেখাবে
         toast.error(data.error || "Failed to reset password.");
       }
     } catch (error) {
@@ -54,15 +53,29 @@ function ResetForm() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">New Password</label>
-          <input
-            type="password"
-            placeholder="Enter strong password"
-            required
-            className="w-full p-3 border rounded-md dark:bg-gray-700 dark:border-gray-600 outline-none focus:border-indigo-500 transition"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {/* ✅ ইউজারকে গাইড করার জন্য ইনস্ট্রাকশন টেক্সট */}
+          
+          
+          <div className="relative">
+            <input
+              
+              type={showPassword ? "text" : "password"} 
+              placeholder="Enter strong password"
+              required
+              className="w-full p-3 border rounded-md dark:bg-gray-700 dark:border-gray-600 outline-none focus:border-indigo-500 transition pr-10" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            
+           
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-indigo-600 dark:text-gray-400 transition"
+            >
+              {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+            </button>
+          </div>
+
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
             Must contain: Min 8 chars, Uppercase (A-Z), Lowercase (a-z), Number (0-9) & Special Character (!@#).
           </p>
@@ -79,7 +92,6 @@ function ResetForm() {
   );
 }
 
-// মেইন পেজ
 export default function ResetPasswordPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
