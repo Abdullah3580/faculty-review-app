@@ -77,7 +77,6 @@ export default async function FacultyProfilePage(props: Props) {
           &larr; Back to Faculty List
         </Link>
 
-        {/* ✅ হেডার (ফিক্সড): ক্লাসটি সরাসরি FadeIn এ দেওয়া হয়েছে */}
         <FadeIn className="glass-card rounded-2xl p-6 md:p-8 mb-8">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
               <div className="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-4xl text-white font-bold shadow-md">
@@ -90,7 +89,7 @@ export default async function FacultyProfilePage(props: Props) {
                       {faculty.name}
                     </h1>
                     <p className="text-gray-600 dark:text-gray-400 text-lg mb-4">
-                      {faculty.designation} &bull; {faculty.department}
+                      {faculty.designation}  of {faculty.department} Dept.
                     </p>
                   </div>
                   <div className="mt-4 md:mt-0">

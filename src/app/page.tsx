@@ -180,7 +180,7 @@ export default async function HomePage(props: Props) {
                     ))}
                   </div>
 
-                  <p className="text-sm text-gray-500 dark:text-gray-400 font-medium mb-4">{faculty.department} &bull; {faculty.designation}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 font-medium mb-4"> {faculty.designation}  of {faculty.department} Dept.</p> 
                   
                   <div className="flex items-center gap-3 pt-4 border-t border-gray-100 dark:border-gray-700/50">
                     <span className="text-3xl font-black text-gray-800 dark:text-white">{faculty.avgRating.toFixed(1)}</span>
@@ -224,7 +224,7 @@ export default async function HomePage(props: Props) {
                             {faculty.name}
                         </h2>
                     </Link>
-                    <p className="text-indigo-600 dark:text-indigo-400 text-sm font-semibold">{faculty.department} &bull; {faculty.designation}</p>
+                    <p className="text-indigo-600 dark:text-indigo-400 text-sm font-semibold">{faculty.designation}  of {faculty.department} Dept.</p>
                     
                     <div className="flex flex-wrap gap-2 mt-3">
                       {faculty.tags.map((tag, i) => (
