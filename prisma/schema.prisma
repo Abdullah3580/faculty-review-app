@@ -68,19 +68,20 @@ model VerificationToken {
 }
 
 model Faculty {
-  id         String     @id @default(cuid())
-  name       String
-  department String
+  id          String   @id @default(cuid())
+  name        String
+  email       String?
+  department  String   @default("General")
   designation String   @default("Lecturer") 
   initial     String?  
   code        String?  
   roomNumber  String?  
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  status     String     @default("PENDING")
-  questions  Question[]
-  reviews    Review[]
-  followers     User[]    @relation("UserFollows")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  status      String   @default("PENDING")
+  questions   Question[]
+  reviews     Review[]
+  followers   User[]   @relation("UserFollows")
 }
 
 model Review {
