@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import prisma from "@/lib/prisma";
 import NotificationBell from "./NotificationBell";
 import ProfileMenu from "./ProfileMenu";
 import AuthButtons from "./AuthButtons";
@@ -9,11 +8,10 @@ import AuthButtons from "./AuthButtons";
 export default async function Navbar() {
   const session = await getServerSession(authOptions);
   
-  let isAdmin = false;
-  if (session?.user?.email) {
-    const user = await prisma.user.findUnique({ where: { email: session.user.email } });
-    isAdmin = user?.role === "ADMIN";
-  }
+  // ⚡ অপটিমাইজেশন: ডাটাবেস কল বাদ দেওয়া হয়েছে।
+  // এখন সরাসরি সেশন থেকে রোল চেক করা হচ্ছে, যা অনেক ফাস্ট কাজ করবে।
+  const userRole = session?.user?.role; 
+  const isAdmin = userRole === "admin" || userRole === "ADMIN";
 
   return (
     <nav className="sticky top-0 z-40 w-full backdrop-blur-lg bg-white/70 dark:bg-gray-900/70 border-b border-gray-200/50 dark:border-gray-800/50 transition-all duration-300">
@@ -31,6 +29,7 @@ export default async function Navbar() {
           {session && <NotificationBell />}
 
           {session?.user ? (
+            // 👇 এখানে isAdmin পাস করা হচ্ছে, যাতে ProfileMenu বাটনটি দেখাবে কি না সিদ্ধান্ত নিতে পারে
             <ProfileMenu user={session.user} isAdmin={isAdmin} />
           ) : (
             <AuthButtons />

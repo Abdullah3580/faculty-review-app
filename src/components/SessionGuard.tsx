@@ -13,7 +13,7 @@ export default function SessionGuard() {
     if (session?.error === "UserDeleted" && !toastShown.current) {
       toastShown.current = true;
 
-      toast.error("আপনার অ্যাকাউন্টটি মুছে ফেলা হয়েছে। লগআউট করা হচ্ছে...", {
+      toast.error("Your account has been deleted. Logging out...", {
         duration: 4000,
         style: {
           border: '1px solid #ef4444',
