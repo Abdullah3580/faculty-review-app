@@ -1,3 +1,5 @@
+// src/app/layout.tsx
+
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
@@ -6,8 +8,8 @@ import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import Footer from "@/components/Footer";
 import ContentProtector from "@/components/ContentProtector";
-import ThemeSwitcher from "@/components/ThemeSwitcher";
 import Navbar from "@/components/Navbar";
+import SessionGuard from "@/components/SessionGuard"; 
 
 const inter = Inter({ 
   subsets: ["latin"], 
@@ -37,6 +39,8 @@ export default function RootLayout({
       <body className={`${inter.variable} ${jakarta.variable} bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white transition-colors duration-300 font-sans`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProvider>
+            <SessionGuard /> 
+            
             <ContentProtector />
             <Toaster position="bottom-right" toastOptions={{ 
               duration: 4000,

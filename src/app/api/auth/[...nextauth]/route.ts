@@ -67,10 +67,8 @@ export const authOptions: NextAuthOptions = {
 
         if (!dbUser) {
           // @ts-ignore
-
-         throw new Error("AccountDeleted: আপনার অ্যাকাউন্টটি মুছে ফেলা হয়েছে।");
-
-
+          session.error = "UserDeleted";
+          return session;
         }
 
         if (session.user) {
