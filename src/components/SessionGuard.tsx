@@ -1,19 +1,39 @@
-// src/components/SessionGuard.tsx
 "use client";
 
 import { useSession, signOut } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import toast from "react-hot-toast";
 
 export default function SessionGuard() {
   const { data: session } = useSession();
+  const toastShown = useRef(false); 
 
   useEffect(() => {
     // @ts-ignore
-    if (session?.error === "UserDeleted") {
-      alert("AccountDeleted: আপনার অ্যাকাউন্টটি মুছে ফেলা হয়েছে।");
-      signOut({ callbackUrl: "/login" }); // লগআউট করে লগিন পেজে পাঠাবে
+    if (session?.error === "UserDeleted" && !toastShown.current) {
+      toastShown.current = true;
+
+      toast.error("আপনার অ্যাকাউন্টটি মুছে ফেলা হয়েছে। লগআউট করা হচ্ছে...", {
+        duration: 4000,
+        style: {
+          border: '1px solid #ef4444',
+          padding: '16px',
+          color: '#ef4444',
+          background: '#fff',
+        },
+        iconTheme: {
+          primary: '#ef4444',
+          secondary: '#FFFAEE',
+        },
+      });
+
+      const timer = setTimeout(() => {
+        signOut({ callbackUrl: "/login" }); 
+      }, 2000);
+
+      return () => clearTimeout(timer);
     }
   }, [session]);
 
-  return null; // এটি স্ক্রিনে কিছু দেখাবে না, শুধু কাজ করবে
+  return null;
 }
