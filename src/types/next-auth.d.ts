@@ -1,3 +1,4 @@
+// src/types/next-auth.d.ts
 import { DefaultSession } from "next-auth";
 
 declare module "next-auth" {
@@ -10,6 +11,7 @@ declare module "next-auth" {
       nickname?: string | null;
       role?: string;
       semester?: string | null;
+      studentId?: string | null;
     } & DefaultSession["user"];
   }
 
@@ -17,6 +19,17 @@ declare module "next-auth" {
     id: string;
     nickname?: string | null;
     role?: string;
+    semester?: string | null;
+    studentId?: string | null;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id: string;
+    role?: string;
+    nickname?: string | null;
+    studentId?: string | null;
     semester?: string | null;
   }
 }

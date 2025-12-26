@@ -1,4 +1,4 @@
-//src/app/api/auth/[...nextauth]/route.ts
+// src/app/api/auth/[...nextauth]/route.ts
 
 import NextAuth, { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
@@ -26,7 +26,6 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Please enter Email and Password");
         }
 
-        // ইউজার খোঁজা (email অথবা studentId)
         const user = await prisma.user.findFirst({
           where: {
             OR: [{ email }, { studentId: email }],
@@ -36,12 +35,10 @@ export const authOptions: NextAuthOptions = {
         if (!user) throw new Error("User not found");
         if (!user.password) throw new Error("Please reset your password");
 
-        // ইমেইল ভেরিফাইড কিনা চেক
         if (!user.emailVerified) {
           throw new Error("Please verify your email first! Check your inbox.");
         }
 
-        // 🧪 Argon2-based password verify
         const isValid = await argon2.verify(user.password, password);
         if (!isValid) throw new Error("Invalid password");
 
@@ -63,15 +60,23 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, token }) {
-      if (session.user) {
-        // @ts-ignore
-        session.user.id = token.id;
-        // @ts-ignore
-        session.user.role = token.role;
-        // @ts-ignore
-        session.user.nickname = token.nickname;
-        // @ts-ignore
-        session.user.studentId = token.studentId;
+      if (token && token.id) {
+        const dbUser = await prisma.user.findUnique({
+          where: { id: token.id as string },
+        });
+
+        if (!dbUser) {
+          // @ts-ignore
+          return null;
+        }
+
+        if (session.user) {
+          session.user.id = dbUser.id;
+          session.user.role = dbUser.role;
+          session.user.nickname = dbUser.nickname;
+          // @ts-ignore
+          session.user.studentId = dbUser.studentId;
+        }
       }
       return session;
     },
