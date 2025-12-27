@@ -8,7 +8,7 @@ interface Props {
   reviewId: string;
 }
 
-export default function AdminReviewControls({ reviewId }: Props) {
+export default function AdminReviewControls({ pendingReviews }: { pendingReviews: any }) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 

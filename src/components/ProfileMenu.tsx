@@ -89,14 +89,8 @@ export default function ProfileMenu({ user, isAdmin }: Props) {
               <Link href="/profile" onClick={() => setIsOpen(false)} className={menuItemClass}>
                 <span className="text-lg">✏️</span> Edit Profile
               </Link>
-
-              {/* ✅ শুধুমাত্র অ্যাডমিন হলে এই অপশন দেখাবে */}
               {isAdmin && (
-                <Link 
-                  href="/admin/dashboard" 
-                  onClick={() => setIsOpen(false)} 
-                  className={`${menuItemClass} text-indigo-600 dark:text-indigo-400 bg-indigo-50/50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800`}
-                >
+                <Link href="/admin" onClick={() => setIsOpen(false)} className={`${menuItemClass} text-indigo-600 dark:text-indigo-400 bg-indigo-50/50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800`}>
                   <span className="text-lg">🛡️</span> Admin Dashboard
                 </Link>
               )}

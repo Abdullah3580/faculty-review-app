@@ -8,8 +8,6 @@ import AuthButtons from "./AuthButtons";
 export default async function Navbar() {
   const session = await getServerSession(authOptions);
   
-  // ⚡ অপটিমাইজেশন: ডাটাবেস কল বাদ দেওয়া হয়েছে।
-  // এখন সরাসরি সেশন থেকে রোল চেক করা হচ্ছে, যা অনেক ফাস্ট কাজ করবে।
   const userRole = session?.user?.role; 
   const isAdmin = userRole === "admin" || userRole === "ADMIN";
 
@@ -29,7 +27,6 @@ export default async function Navbar() {
           {session && <NotificationBell />}
 
           {session?.user ? (
-            // 👇 এখানে isAdmin পাস করা হচ্ছে, যাতে ProfileMenu বাটনটি দেখাবে কি না সিদ্ধান্ত নিতে পারে
             <ProfileMenu user={session.user} isAdmin={isAdmin} />
           ) : (
             <AuthButtons />
