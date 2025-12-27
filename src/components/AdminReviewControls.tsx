@@ -1,9 +1,9 @@
+//src/components/AdminReviewControls.tsx
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-// টাইপ ফিক্স: pendingReviews array গ্রহণ করবে
 export default function AdminReviewControls({ pendingReviews }: { pendingReviews: any[] }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -13,24 +13,29 @@ export default function AdminReviewControls({ pendingReviews }: { pendingReviews
     setLoading(true);
 
     try {
-      // আমরা এখানে ধরে নিচ্ছি আপনার API টি '/api/admin/review' বা এমন কোনো পাথে আছে যা বডিতে ID আশা করে
-      // অথবা যদি ডাইনামিক রাউট হয়, তবুও বডি ফিক্স করা হলো:
-      const res = await fetch(`/api/admin/review`, { 
-        method: "PATCH",
+      // ✅ ফিক্স ১: সঠিক URL ব্যবহার করা হলো (/api/admin/review/action)
+      // ✅ ফিক্স ২: মেথড PATCH এর বদলে POST করা হলো
+      const res = await fetch(`/api/admin/review/action`, { 
+        method: "POST", 
         headers: { "Content-Type": "application/json" },
-        // ⚠️ ফিক্স: আগে ছিল { reviewId, action }, এখন করা হলো { reviewId: id, action }
-        body: JSON.stringify({ reviewId: id, action }),
+        // ✅ ফিক্স ৩: action কে ছোট হাতের অক্ষরে (toLowerCase) পাঠানো হচ্ছে
+        // কারণ ব্যাকএন্ড 'approve' বা 'reject' (ছোট হাতের) আশা করছে
+        body: JSON.stringify({ 
+          reviewId: id, 
+          action: action.toLowerCase() 
+        }),
       });
 
       if (res.ok) {
-        router.refresh();
+        router.refresh(); // পেজ রিফ্রেশ
       } else {
-        // যদি উপরের API পাথ কাজ না করে, তবে অনেক সময় ডাইনামিক পাথেও কাজ হতে পারে, যেমন:
-        // await fetch(`/api/review/${id}`, { method: "PATCH", body: JSON.stringify({ action }) });
-        console.error("Action failed");
+        const data = await res.json();
+        console.error("Server Error:", data);
+        alert("Action failed: " + (data.error || "Unknown error"));
       }
     } catch (error) {
-      console.error(error);
+      console.error("Network Error:", error);
+      alert("Network error occurred");
     } finally {
       setLoading(false);
     }
