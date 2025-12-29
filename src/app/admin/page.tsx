@@ -1,3 +1,4 @@
+//src\app\admin\page.tsx
 import prisma from "@/lib/prisma";
 import AdminReviewControls from "@/components/AdminReviewControls";
 import AdminFacultyControls from "@/components/AdminFacultyControls";

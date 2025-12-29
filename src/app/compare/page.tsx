@@ -3,8 +3,10 @@ import prisma from "@/lib/prisma";
 import CompareView from "@/components/CompareView";
 import Link from "next/link";
 export const dynamic = "force-dynamic";
+
 export default async function ComparePage() {
   const faculties = await prisma.faculty.findMany({
+    where: { status: "APPROVED" },
     include: { reviews: { select: { rating: true } } },
     orderBy: { name: "asc" },
   });

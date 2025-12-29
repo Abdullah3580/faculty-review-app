@@ -1,3 +1,4 @@
+// src/app/faculty/[id]/page.tsx
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -53,6 +54,9 @@ export default async function FacultyProfilePage(props: Props) {
     where: { id: params.id },
     include: {
       reviews: {
+        where: { 
+          status: "APPROVED"
+        },
         include: {
           user: { 
             select: { id: true, nickname: true, role: true, _count: { select: { reviews: true } } } 

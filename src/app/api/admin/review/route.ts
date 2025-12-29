@@ -16,7 +16,7 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: "Forbidden: Admins only" }, { status: 403 });
   }
 
-  const { reviewId, action } = await request.json(); 
+  const { reviewId, action ,reason} = await request.json(); 
 
   try {
     if (action === "approve") {
@@ -26,9 +26,31 @@ export async function PUT(request: Request) {
       });
     } 
     else if (action === "reject") {
-      await prisma.review.delete({
+      // ১. নোটিফিকেশন পাঠানোর জন্য রিভিউ খুঁজে বের করা
+      const review = await prisma.review.findUnique({
         where: { id: reviewId },
+        select: { userId: true, comment: true }
       });
+
+      if (review) {
+        // ২. যদি কারণ (reason) থাকে, তবে নোটিফিকেশন তৈরি করো
+        if (reason) {
+          await prisma.notification.create({
+            data: {
+              userId: review.userId,
+              type: "SYSTEM",
+              message: `Your review was rejected. Reason: ${reason}`,
+              link: "/",
+              isRead: false
+            }
+          });
+        }
+        
+        // ৩. শেষমেশ রিভিউ ডিলিট করো
+        await prisma.review.delete({
+          where: { id: reviewId },
+        });
+      }
     }
 
     else if (action === "approve_report") {
