@@ -20,8 +20,8 @@ export async function POST(request: Request) {
       validationErrors.push("Use only UIU email.");
     }
 
-    if (studentId.length < 10) {
-      validationErrors.push("Student ID must be at least 10 digits long.");
+    if (studentId.length < 9) {
+      validationErrors.push("Student ID must be at least 9 digits long.");
     }
 
     if (password.length < 8) {
