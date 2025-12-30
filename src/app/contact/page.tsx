@@ -210,9 +210,7 @@ export default function ContactPage() {
           
           {activeTab === 'location' && (
             <div className="p-6 bg-green-50 dark:bg-green-900/10 border-t border-green-100 text-center">
-              <p className="font-bold text-gray-800 dark:text-white">TSC Building, 2nd Floor</p>
-              <p className="text-sm text-gray-500">University Campus, Dhaka</p>
-              <a href="https://maps.google.com" target="_blank" className="mt-3 inline-block text-xs text-green-600 font-bold hover:underline">View on Google Maps</a>
+              <p className="text-sm text-gray-500">University Campus,UIU</p>
             </div>
           )}
         </div>
