@@ -22,12 +22,12 @@ export default function Footer() {
             <Link href="/compare" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition">
               Compare
             </Link>
-            <Link href="#" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-              About Us
+            <Link href="/contact" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+              Contact Us
             </Link>
-            <Link href="#" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+            {/* <Link href="#" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition">
               Privacy Policy
-            </Link>
+            </Link> */}
           </div>
 
         </div>
