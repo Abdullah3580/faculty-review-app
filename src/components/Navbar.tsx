@@ -1,12 +1,14 @@
+"use client";
 import Link from "next/link";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+//import { getServerSession } from "next-auth";
+import { useSession, signOut } from "next-auth/react";
+//import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import NotificationBell from "./NotificationBell";
 import ProfileMenu from "./ProfileMenu";
 import AuthButtons from "./AuthButtons";
 
-export default async function Navbar() {
-  const session = await getServerSession(authOptions);
+export default function Navbar() {
+  const { data: session } = useSession();
   
   const userRole = session?.user?.role; 
   const isAdmin = userRole === "admin" || userRole === "ADMIN";
