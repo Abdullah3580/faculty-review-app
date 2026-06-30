@@ -10,7 +10,7 @@ const bannedWords = ["bad", "worst", "useless", "stupid", "idiot", "fake", "baje
 const reviewSchema = z.object({
   rating: z.coerce.number().min(1).max(5),
   comment: z.string().min(5).max(500),
-  course: z.string().max(20).optional(),
+  course: z.string().max(150).optional(),
   facultyId: z.string(),
 });
 
@@ -31,8 +31,10 @@ export async function POST(request: Request) {
     const validation = reviewSchema.safeParse(json);
 
     if (!validation.success) {
+      // Zod theke ashol error message ta pathabo
+      const errorMessage = validation.error.errors[0]?.message || "Invalid validation data!";
       return NextResponse.json(
-        { error: "Invalid data! Comment must be 5-500 chars & Rating 1-5." },
+        { error: errorMessage }, 
         { status: 400 }
       );
     }
