@@ -36,27 +36,29 @@ model Session {
 }
 
 model User {
-  id            String     @id @default(cuid())
-  email         String?    @unique
-  emailVerified DateTime?
-  image         String?
-  name          String?
-  nickname      String?    @unique
-  semester      String?
-  role          String     @default("STUDENT")
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @default(now()) @updatedAt
-  password      String?
-  studentId     String?    @unique
-  accounts      Account[]
-  answers       Answer[]
-  questions     Question[]
-  reports       Report[]
-  reviews       Review[]
-  sessions      Session[]
-  votes         Vote[]
-  notifications Notification[]
-  followedFaculties Faculty[] @relation("UserFollows")
+  id                String         @id @default(cuid())
+  email             String?        @unique
+  emailVerified     DateTime?
+  image             String?
+  name              String?
+  nickname          String?        @unique
+  semester          String?
+  role              String         @default("STUDENT")
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @default(now()) @updatedAt
+  password          String?
+  studentId         String?        @unique
+  verifyToken       String?        @unique
+  verifyTokenExpiry DateTime?
+  accounts          Account[]
+  answers           Answer[]
+  notifications     Notification[]
+  questions         Question[]
+  reports           Report[]
+  reviews           Review[]
+  sessions          Session[]
+  votes             Vote[]
+  followedFaculties Faculty[]      @relation("UserFollows")
 }
 
 model VerificationToken {
@@ -68,20 +70,20 @@ model VerificationToken {
 }
 
 model Faculty {
-  id          String   @id @default(cuid())
+  id          String     @id @default(cuid())
   name        String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  status      String     @default("PENDING")
+  code        String?
+  designation String     @default("Lecturer")
+  initial     String?
+  roomNumber  String?
   email       String?
-  department  String   @default("General")
-  designation String   @default("Lecturer") 
-  initial     String?  
-  code        String?  
-  roomNumber  String?  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  status      String   @default("PENDING")
+  department  String     @default("General")
   questions   Question[]
   reviews     Review[]
-  followers   User[]   @relation("UserFollows")
+  followers   User[]     @relation("UserFollows")
 }
 
 model Review {
@@ -146,7 +148,7 @@ model Department {
   name      String   @unique
   createdAt DateTime @default(now())
 }
-// পাসওয়ার্ড রিসেট টোকেন মডেল
+
 model PasswordResetToken {
   id        String   @id @default(cuid())
   email     String
@@ -156,15 +158,21 @@ model PasswordResetToken {
 
   @@unique([email, token])
 }
-// নোটিফিকেশন মডেল (সবার জন্য)
+
 model Notification {
   id        String   @id @default(cuid())
-  userId    String   
-  type      String   
-  message   String   
-  link      String? 
-  isRead    Boolean  @default(false) 
+  userId    String
+  type      String
+  message   String
+  link      String?
+  isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
-
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Course {
+  id        String   @id @default(cuid())
+  code      String   @unique // যেমন: "CSE101"
+  name      String?  // ঐচ্ছিক: কোর্সের নাম, যেমন: "Computer Programming"
+  createdAt DateTime @default(now())
 }

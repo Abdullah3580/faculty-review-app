@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -9,17 +9,65 @@ interface Props {
 }
 
 export default function ReviewForm({ facultyId }: Props) {
-  
   const [rating, setRating] = useState(0);
   const [course, setCourse] = useState("");
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
+  
+  // ডেটাবেজ থেকে আসা কোর্সগুলো রাখার জন্য স্টেট
+  const [courses, setCourses] = useState<string[]>([]);
+  
+  // ড্রপডাউনের জন্য নতুন স্টেট
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const router = useRouter();
+
+  // কম্পোনেন্ট লোড হওয়ার সময় ডেটাবেজ (API) থেকে কোর্স লিস্ট ফেচ করা
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const res = await fetch("/api/courses");
+        if (res.ok) {
+          const data = await res.json();
+          // API থেকে যদি স্ট্রিংয়ের অ্যারে আসে, তবে সেটি স্টেটে সেভ করবে
+          if (Array.isArray(data)) {
+            setCourses(data);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch courses:", error);
+      }
+    };
+    fetchCourses();
+  }, []);
+
+  // ড্রপডাউনের বাইরে ক্লিক করলে সেটি বন্ধ করার লজিক
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // ইউজার যা টাইপ করবে তার ভিত্তিতে ডেটাবেজ থেকে পাওয়া কোর্স ফিল্টার করা
+  const filteredCourses = courses.filter(c => 
+    c.toLowerCase().includes(course.toLowerCase())
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (rating === 0) {
       toast.error("Please give a rating ⭐");
+      return;
+    }
+
+    // ভ্যালিডেশন: টাইপ করা কোর্সটি অবশ্যই ডেটাবেজের লিস্টে থাকতে হবে
+    if (!courses.includes(course)) {
+      toast.error("Please select a valid course from the list 📚");
       return;
     }
     
@@ -37,9 +85,8 @@ export default function ReviewForm({ facultyId }: Props) {
         setRating(0);
         setCourse("");
         setComment("");
+        setIsDropdownOpen(false); // সাবমিট করার পর ড্রপডাউন বন্ধ
         router.refresh();
-        
-        
       } else {
         const errorData = await res.json();
         toast.error(errorData.error || "Failed to submit.");
@@ -52,9 +99,7 @@ export default function ReviewForm({ facultyId }: Props) {
   };
 
   return (
-    
-    <form onSubmit={handleSubmit} className="space-y-4">
-      
+    <form onSubmit={handleSubmit} className="space-y-4 relative">
       <div>
         <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
           Rating
@@ -75,18 +120,42 @@ export default function ReviewForm({ facultyId }: Props) {
         </div>
       </div>
 
-      <div>
+      {/* Course Search Box */}
+      <div ref={dropdownRef} className="relative">
         <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
-          Course Taken (e.g. CSE101)
+          Course Taken (e.g. CSE101 or Physics)
         </label>
         <input
           type="text"
           value={course}
-          onChange={(e) => setCourse(e.target.value)}
-          placeholder="Enter course code"
+          onChange={(e) => {
+            setCourse(e.target.value);
+            setIsDropdownOpen(true);
+          }}
+          onFocus={() => setIsDropdownOpen(true)}
+          placeholder="Search course code..."
           className="w-full p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 focus:border-indigo-500 outline-none transition"
           required
+          autoComplete="off"
         />
+        
+        {/* Dropdown Menu */}
+        {isDropdownOpen && filteredCourses.length > 0 && (
+          <ul className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg max-h-48 overflow-y-auto custom-scrollbar">
+            {filteredCourses.map((c) => (
+              <li
+                key={c}
+                className="p-3 text-sm hover:bg-indigo-50 dark:hover:bg-indigo-900/30 cursor-pointer text-gray-700 dark:text-gray-300 transition border-b border-gray-100 dark:border-gray-700 last:border-b-0"
+                onClick={() => {
+                  setCourse(c); // সিলেক্ট করলে ইনপুটে পুরো নাম বসবে
+                  setIsDropdownOpen(false); // ড্রপডাউন বন্ধ হবে
+                }}
+              >
+                {c}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <div>
@@ -110,7 +179,6 @@ export default function ReviewForm({ facultyId }: Props) {
       >
         {loading ? "Submitting..." : "Submit Review"}
       </button>
-
     </form>
   );
 }
