@@ -32,7 +32,7 @@ export async function POST(request: Request) {
 
     if (!validation.success) {
       // Zod theke ashol error message ta pathabo
-      const errorMessage = validation.error.errors[0]?.message || "Invalid validation data!";
+      const errorMessage = validation.error.issues?.[0]?.message || "Invalid validation data!";
       return NextResponse.json(
         { error: errorMessage }, 
         { status: 400 }
