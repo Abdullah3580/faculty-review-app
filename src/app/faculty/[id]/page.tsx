@@ -39,6 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/faculty/${id}`,
     images: faculty.image ? [{ url: faculty.image, width: 400, height: 400, alt: faculty.name }] : [],
   },
+}
   twitter: { card: "summary_large_image", title, description },
 };
 
