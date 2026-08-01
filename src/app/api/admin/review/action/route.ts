@@ -1,4 +1,4 @@
-//src/app/api/admin/review/action/route.ts
+// src/app/api/admin/review/action/route.ts
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
@@ -6,61 +6,82 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export async function POST(request: Request) {
   try {
-    // ১. বডি রিড করা এবং লগ করা (ডিবাগিংয়ের জন্য)
     const body = await request.json();
-    console.log("Admin Action Received:", body); // ভারসেল লগ চেক করতে কাজে লাগবে
-
     const { reviewId, action } = body;
 
-    // ২. ইনপুট ভ্যালিডেশন
+    // ১. Input validation
     if (!reviewId || !action) {
       return NextResponse.json({ error: "Missing reviewId or action" }, { status: 400 });
     }
 
-    // ৩. সেশন চেক
+    // ২. Session check
     const session = await getServerSession(authOptions);
     if (!session || !session.user?.email) {
       return NextResponse.json({ error: "Unauthorized: Please login" }, { status: 401 });
     }
 
-    // ৪. ইউজার এবং এডমিন রোল চেক
-    const user = await prisma.user.findUnique({ 
-      where: { email: session.user.email } 
+    // ৩. Admin role check
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
     });
-
     if (!user) {
-        return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // 👇 ডিবাগিং লগ: ডাটাবেসে ঠিক কী আছে তা দেখার জন্য
-    console.log(`Checking Role for ${user.email}: Raw DB Role = '${user.role}'`);
-
-    // ⚠️ ফিক্স: trim() ব্যবহার করা হলো স্পেস মুছতে, এবং toUpperCase() বড় হাতের করতে
-    // এখন ' Admin ', 'adMin', 'admin' সব কাজ করবে।
     const userRole = user.role ? user.role.trim().toUpperCase() : "";
-
     if (userRole !== "ADMIN") {
-      console.log(`Access Denied. Processed Role: '${userRole}' is not 'ADMIN'`);
       return NextResponse.json({ error: "Forbidden: You are not an Admin" }, { status: 403 });
     }
 
-    // ৫. অ্যাকশন অনুযায়ী ডাটাবেস অপারেশন
-    // action.toLowerCase() ব্যবহার করা হলো যাতে কেস সেন্সিটিভ সমস্যা না হয়
     const actionType = action.trim().toLowerCase();
 
+    // ৪. Review এবং faculty info নিয়ে আসা (notification এর জন্য)
+    const review = await prisma.review.findUnique({
+      where: { id: reviewId },
+      include: {
+        faculty: { select: { id: true, name: true } },
+      },
+    });
+
+    if (!review) {
+      return NextResponse.json({ error: "Review not found" }, { status: 404 });
+    }
+
+    // ৫. Action অনুযায়ী কাজ করা
     if (actionType === "approve") {
       await prisma.review.update({
         where: { id: reviewId },
         data: { status: "APPROVED" },
       });
-    } 
-    else if (actionType === "reject") {
-      // রিজেক্ট হলে রিভিউ ডিলিট হবে
+
+      // ✅ Review author কে notification পাঠানো
+      await prisma.notification.create({
+        data: {
+          userId: review.userId,
+          type: "REVIEW_APPROVED",
+          message: `✅ Your review for ${review.faculty.name} has been approved!`,
+          link: `/faculty/${review.faculty.id}`,
+          isRead: false,
+        },
+      });
+
+    } else if (actionType === "reject") {
+      // ❌ Delete করার আগে notification পাঠানো
+      await prisma.notification.create({
+        data: {
+          userId: review.userId,
+          type: "REVIEW_REJECTED",
+          message: `❌ Your review for ${review.faculty.name} was not approved.`,
+          link: `/faculty/${review.faculty.id}`,
+          isRead: false,
+        },
+      });
+
       await prisma.review.delete({
         where: { id: reviewId },
       });
-    }
-    else {
+
+    } else {
       return NextResponse.json({ error: "Invalid action provided" }, { status: 400 });
     }
 
@@ -68,10 +89,8 @@ export async function POST(request: Request) {
 
   } catch (error: any) {
     console.error("API Action Error:", error);
-    
-    // ⚠️ ফিক্স: এরর অবজেক্ট সরাসরি না পাঠিয়ে, error.message পাঠানো হচ্ছে
     return NextResponse.json(
-      { error: error.message || "Internal Server Error" }, 
+      { error: error.message || "Internal Server Error" },
       { status: 500 }
     );
   }
