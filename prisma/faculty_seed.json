@@ -1,0 +1,2515 @@
+[
+  {
+    "name": "Ms. Rukaiya Rob",
+    "email": "rukaiya@bus.uiu.ac.bd",
+    "initial": "RuRb",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Israt Jabin",
+    "email": "israt@bus.uiu.ac.bd",
+    "initial": "ItJn",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Imtiaz Zahan Chowdhury",
+    "email": "imtiazzahan@bus.uiu.ac.bd",
+    "initial": "IZC",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Jerin Haque Chhanda",
+    "email": "jerin@bus.uiu.ac.bd",
+    "initial": "JHC",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Jakowan",
+    "email": "jakowan@bus.uiu.ac.bd",
+    "initial": "Jkn",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Ishrat Jahan",
+    "email": "ishrat_jahan@bus.uiu.ac.bd",
+    "initial": "IJ",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mohammad Tohidul Islam Miya",
+    "email": "tohid@bus.uiu.ac.bd",
+    "initial": "TIM",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Zinnatun Nesa",
+    "email": "zinnatun@bus.uiu.ac.bd",
+    "initial": "ZN",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Nasrin Akter",
+    "email": "nasrin@bus.uiu.ac.bd",
+    "initial": "NAr",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Muhammad Hasan Al-Mamun",
+    "email": "mamun@bus.uiu.ac.bd",
+    "initial": "MHAMn",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Mimnun Sultana",
+    "email": "mimnun@bus.uiu.ac.bd",
+    "initial": null,
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Md. Kaium Hossain",
+    "email": "kaium@bus.uiu.ac.bd",
+    "initial": "MKHn",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Ishrat Sultana",
+    "email": "ishrat@bus.uiu.ac.bd",
+    "initial": "IS",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Shayla Khanam",
+    "email": "shayla@bus.uiu.ac.bd",
+    "initial": "SK",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Shakila Aziz",
+    "email": "shakila@bus.uiu.ac.bd",
+    "initial": "ShAz",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Muhammad Enamul Haque",
+    "email": "enamul@bus.uiu.ac.bd",
+    "initial": "MEH",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Mosabbir Uddin Ahmad",
+    "email": "mosabbir@bus.uiu.ac.bd",
+    "initial": "MA",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Mohammad Behroz Jalil",
+    "email": "mbj@bus.uiu.ac.bd",
+    "initial": "BJ",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Shafiqul Islam",
+    "email": "shafiqul@bus.uiu.ac.bd",
+    "initial": "ShaIs",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Mofijul Hoq Masum",
+    "email": "masum@bus.uiu.ac.bd",
+    "initial": "MHM",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Sarker Rafij Ahmed Ratan",
+    "email": "rafij@bus.uiu.ac.bd",
+    "initial": "SRA",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Gouranga Chandra Debnath",
+    "email": "gouranga@bus.uiu.ac.bd",
+    "initial": "GCD",
+    "department": "School of Business and Economics",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Mr. Mohammad Tariq Hasan",
+    "email": "tariq@bus.uiu.ac.bd",
+    "initial": "MTH",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Saad Hasan",
+    "email": "saadhasan@bus.uiu.ac.bd",
+    "initial": "sdhn",
+    "department": "School of Business and Economics",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Dr. Seyama Sultana",
+    "email": "seyama@bus.uiu.ac.bd",
+    "initial": "SeyS",
+    "department": "School of Business and Economics",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Md. Qamruzzaman",
+    "email": "qamruzzaman@bus.uiu.ac.bd",
+    "initial": "MdQ",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. James Bakul Sarker",
+    "email": "jmssarkar@bus.uiu.ac.bd",
+    "initial": "JBS",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Kawsar Ahmmed",
+    "email": "kawsar@bus.uiu.ac.bd",
+    "initial": "KA",
+    "department": "School of Business and Economics",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Dr. Md Mohan Uddin",
+    "email": "mohanuddin@bus.uiu.ac.bd",
+    "initial": "MUd",
+    "department": "School of Business and Economics",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Dr. Joarder Mohd. Hasanur Raihan",
+    "email": "raihan.joarder@bus.uiu.ac.bd",
+    "initial": "HRJ",
+    "department": "School of Business and Economics",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Prof. Dr. Abu Saleh Md. Sohel-Uz-Zaman",
+    "email": "sohel@bus.uiu.ac.bd",
+    "initial": "ASSZ",
+    "department": "School of Business and Economics",
+    "designation": "Professor"
+  },
+  {
+    "name": "Prof. Dr. Farid A. Sobhani",
+    "email": "drsobhani@uiu.ac.bd",
+    "initial": "FAhS",
+    "department": "School of Business and Economics",
+    "designation": "Professor"
+  },
+  {
+    "name": "Prof. Dr. Salma Karim",
+    "email": "ska@bus.uiu.ac.bd",
+    "initial": "SKa",
+    "department": "School of Business and Economics",
+    "designation": "Professor"
+  },
+  {
+    "name": "Prof. Dr. Mohammad Musa",
+    "email": "mmusa@uiu.ac.bd",
+    "initial": "MMs",
+    "department": "School of Business and Economics",
+    "designation": "Professor"
+  },
+  {
+    "name": "Ahmed Imran Kabir",
+    "email": "ahmedimran@bus.uiu.ac.bd",
+    "initial": "AIK",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mohammad Ali",
+    "email": "ali@admin.uiu.ac.bd",
+    "initial": null,
+    "department": "General",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Tahmina Foyez",
+    "email": "tahmina@pharmacy.uiu.ac.bd",
+    "initial": "TaF",
+    "department": "Pharmacy",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Sabiha Tasnim",
+    "email": "sabiha@pharmacy.uiu.ac.bd",
+    "initial": "ST",
+    "department": "Pharmacy",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Rajib Das",
+    "email": "rajibdas@pharmacy.uiu.ac.bd",
+    "initial": "RaDa",
+    "department": "Pharmacy",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Rafe Salman Rifat",
+    "email": "rifat@pharmacy.uiu.ac.bd",
+    "initial": "RSR",
+    "department": "Pharmacy",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Syed Masudur Rahman Dewan",
+    "email": "masudur@pharmacy.uiu.ac.bd",
+    "initial": "SMRD",
+    "department": "Pharmacy",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Refaya Rezwan",
+    "email": "refaya@pharmacy.uiu.ac.bd",
+    "initial": "ReRn",
+    "department": "Pharmacy",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Sharmin Ahmed Rakhi",
+    "email": "sharmin@pharmacy.uiu.ac.bd",
+    "initial": "ShAR",
+    "department": "Pharmacy",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Ferdous-Ul-Haque Joy",
+    "email": "ferdous@pharmacy.uiu.ac.bd",
+    "initial": "FHJ",
+    "department": "Pharmacy",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Mst. Nowsad Zahan Sathi",
+    "email": "nowsad@pharmacy.uiu.ac.bd",
+    "initial": "NZS",
+    "department": "Pharmacy",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Md. Abdul Mazid",
+    "email": "mazid@pharmacy.uiu.ac.bd",
+    "initial": "MdAMd",
+    "department": "Pharmacy",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Ms. Sadia Binte Anwar",
+    "email": "sba.sadia19@gmail.com",
+    "initial": "SBAr",
+    "department": "Pharmacy",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Taniah Mahmuda Tinni",
+    "email": "taniah@eds.uiu.ac.bd",
+    "initial": "TMT",
+    "department": "Pharmacy",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Saima Akter",
+    "email": "saima-2014316139@math.du.ac.bd",
+    "initial": "SamAr",
+    "department": "Pharmacy",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Nusrath Jahan Borna",
+    "email": "nusrathjahan201@gmail.com",
+    "initial": "NJB",
+    "department": "Pharmacy",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Jannatun Noor Mukta",
+    "email": "jannatun@cse.uiu.ac.bd",
+    "initial": "JNM",
+    "department": "CSE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Dr. Suman Ahmmed",
+    "email": "suman@cse.uiu.ac.bd",
+    "initial": "SA",
+    "department": "CSE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Mr. Kh Ehsanur Rahman",
+    "email": "ehsanur.ptfaculty@cse.uiu.ac.bd",
+    "initial": "KhER",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Mohammad Nurul Huda",
+    "email": "mnh@cse.uiu.ac.bd",
+    "initial": "MNH",
+    "department": "CSE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Prof. Dr. Dewan Md. Farid",
+    "email": "dewanfarid@cse.uiu.ac.bd",
+    "initial": "DMF",
+    "department": "CSE",
+    "designation": "Professor"
+  },
+  {
+    "name": "Dr. A.K.M. Muzahidul Islam",
+    "email": "muzahid@cse.uiu.ac.bd",
+    "initial": "AKMMI",
+    "department": "CSE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Mr. Mohammad Mamun Elahi",
+    "email": "mmelahi@cse.uiu.ac.bd",
+    "initial": "ME",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Motaharul Islam",
+    "email": "motaharul@cse.uiu.ac.bd",
+    "initial": "MdMIm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Khondaker Abdullah-Al-Mamun",
+    "email": "mamun@cse.uiu.ac.bd",
+    "initial": "KM",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Ohidujjaman",
+    "email": "ohidujjaman@cse.uiu.ac.bd",
+    "initial": "Ojn",
+    "department": "CSE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Prof. Dr. Hasan Sarwar",
+    "email": "hsarwar@cse.uiu.ac.bd",
+    "initial": "HS",
+    "department": "CSE",
+    "designation": "Professor"
+  },
+  {
+    "name": "Dr. Md. Shohrab Hossain",
+    "email": "shohrab@cse.uiu.ac.bd",
+    "initial": null,
+    "department": "CSE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Hasin Anupama Azhari",
+    "email": "ahanupama@uiu.ac.bd",
+    "initial": "HAA",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Riasat Azim",
+    "email": "riasat@cse.uiu.ac.bd",
+    "initial": "RtAm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Rubaiya Rahtin Khan",
+    "email": "rubaiya@cse.uiu.ac.bd",
+    "initial": "RRK",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Sadia Islam",
+    "email": "sadia@cse.uiu.ac.bd",
+    "initial": "SaIs",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ashek Ahmed",
+    "email": "ashek@ins.uiu.ac.bd",
+    "initial": "AkAd",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mahtab Uddin",
+    "email": "mahtab@ins.uiu.ac.bd",
+    "initial": "MUn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Sajjad Hossain",
+    "email": "sajjad.ptfaculty@english.uiu.ac.bd",
+    "initial": "SaHsn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Khandoker Makjum Wahid",
+    "email": "makjum.ptfaculty@english.uiu.ac.bd",
+    "initial": "KhMW",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Muhammad Saiful Islam",
+    "email": "saiful.ptfaculty@english.uiu.ac.bd",
+    "initial": null,
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Md. Mushfiqul Haque Omi",
+    "email": "mushfiqul@cse.uiu.ac.bd",
+    "initial": "MHO",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Azizur Rahman Anik",
+    "email": "azizur@cse.uiu.ac.bd",
+    "initial": "ARnA",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Tahmid Mosaddeque",
+    "email": "mosaddeque@cse.uiu.ac.bd",
+    "initial": "TaMo",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Asif Abrar",
+    "email": "asifabrar@cse.uiu.ac.bd",
+    "initial": "AsAr",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Hafijul Hoque Chowdhury",
+    "email": "hafijul@cse.uiu.ac.bd",
+    "initial": "HHCh",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Nabila Sabrin Sworna",
+    "email": "nabila@cse.uiu.ac.bd",
+    "initial": "NSS",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Nahid Ferdous Aurna",
+    "email": "aurna@cse.uiu.ac.bd",
+    "initial": "NaFA",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Siana Rizwan",
+    "email": "siana@cse.uiu.ac.bd",
+    "initial": "SnRn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Shihab Ahmed",
+    "email": "shihab@cse.uiu.ac.bd",
+    "initial": "ShAhd",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Nusaiba Zaman Manifa",
+    "email": "manifa@cse.uiu.ac.bd",
+    "initial": "NZMa",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Syed Abu Ammar Muhammad Zarif",
+    "email": "zarif@cse.uiu.ac.bd",
+    "initial": "SAMZ",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Muhammad Anwarul Azim",
+    "email": "anwarul@cse.uiu.ac.bd",
+    "initial": "MAnAm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Samin Sharaf Somik",
+    "email": "samin@cse.uiu.ac.bd",
+    "initial": "SSSk",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Farhan Anan Himu",
+    "email": "himu@cse.uiu.ac.bd",
+    "initial": "FAH",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Umama Rahman",
+    "email": "umama@cse.uiu.ac.bd",
+    "initial": "UR",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Charles Aunkan Gomes",
+    "email": "charles@cse.uiu.ac.bd",
+    "initial": "CAG",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Didarul Islam Didar",
+    "email": "didarul@cse.uiu.ac.bd",
+    "initial": "DID",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mobashara Islam",
+    "email": "islamnishi989@gmail.com",
+    "initial": "MobIm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "M. M. RAFIN MAHMUD",
+    "email": "rafin.ptfaculty@bge.uiu.ac.bd",
+    "initial": "MMRM",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "ERINA SHARMIN",
+    "email": "erina.ptfaculty@bge.uiu.ac.bd",
+    "initial": "ESh",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Md. Habibur Rahman",
+    "email": "habibur@eds.uiu.ac.bd",
+    "initial": "MdHR",
+    "department": "CSE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Ms. Mallika Datta",
+    "email": "mallika@eds.uiu.ac.bd",
+    "initial": "MD",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Minhajul Islam",
+    "email": "minhaj.geo.du@gmail.com",
+    "initial": "MMiIm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Anowarul Abedin",
+    "email": "anowarul.abedin@gmail.com",
+    "initial": "MAnAn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Asnuva Tanvin",
+    "email": "tanvin@cse.uiu.ac.bd",
+    "initial": "AsTn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Md. Golam Mahabub Sarwar",
+    "email": "mgmsarwar@gmail.com",
+    "initial": "gms",
+    "department": "CSE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Nazmun Nahar Showmi",
+    "email": "nuzmunshoumi@gmail.com",
+    "initial": "NNS",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Muhammad Al-Amin Hoque",
+    "email": "shajidgeo34@gmail.com",
+    "initial": "aanh",
+    "department": "CSE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Nabila Sultana",
+    "email": "nstina711@gmail.com",
+    "initial": "NaSa",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Zakia Tabassum",
+    "email": "zakia.ptfaculty@eds.uiu.ac.bd",
+    "initial": "ZT",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Naima Ansar Khan",
+    "email": "naima@eds.uiu.ac.bd",
+    "initial": "NArKh",
+    "department": "CSE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "S.M. Hasibul Hassan Rizvee",
+    "email": "h.nasahrizvee@gmail.com",
+    "initial": "HaHR",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Md. Saiful Islam",
+    "email": "saiful.rafislam@gmail.com",
+    "initial": null,
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Nobir Hosen",
+    "email": "nobirhosen55@gmail.com",
+    "initial": "MNHn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Rabeya Bakar Sarna",
+    "email": "rbshorna1583@gmail.com",
+    "initial": "RBS",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Sagar Dutta",
+    "email": "sagar@ins.uiu.ac.bd",
+    "initial": "sada",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Golam Mohammed Bhuiyan",
+    "email": "gbhuiyan@du.ac.bd",
+    "initial": "gmb",
+    "department": "CSE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Mr. Md. Asaduzzaman",
+    "email": "asad@ins.uiu.ac.bd",
+    "initial": "MAn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Rahil Afzal Nihal",
+    "email": "rahil.afzal02@gmail.com",
+    "initial": "RaAN",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Nazmul Hasan",
+    "email": "nazmul-2017014032@amath.du.ac.bd",
+    "initial": "NzHn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Moynul Islam",
+    "email": "moynul40402812@gmail.com",
+    "initial": "MoIm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Mutasim Billah Kouser",
+    "email": "mutasimkouser@gmail.com",
+    "initial": "MMBK",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Fazle Rabby",
+    "email": "fazle.ptfaculty@ins.uiu.ac.bd",
+    "initial": "FRa",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Saidul Islam",
+    "email": "saiduldu43@gmail.com",
+    "initial": "SIsm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Jashodhan Saha",
+    "email": "jsaha@ins.uiu.ac.bd",
+    "initial": "JAS",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Sumaiya Tarannum",
+    "email": "sumaiya.ptfaculty@ins.uiu.ac.bd",
+    "initial": "SuT",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Maliha Tasnim",
+    "email": "malihaluba123@gmail.com",
+    "initial": "MaTm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Nazia Shifa Mugdha",
+    "email": "naziaamth2@gmail.com",
+    "initial": "nsm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Muhaiminul Islam Adnan",
+    "email": "adnan@ins.uiu.ac.bd",
+    "initial": "MIA",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Aminur Islam",
+    "email": "mdaminur.du.math@gmail.com",
+    "initial": "MdAIm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md Mehedi Hasan",
+    "email": "hasan.ptfaculty@ins.uiu.ac.bd",
+    "initial": "MMeHn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Tanveer Ahmed Khan Fahim",
+    "email": "tanveer.ptfaculty@ins.uiu.ac.bd",
+    "initial": "TAKF",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mohammad Mahmudul Hasan Chowdhury",
+    "email": "mahmudul.ptfaculty@ins.uiu.ac.bd",
+    "initial": "MMHC",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mohsina Rahman",
+    "email": "mohsina.ptfaculty@ins.uiu.ac.bd",
+    "initial": "MoRhn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Alvi Ahmed Sarker",
+    "email": "alvi.ptfaculty@ins.uiu.ac.bd",
+    "initial": "AAS",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Al Amin Hossain",
+    "email": "alamin.ptfaculty@ins.uiu.ac.bd",
+    "initial": "AAHn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Joyonty Ghosh",
+    "email": "joyonty.ptfaculty@ins.uiu.ac.bd",
+    "initial": "JG",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Asadujjaman",
+    "email": "asad132@du.ac.bd",
+    "initial": "MdAsn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Torun Haldar",
+    "email": "torun.ptfaculty@ins.uiu.ac.bd",
+    "initial": "THr",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Shaila Ahsan",
+    "email": "shaila.ptfaculty@ins.uiu.ac.bd",
+    "initial": "ShAhn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Kaspia Kabir",
+    "email": "kaspia.ptfaculty@ins.uiu.ac.bd",
+    "initial": "KKr",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Partha Pratim Das Roy",
+    "email": "ppratim1059@gmail.com",
+    "initial": "PPDR",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "M.M Fahim Siddiquee",
+    "email": "fahim.ptfaculty@ins.uiu.ac.bd",
+    "initial": "MMFS",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Sadia Islam",
+    "email": "sadia.ptfaculty@english.uiu.ac.bd",
+    "initial": "SaIsm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mir Md. Fazle Rabbi",
+    "email": "fazle.ptfaculty@english.uiu.ac.bd",
+    "initial": "MMFR",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Saima Hasin",
+    "email": "sahn@eli.uiu.ac.bd",
+    "initial": "SaHn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Labib Rashid Inan",
+    "email": "labib@english.uiu.ac.bd",
+    "initial": "LRI",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Christina Miti Rozario",
+    "email": "rozario.miti@gmail.com",
+    "initial": "ChMR",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Kirsten Gudgeon",
+    "email": "gudgeon@english.uiu.ac.bd",
+    "initial": "kngn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Nadiratur Rahman",
+    "email": "nadiratur.ptfaculty@english.uiu.ac.bd",
+    "initial": "NrRn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ahmed Abdullah Bin Farooqi Rayhan",
+    "email": "abdullah@english.uiu.ac.bd",
+    "initial": "AAFR",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ismat Zarin",
+    "email": "ismat.ptfaculty@english.uiu.ac.bd",
+    "initial": "IZn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Dil Nusrat",
+    "email": "dil@english.uiu.ac.bd",
+    "initial": "DN",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Maruf Jihan Shoyeb",
+    "email": "shoyeb.mj@gmail.com",
+    "initial": "MJSh",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Muntasir Ahmad",
+    "email": "muntasir@english.uiu.ac.bd",
+    "initial": "MAd",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Chowdhury Omar Sharif",
+    "email": "sharif@english.uiu.ac.bd",
+    "initial": "COS",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Rifa Noor",
+    "email": "rifa.ptfaculty@english.uiu.ac.bd",
+    "initial": "RfNr",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Mujib Ullah",
+    "email": "mujib.ptfaculty@english.uiu.ac.bd",
+    "initial": "MMUh",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Shahriar Mahmud",
+    "email": "shahriarmahmud@cse.uiu.ac.bd",
+    "initial": "ShMd",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Nahin F. Siddiqui",
+    "email": "nahin@cse.uiu.ac.bd",
+    "initial": "NaFS",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Sayeda Chandra Tabassum",
+    "email": "tabassum@eco.uiu.ac.bd",
+    "initial": "SCT",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Tanzila Amir",
+    "email": "tanzila@eco.uiu.ac.bd",
+    "initial": "TaA",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Antara Chowdhury",
+    "email": "antara@bus.uiu.ac.bd",
+    "initial": "ACh",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Syed Mahbub Rahman",
+    "email": "srahman@hum.buet.ac.bd",
+    "initial": "SMRn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Mohammad Akhtaruzzaman",
+    "email": "akhtaruzzaman@eco.uiu.ac.bd",
+    "initial": "MdAkh",
+    "department": "CSE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Mr. Mohammad A. Ashraf",
+    "email": "mmashraf@bus.uiu.ac.bd",
+    "initial": "AAsh",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Pranta Biswas",
+    "email": "pranta@cse.uiu.ac.bd",
+    "initial": "PB",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Tasmia Binte Sogir",
+    "email": "tasmia@cse.uiu.ac.bd",
+    "initial": "TBS",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Kazi Fahim Tahmid",
+    "email": "fahimtahmid@cse.uiu.ac.bd",
+    "initial": "KFT",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Md. Suzauddola",
+    "email": "suzauddola@cse.uiu.ac.bd",
+    "initial": "MdSu",
+    "department": "CSE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Ahmed Nesar Tahsin Choudhury",
+    "email": "tahsinchoudhury@cse.uiu.ac.bd",
+    "initial": "ANTC",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Md. Tanvir Raihan",
+    "email": "tanvir@cse.uiu.ac.bd",
+    "initial": "MTR",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Arnab Bhattacharjee",
+    "email": "arnab@cse.uiu.ac.bd",
+    "initial": "ArBh",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Rizvan Jawad Ruhan",
+    "email": "rizvan@cse.uiu.ac.bd",
+    "initial": "RJR",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Syed Samin Sadaf",
+    "email": "sadaf@cse.uiu.ac.bd",
+    "initial": "SSSf",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Muhyminul Haque",
+    "email": "muhyminul@cse.uiu.ac.bd",
+    "initial": "MdMH",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Anindya Hoque",
+    "email": "anindya@cse.uiu.ac.bd",
+    "initial": "AnHq",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Mehedi Hasan",
+    "email": "mehedi@cse.uiu.ac.bd",
+    "initial": "MdMeHn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Abrar Mahmud",
+    "email": "abrar@cse.uiu.ac.bd",
+    "initial": "ArMd",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Muhammad Nomani Kabir",
+    "email": "kabir@cse.uiu.ac.bd",
+    "initial": "MNK",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Taky Shaharair",
+    "email": "taky@cse.uiu.ac.bd",
+    "initial": "MTSh",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Abu Bakar Fahad",
+    "email": "abfahad.cse@gmail.com",
+    "initial": "ABF",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Enamul Haque",
+    "email": "enamul.m3h@gmail.com",
+    "initial": "MEHq",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Shahil Yasar Haque",
+    "email": "shahilyasarhaque@gmail.com",
+    "initial": "SYH",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Fairoz Anika",
+    "email": "fairoz@cse.uiu.ac.bd",
+    "initial": "FzAn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Siam",
+    "email": "siam@cse.uiu.ac.bd",
+    "initial": "MdSam",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Jarin Tasneem",
+    "email": "jarin@cse.uiu.ac.bd",
+    "initial": "JT",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Md. Sajjad Hossain",
+    "email": "sajjad@cse.uiu.ac.bd",
+    "initial": null,
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mobaswirul Islam",
+    "email": "mobaswirul@cse.uiu.ac.bd",
+    "initial": "MoIsm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Novia Nurain",
+    "email": "nnurain@umich.edu",
+    "initial": "NoNn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Zaara Zabeen Arpa",
+    "email": "zaara@cse.uiu.ac.bd",
+    "initial": "ZZA",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Tanmoy Bipro Das",
+    "email": "tanmoy@cse.uiu.ac.bd",
+    "initial": "TBD",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Sudipto Mondal",
+    "email": "sudipto.ptfaculty@cse.uiu.ac.bd",
+    "initial": "SuM",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "sudiptomondal@cse.uiu.ac.bd",
+    "email": "sudiptomondal@cse.uiu.ac.bd",
+    "initial": "SuMo",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Tasriad Ahmed Tias",
+    "email": "tasriad@cse.uiu.ac.bd",
+    "initial": "TATs",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Shafqat Talukder Rakin",
+    "email": "shafqat@cse.uiu.ac.bd",
+    "initial": null,
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Miftahul Sheikh",
+    "email": "miftahulsheikh1100@gmail.com",
+    "initial": "MfSh",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Rafid Nahiyan Farabi",
+    "email": "rafid@cse.uiu.ac.bd",
+    "initial": "RNF",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Abid Hossain",
+    "email": "abid@cse.uiu.ac.bd",
+    "initial": "AbHn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Kazi Abdun Noor",
+    "email": "abdunnoor@cse.uiu.ac.bd",
+    "initial": "KAN",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Sayem Shahad",
+    "email": "sayem@cse.uiu.ac.bd",
+    "initial": "SmSd",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Nahid Hossain",
+    "email": "nahid@cse.uiu.ac.bd",
+    "initial": "NHn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mahmudul Hasan",
+    "email": "mahmudul@cse.uiu.ac.bd",
+    "initial": "MahHsn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Shadman Aadeeb",
+    "email": "shadman@cse.uiu.ac.bd",
+    "initial": "MdShA",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "S.M. Kausar Parvej",
+    "email": "kausar@cse.uiu.ac.bd",
+    "initial": "SMKP",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Al-Sakib Khan Pathan",
+    "email": "sakib@cse.uiu.ac.bd",
+    "initial": "ASKP",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Mohammad Shahriar Rahman",
+    "email": "mshahriar@cse.uiu.ac.bd",
+    "initial": "MdSR",
+    "department": "CSE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Sahid Hossain Mustakim",
+    "email": "mustakim.ptfaculty@cse.uiu.ac.bd",
+    "initial": "SHMm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Jerin Hasan Priya",
+    "email": "priyajerin9@gmail.com",
+    "initial": "JHP",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Tasinul Islam Ahon",
+    "email": "tasinul@cse.uiu.ac.bd",
+    "initial": "TIA",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Robiul Islam",
+    "email": "robiulislam285522@gmail.com",
+    "initial": "RoIm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Golam Hossain",
+    "email": "mghhimu@gmail.com",
+    "initial": "MGH",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Zia Ul Hassan Abdullah",
+    "email": "hassan@cse.uiu.ac.bd",
+    "initial": "ZUHA",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mohammad Johirul Islam",
+    "email": "johir123@gmail.com",
+    "initial": "MdJI",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Sadatul lslam Sadi",
+    "email": "sadatul@cse.uiu.ac.bd",
+    "initial": "SlS",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Saifullah Mahbub",
+    "email": "saifornab@gmail.com",
+    "initial": "SaMb",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr.Sajid Ahmed Chowdhury",
+    "email": "sajidahmed@cse.uiu.ac.bd",
+    "initial": "SdACh",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Sajjad Ahmed",
+    "email": "sajjad.ahmed.cse@gmail.com",
+    "initial": "SdAh",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Md. Muhaiminul Islam Nafi",
+    "email": "muhaiminul@cse.uiu.ac.bd",
+    "initial": "MMIN",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Sayeem Been Zaman",
+    "email": "sayeem.ptfaculty@cse.uiu.ac.bd",
+    "initial": "SBZ",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. K Shayekh Ebne Mizan",
+    "email": "shayekh.iit.ju.44@gmail.com",
+    "initial": "KShEM",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Sidratul Tanzila Tasmi",
+    "email": "tanzila@cse.uiu.ac.bd",
+    "initial": "STT",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Rejwan Ahmed",
+    "email": "rejwan.ahmed@live.com",
+    "initial": "ReAd",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Zobaer Ibn Razzaque",
+    "email": "zobaer.ptfaculty@cse.uiu.ac.bd",
+    "initial": "ZIR",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Benzir Ahmed",
+    "email": "benzir@cse.uiu.ac.bd",
+    "initial": "MBAd",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Saqif Kaisar",
+    "email": "saqif@cse.uiu.ac.bd",
+    "initial": "SaKar",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Sheikh Mohammed Al Hadi Elaf",
+    "email": "hadielaf@cse.uiu.ac.bd",
+    "initial": "SMAHE",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Emrul Kayes Raceme",
+    "email": "raceme@hotmail.co.uk",
+    "initial": "EKR",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Sidratul Muntaha",
+    "email": "sidratul@cse.uiu.ac.bd",
+    "initial": "SiMa",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Kamruzzaman",
+    "email": "kamrulzuiu@gmail.com",
+    "initial": "MdK",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. K M Faizullah Fuhad",
+    "email": "faizullahfuhad@gmail.com",
+    "initial": "KMFF",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Tasmin Sanjida",
+    "email": "sanjida@cse.uiu.ac.bd",
+    "initial": "TaSa",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Mainul Islam",
+    "email": "mainulfuad95@gmail.com",
+    "initial": "MMaIm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Mohammed Jawwadul Islam",
+    "email": "jawwad.fida@gmail.com",
+    "initial": "MJIm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Abdullah Ibne Masud Mahi",
+    "email": "ibnemasud@cse.uiu.ac.bd",
+    "initial": "AIMM",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Tahia Hossain",
+    "email": "tahiahossain23@gmail.com",
+    "initial": "TaH",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Sajid Ahmed",
+    "email": "sajid@cse.uiu.ac.bd",
+    "initial": "SaAhd",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Ashraful Islam Paran",
+    "email": "paran@cse.uiu.ac.bd",
+    "initial": "AIP",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Shoib Ahmed Shourav",
+    "email": "shoib@cse.uiu.ac.bd",
+    "initial": "SAhSh",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mrs. Humaira Anzum Neha",
+    "email": "humaira@cse.uiu.ac.bd",
+    "initial": "HAN",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Asif Ahmed Utsa",
+    "email": "asif@cse.uiu.ac.bd",
+    "initial": "AAU",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Md. Zunaid-Ul-Alam",
+    "email": "zunaid@cse.uiu.ac.bd",
+    "initial": "MZUA",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Raiyan Janik Monir",
+    "email": "raiyan.janik.monir@g.bracu.ac.bd",
+    "initial": "RJM",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Tarek Hasan",
+    "email": "tarek@cse.uiu.ac.bd",
+    "initial": "MdTH",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Diniya Tahrin Bhuiyan",
+    "email": "tahrindiniya@gmail.com",
+    "initial": "DTB",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Sherajul Arifin",
+    "email": "sherajul@cse.uiu.ac.bd",
+    "initial": "ShArn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Rakibul Hasan Rafi",
+    "email": "rakibulhasan@cse.uiu.ac.bd",
+    "initial": "RaHR",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Minhajul Bashir",
+    "email": "minhajul@cse.uiu.ac.bd",
+    "initial": "MiBa",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Fazlul Hoque",
+    "email": "fazlul.ptfaculty@cse.uiu.ac.bd",
+    "initial": "Fhoq",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Mofiz Mojib Haider",
+    "email": "haider.ptfaculty@cse.uiu.ac.bd",
+    "initial": "MMHr",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "M. Fahmin Rahman",
+    "email": "fahmin@cse.uiu.ac.bd",
+    "initial": "MFRn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Imran Hossain",
+    "email": "imran@cse.uiu.ac.bd",
+    "initial": "IHn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Taki Yashir",
+    "email": "taki@cse.uiu.ac.bd",
+    "initial": "TY",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Abu Shafin Mohammad Mahdee Jameel",
+    "email": "mahdee@cse.uiu.ac.bd",
+    "initial": "ASMMJ",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Shekh Md. Saifur Rahman",
+    "email": "saifur@cse.uiu.ac.bd",
+    "initial": "SMSR",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Romizul Islam",
+    "email": "romizul@cse.uiu.ac.bd",
+    "initial": "MdRIm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Faria Tabassum",
+    "email": "fariatabassum3@gmail.com",
+    "initial": "FT",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Anika Tasnim Rodela",
+    "email": "anika@cse.uiu.ac.bd",
+    "initial": "ATR",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Hamudi Hasan Sonet",
+    "email": "sonet@cse.uiu.ac.bd",
+    "initial": "HHS",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Muhammad Sibgatullah Zunnun",
+    "email": "sibgatullahzunnun7374@gmail.com",
+    "initial": null,
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Sakibul Satter Shupto",
+    "email": "sakibul.ptfaculty@bge.uiu.ac.bd",
+    "initial": "SaSSh",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mahir Amer Haque",
+    "email": "mahir.amer05@gmail.com",
+    "initial": "MAmH",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Zubayer Alvi",
+    "email": "zubayeralvi@eee.uiu.ac.bd",
+    "initial": "MZA",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr.Md. Zahin Alam",
+    "email": "zahin@bge.uiu.ac.bd",
+    "initial": "MZAm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Fariha Yousuf Monia",
+    "email": "fariha.ptfaculty@bge.uiu.ac.bd",
+    "initial": "FYM",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Sanzed Alam",
+    "email": "sanzed.ptfaculty@bge.uiu.ac.bd",
+    "initial": "SdAm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Al Jamal Mustafa Shindaini",
+    "email": "mustafashindaini@gmail.com",
+    "initial": "AJMSh",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Jannatul Ferdous Nishat",
+    "email": "jannatul.ptfaculty@eds.uiu.ac.bd",
+    "initial": "JFNt",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Marjana Morshed",
+    "email": "marjana.ptfaculty@eds.uiu.ac.bd",
+    "initial": "MMd",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Nazmul Huda",
+    "email": "hudasociology@hum.buet.ac.bd",
+    "initial": "NaHu",
+    "department": "CSE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Mr. Md. Nazmul Huda",
+    "email": "nazmul.ptfaculty@eds.uiu.ac.bd",
+    "initial": "MNaHu",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Nawshin Tabassum",
+    "email": "nawshin.ptfaculty@eds.uiu.ac.bd",
+    "initial": "NTm",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Sadia Zaman",
+    "email": "sadia.ptfaculty@eds.uiu.ac.bd",
+    "initial": "SZn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mosharof Hossain",
+    "email": "mosharof04@gmail.com",
+    "initial": "MfHn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mohamad Amzad Hossain",
+    "email": "mahossain@bus.uiu.ac.bd",
+    "initial": "MdAHn",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Kazi Yousuf Hasan",
+    "email": "yousuf.ptfaculty@bus.uiu.ac.bd",
+    "initial": "KYH",
+    "department": "CSE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Prof. Dr. Md. Abu Saklayen",
+    "email": "saklayen@ins.uiu.ac.bd",
+    "initial": "MASn",
+    "department": "EEE",
+    "designation": "Professor"
+  },
+  {
+    "name": "Mr. Abdullah Al Mamun",
+    "email": "mamun@ins.uiu.ac.bd",
+    "initial": "AM",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Md. Kamrul Bari",
+    "email": "bari.sarkar@gmail.com",
+    "initial": "MKB",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Sadia Afrin",
+    "email": "sadia@eli.uiu.ac.bd",
+    "initial": "SaAn",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Umme Habiba",
+    "email": "habiba@english.uiu.ac.bd",
+    "initial": "UmH",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Ziaul Karim",
+    "email": "ziaul007.karim@gmail.com",
+    "initial": "mzk",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Kaled Masukur Rahman",
+    "email": "masuk@eee.uiu.ac.bd",
+    "initial": "MKMR",
+    "department": "EEE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Prof. Dr. Siddique Mohammad Lutful Kabir",
+    "email": "Lutfulkabir82@gmail.com",
+    "initial": "SMLK",
+    "department": "EEE",
+    "designation": "Professor"
+  },
+  {
+    "name": "Md. Hasanuzzaman",
+    "email": "hasanuzzaman@eee.uiu.ac.bd",
+    "initial": "MdHn",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Hachhibur Rahman",
+    "email": "hachhibur.ptfaculty@eee.uiu.ac.bd",
+    "initial": "MdHRn",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Helena Bulbul",
+    "email": "helena@eee.uiu.ac.bd",
+    "initial": "HB",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Md. Shahriar Ahmed Chowdhury",
+    "email": "shahriar@eee.uiu.ac.bd",
+    "initial": "SAC",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Syed Moktacim Billah",
+    "email": "moktacim@eee.uiu.ac.bd",
+    "initial": "SMB",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Md. Fayyaz Khan",
+    "email": "fayyaz@eee.uiu.ac.bd",
+    "initial": "MFK",
+    "department": "EEE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Mr. Liakat Omar Rihan",
+    "email": "liakat@eee.uiu.ac.bd",
+    "initial": "LOR",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Md. Iqbal Bahar Chowdhury",
+    "email": "ibchy@eee.uiu.ac.bd",
+    "initial": "IBC",
+    "department": "EEE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Dr. Sadid Muneer",
+    "email": "sadidmuneer@eee.uiu.ac.bd",
+    "initial": "SdM",
+    "department": "EEE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Mr. Kazi Abrar Mahmud",
+    "email": "abrar@eee.uiu.ac.bd",
+    "initial": "KAM",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Md. Nure-Alam-Dipu",
+    "email": "nurealam@eee.uiu.ac.bd",
+    "initial": "NAD",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Raqibul Mostafa",
+    "email": "rmostafa@eee.uiu.ac.bd",
+    "initial": "RM",
+    "department": "EEE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Dr. Intekhab Alam",
+    "email": "intekhab@eee.uiu.ac.bd",
+    "initial": "IA",
+    "department": "EEE",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Mr. B.K.M. Mizanur Rahman",
+    "email": "bkm@eee.uiu.ac.bd",
+    "initial": "BKM",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "M.A. Mosabbir Antor",
+    "email": "mosabbir@eee.uiu.ac.bd",
+    "initial": "MAMA",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Kafi Anan",
+    "email": "kafi@eee.uiu.ac.bd",
+    "initial": "KaAn",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Jalal Uddin",
+    "email": "Jalal.439284@gmail.com",
+    "initial": "MJUn",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Akif Hamid",
+    "email": "akif@eee.uiu.ac.bd",
+    "initial": "AkHd",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Md. Mostaqul Islam",
+    "email": "mostaqul@eee.uiu.ac.bd",
+    "initial": "MdMoIm",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "M. Rezwan Khan",
+    "email": "rezwanm@uiu.ac.bd",
+    "initial": null,
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Mohammad Mahboob Ali Siddiqi",
+    "email": "mahboob@ins.uiu.ac.bd",
+    "initial": "MASq",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Salma Begum",
+    "email": "salma_begum@outlook.com",
+    "initial": "SaB",
+    "department": "EEE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Zolakha Akter Shifa",
+    "email": "zolakha.ptfaculty@english.uiu.ac.bd",
+    "initial": "ZAS",
+    "department": "Civil Engineering",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Nafisa Tabassum",
+    "email": "nafisa@ce.uiu.ac.bd",
+    "initial": "NT",
+    "department": "Civil Engineering",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Tariq Bin Yousuf",
+    "email": "yousuf.ptfaculty@ce.uiu.ac.bd",
+    "initial": "TBY",
+    "department": "Civil Engineering",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Mr. Md. Hossain Safayet",
+    "email": "safayet@ce.uiu.ac.bd",
+    "initial": "MHSt",
+    "department": "Civil Engineering",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Abdullah Al-Muyeed",
+    "email": "abdullah.ptfaculty@ce.uiu.ac.bd",
+    "initial": "AbAMd",
+    "department": "Civil Engineering",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Mr. Ahnaf Rafi Sharan",
+    "email": "ahnaf@ce.uiu.ac.bd",
+    "initial": "AhRSh",
+    "department": "Civil Engineering",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Jamil Ahmed Joy",
+    "email": "jamil@ce.uiu.ac.bd",
+    "initial": "JAJ",
+    "department": "Civil Engineering",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Intishar Rahman",
+    "email": "intishar.ptfaculty@ce.uiu.ac.bd",
+    "initial": "MIR",
+    "department": "Civil Engineering",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Md. Mujibur Rahman",
+    "email": "mujibur@ce.uiu.ac.bd",
+    "initial": null,
+    "department": "Civil Engineering",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Dr. Md. Saiful Islam",
+    "email": "saiful@ce.uiu.ac.bd",
+    "initial": null,
+    "department": "Civil Engineering",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Mr. Shishir Shahriar Arif",
+    "email": "shishir@ce.uiu.ac.bd",
+    "initial": "SSAf",
+    "department": "Civil Engineering",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Shahriare Mahmud Sakib",
+    "email": "shahriare@ce.uiu.ac.bd",
+    "initial": "ShMS",
+    "department": "Civil Engineering",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Rumana Afrin",
+    "email": "rumana@ce.uiu.ac.bd",
+    "initial": "RAf",
+    "department": "Civil Engineering",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Jannatul Ferdows Nowrin",
+    "email": "jannatul@ce.uiu.ac.bd",
+    "initial": "JFN",
+    "department": "Civil Engineering",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Hossain",
+    "email": "marzan@admin.uiu.ac.bd",
+    "initial": "Marzan",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Tanseer Ahamed",
+    "email": "tanseer@eco.uiu.ac.bd",
+    "initial": null,
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Musharrat Shabnam Shuchi",
+    "email": "shabnam@eco.uiu.ac.bd",
+    "initial": null,
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mohammed Zia Uddin",
+    "email": "ziaa96@gamil.com",
+    "initial": "MZU",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Shuva Ghosh",
+    "email": "shuvaghosh@ipe.buet.ac.bd",
+    "initial": "ShGh",
+    "department": "School of Business and Economics",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Dr. Md. Kashedul Wahab Tuhin",
+    "email": "kashedul@gmail.com",
+    "initial": "KWT",
+    "department": "School of Business and Economics",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Dr. Khandoker Mahmudur Rahman",
+    "email": "khandoker@bus.uiu.ac.bd",
+    "initial": "KMR",
+    "department": "School of Business and Economics",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Md. Musharrof Hossain",
+    "email": "musharrofh@bus.uiu.ac.bd",
+    "initial": "mohn",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Ashadullah",
+    "email": "ashadullah.bd@gmail.com",
+    "initial": "MdAU",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Qazi Moinuddin Mahmud",
+    "email": "qmmahmud@du.ac.bd",
+    "initial": "QMMd",
+    "department": "School of Business and Economics",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Dr. Shoaib Ahmed",
+    "email": "shoaib@bus.uiu.ac.bd",
+    "initial": "SbAd",
+    "department": "School of Business and Economics",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Dr. Mohammad Omar Farooq",
+    "email": "farooq@eco.uiu.ac.bd",
+    "initial": "MOF",
+    "department": "School of Business and Economics",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Dr. Kais Zaman",
+    "email": "kaiszaman@yahoo.com",
+    "initial": "KZ",
+    "department": "School of Business and Economics",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Professor. Dr. Mahtab Uddin Ahmmed",
+    "email": "mahtab.ahmmed@gmail.com",
+    "initial": "munad",
+    "department": "School of Business and Economics",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Dr. Md. Arifur Rahman",
+    "email": "reach2arif99@gmail.com",
+    "initial": "mdarr",
+    "department": "School of Business and Economics",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Dr. Mohammad Shamsul Alam Wasimi",
+    "email": "shamsul@bus.uiu.ac.bd",
+    "initial": null,
+    "department": "School of Business and Economics",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Tasneem Jahan Tumpa",
+    "email": "tumpa@eco.uiu.ac.bd",
+    "initial": "TJT",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Muhammad Amir Hossain",
+    "email": "amir@iibfe.uiu.ac.bd",
+    "initial": "MdAmHn",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Mahbuba Sultana",
+    "email": "mahbuba@bus.uiu.ac.bd",
+    "initial": "MaSa",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Shariful Alam",
+    "email": "sharifdu@bus.uiu.ac.bd",
+    "initial": "MdSA",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Abdullah Al Fahad",
+    "email": "aaf5623@gmail.com",
+    "initial": "AAFd",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. S.M. Asif-Ur-Rahman",
+    "email": "asif@bus.uiu.ac.bd",
+    "initial": "SMAR",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Nazmul Huda Mohd. Sharif Uddin",
+    "email": "sharifnazmul01@gmail.com",
+    "initial": "NHMS",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Montaha Ayub Vasha",
+    "email": "montaha@bus.uiu.ac.bd",
+    "initial": "MAV",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Nusrat Farzana",
+    "email": "farzana@bus.uiu.ac.bd",
+    "initial": "NFa",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Tashrifa Fairuz",
+    "email": "tashrifa.fr@gmail.com",
+    "initial": "TaFz",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Nousin Laila Bristi",
+    "email": "nousin@english.uiu.ac.bd",
+    "initial": "NLB",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Nafisa Rahman",
+    "email": "nafisa@bus.uiu.ac.bd",
+    "initial": "NRn",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Kazimul Hoque",
+    "email": "kazimul@bus.uiu.ac.bd",
+    "initial": "MKHq",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Abrar Mahmood Sami",
+    "email": "abrar@bus.uiu.ac.bd",
+    "initial": "AMSa",
+    "department": "School of Business and Economics",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Maksuda Akter",
+    "email": "aktermaksuda05@gmail.com",
+    "initial": "MaAkr",
+    "department": "English",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Shafqat Chaudhuri",
+    "email": "shafqat.ptfaculty@english.uiu.ac.bd",
+    "initial": "SCh",
+    "department": "English",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Elias Uddin",
+    "email": "elias.ptfaculty@english.uiu.ac.bd",
+    "initial": "MEUn",
+    "department": "English",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Md. Kamrul Hasan",
+    "email": "kamrul@eli.uiu.ac.bd",
+    "initial": "MKH",
+    "department": "English",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Marzia Shurovi",
+    "email": "shurovi@eli.uiu.ac.bd",
+    "initial": "MaShu",
+    "department": "English",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Ms. Rusafa Islam Aurchi",
+    "email": "rusafa.ptfaculty@eds.uiu.ac.bd",
+    "initial": "RIA",
+    "department": "English",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Shantanu Kumar Saha",
+    "email": "shantanu@eds.uiu.ac.bd",
+    "initial": "SKS",
+    "department": "EDS",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Hamidul Huq",
+    "email": "hamidulhuq@idss.uiu.ac.bd",
+    "initial": "HHq",
+    "department": "EDS",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Dr. Sharif Ahmed Mukul",
+    "email": "mukul@eds.uiu.ac.bd",
+    "initial": "ShAM",
+    "department": "EDS",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Oliver Tirtho Sarkar",
+    "email": "tirtho@eds.uiu.ac.bd",
+    "initial": "OTS",
+    "department": "EDS",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Dr. Sheikh Mohammad Shafiul Islam",
+    "email": "shafiul@msj.uiu.ac.bd",
+    "initial": "SMSI",
+    "department": "MSJ",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Dr. Md. Mofizur Rhaman",
+    "email": "mofizur.ptfaculty@msj.uiu.ac.bd",
+    "initial": "MMRh",
+    "department": "MSJ",
+    "designation": "Assistant Professor"
+  },
+  {
+    "name": "Ms. Sumia Zahid",
+    "email": "sumia@msj.uiu.ac.bd",
+    "initial": "SZ",
+    "department": "MSJ",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Kazi Kamrun Nahar Tania",
+    "email": "tania@msj.uiu.ac.bd",
+    "initial": "KKNT",
+    "department": "MSJ",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "S.M. Rafiqul Islam",
+    "email": "rafiqul@bge.uiu.ac.bd",
+    "initial": "SMRI",
+    "department": "BGE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Khalid Shahriar",
+    "email": "shahriar@bge.uiu.ac.bd",
+    "initial": "KS",
+    "department": "BGE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Mr. Muhammad Sibgatullah Zunnun",
+    "email": "sibgatullah@bge.uiu.ac.bd",
+    "initial": "MdSZ",
+    "department": "BGE",
+    "designation": "Lecturer"
+  },
+  {
+    "name": "Md. Belal Hussain Ripon",
+    "email": "belal@bge.uiu.ac.bd",
+    "initial": "BHR",
+    "department": "BGE",
+    "designation": "Lecturer"
+  }
+]

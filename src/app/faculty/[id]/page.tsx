@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const faculty = await prisma.faculty.findUnique({
     where: { id },
-    select: { name: true, designation: true, department: true },
+    select: { name: true, designation: true, department: true , image: true},
   });
 
   if (!faculty) return { title: "Faculty Not Found" };
@@ -29,17 +29,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description = `Read honest reviews about ${faculty.name} (${faculty.designation}, ${faculty.department}). 100% Anonymous.`;
 
   return {
+  title,
+  description,
+  openGraph: {
     title,
     description,
-    openGraph: {
-      title,
-      description,
-      type: "website",
-      siteName: "Faculty Review App",
-    },
-    twitter: { card: "summary_large_image", title, description },
-  };
-}
+    type: "profile",
+    siteName: "Faculty Review App",
+    url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/faculty/${id}`,
+    images: faculty.image ? [{ url: faculty.image, width: 400, height: 400, alt: faculty.name }] : [],
+  },
+  twitter: { card: "summary_large_image", title, description },
+};
 
 export default async function FacultyProfilePage(props: Props) {
   const params = await props.params;
