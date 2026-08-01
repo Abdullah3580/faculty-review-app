@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!faculty) return { title: "Faculty Not Found" };
 
   const title = `Review of ${faculty.name} | Faculty Review App`;
-  const description = `Read honest reviews about ${faculty.name} (${faculty.designation}, ${faculty.department}). 100% Anonymous.`;
+  const description = `Read and give honest reviews about ${faculty.name} (${faculty.designation}, ${faculty.department}). 100% Anonymous.`;
 
   return {
     title,
