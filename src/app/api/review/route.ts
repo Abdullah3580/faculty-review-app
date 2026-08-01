@@ -51,10 +51,23 @@ export async function POST(request: Request) {
       },
     });
 
-    if (recentReview) {
+    // if (recentReview) {
+    //   return NextResponse.json(
+    //     { error: "Please wait 5 minutes before posting another review! ⏳" },
+    //     { status: 429 }
+    //   );
+    // }
+
+    const existingReview = await prisma.review.findFirst({
+      where: {
+        userId: user.id,
+        facultyId: facultyId,
+      },
+    });
+    if (existingReview) {
       return NextResponse.json(
-        { error: "Please wait 5 minutes before posting another review! ⏳" },
-        { status: 429 }
+        { error: "You have already reviewed this faculty! ⚠️" },
+        { status: 409 }
       );
     }
 
