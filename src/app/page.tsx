@@ -36,7 +36,7 @@ const getTags = (avgRating: number, reviewCount: number) => {
 
 export default async function HomePage(props: Props) {
   const searchParams = await props.searchParams;
-  const query = searchParams.q || "";
+  const query = (searchParams.q || "").trim();
   const page = parseInt(searchParams.page || "1");
   const itemsPerPage = 10;
   const session = await getServerSession(authOptions);

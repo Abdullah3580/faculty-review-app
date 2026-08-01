@@ -11,6 +11,7 @@ import FadeIn from "@/components/FadeIn";
 import ReviewModalButton from "@/components/ReviewModalButton";
 import FollowButton from "@/components/FollowButton";
 import EditFacultyModal from "@/components/EditFacultyModal";
+import DeleteFacultyButton from "@/components/DeleteFacultyButton";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -125,19 +126,26 @@ export default async function FacultyProfilePage(props: Props) {
                       {faculty.name}
                     </h1>
                     {isAdmin && (
-                      <EditFacultyModal
-                        faculty={{
-                          id: faculty.id,
-                          name: faculty.name,
-                          department: faculty.department,
-                          designation: faculty.designation,
-                          initial: faculty.initial,
-                          code: faculty.code,
-                          email: faculty.email,
-                          roomNumber: faculty.roomNumber,
-                          image: faculty.image,
-                        }}
-                      />
+                      <div className="flex items-center gap-1">
+                            <EditFacultyModal
+                              faculty={{
+                                id: faculty.id,
+                                name: faculty.name,
+                                department: faculty.department,
+                                designation: faculty.designation,
+                                initial: faculty.initial,
+                                code: faculty.code,
+                                email: faculty.email,
+                                roomNumber: faculty.roomNumber,
+                                image: faculty.image,
+                              }}
+                            />
+                        <DeleteFacultyButton
+                          facultyId={faculty.id}
+                          facultyName={faculty.name}
+                        />
+                      </div>
+                      
                     )}
                   </div>
                   <p className="text-gray-600 dark:text-gray-400 text-lg mb-4">

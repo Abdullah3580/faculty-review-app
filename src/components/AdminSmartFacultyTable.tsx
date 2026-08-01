@@ -17,10 +17,13 @@ export default function AdminSmartFacultyTable({ faculties, departments }: Props
   const [isUpdating, setIsUpdating] = useState(false);
 
   // সার্চ ফিল্টার
-  const filteredFaculties = faculties.filter((f) =>
-    f.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    f.department.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredFaculties = faculties.filter((f) => {
+  const term = searchTerm.toLowerCase().trim();
+  return (
+    f.name.toLowerCase().includes(term) ||
+    f.department.toLowerCase().includes(term)
   );
+});
 
   // চেকবাক্স লজিক
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
