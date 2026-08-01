@@ -1,4 +1,3 @@
-// src/app/faculty/[id]/page.tsx
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -11,6 +10,7 @@ import type { Metadata } from "next";
 import FadeIn from "@/components/FadeIn"; 
 import ReviewModalButton from "@/components/ReviewModalButton";
 import FollowButton from "@/components/FollowButton";
+import EditFacultyModal from "@/components/EditFacultyModal";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -40,6 +40,8 @@ export default async function FacultyProfilePage(props: Props) {
   const params = await props.params;
   const session = await getServerSession(authOptions);
 
+  // অ্যাডমিন কিনা তা চেক করা হচ্ছে
+  const isAdmin = session?.user?.role === "ADMIN";
   
   let isFollowing = false;
   if (session?.user?.email) {
@@ -83,15 +85,35 @@ export default async function FacultyProfilePage(props: Props) {
 
         <FadeIn className="glass-card rounded-2xl p-6 md:p-8 mb-8">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-              <div className="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-4xl text-white font-bold shadow-md">
-                {faculty.name.charAt(0)}
+              
+              {/* ছবির অংশ */}
+              <div className="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-4xl text-white font-bold shadow-md overflow-hidden shrink-0">
+                {faculty.image ? (
+                  <img src={faculty.image} alt={faculty.name} className="w-full h-full object-cover" />
+                ) : (
+                  faculty.name.charAt(0)
+                )}
               </div>
+
               <div className="flex-1 text-center md:text-left">
                 <div className="flex flex-col md:flex-row justify-between items-center md:items-start">
                   <div>
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                      {faculty.name}
-                    </h1>
+                    {/* নামের পাশে এডিট বাটন যোগ করা হলো */}
+                    <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
+                      <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+                        {faculty.name}
+                      </h1>
+                      {isAdmin && (
+                        <EditFacultyModal 
+                          faculty={{
+                            id: faculty.id,
+                            name: faculty.name,
+                            department: faculty.department,
+                            image: faculty.image // ছবি পাস করা হচ্ছে
+                          }} 
+                        />
+                      )}
+                    </div>
                     <p className="text-gray-600 dark:text-gray-400 text-lg mb-4">
                       {faculty.designation}  of {faculty.department} Dept.
                     </p>

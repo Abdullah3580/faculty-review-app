@@ -80,6 +80,7 @@ model Faculty {
   initial     String?
   roomNumber  String?
   email       String?
+  image       String?
   department  String     @default("General")
   questions   Question[]
   reviews     Review[]
