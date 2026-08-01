@@ -48,8 +48,7 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/api/auth") ||    
     pathname === "/api/register" ||
     pathname === "/auth-error" ||
-    pathname.startsWith("/faculty/") ||
-    pathname === "/";
+    pathname.startsWith("/faculty/");
 
   if (!token && !isPublicPath) {
     return NextResponse.redirect(new URL("/login", request.url));
@@ -73,3 +72,4 @@ export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 
 }; 
+
