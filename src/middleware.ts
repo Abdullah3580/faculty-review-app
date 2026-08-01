@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
@@ -47,7 +47,9 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/verify-email") ||
     pathname.startsWith("/api/auth") ||    
     pathname === "/api/register" ||
-    pathname === "/auth-error";
+    pathname === "/auth-error" ||
+    pathname.startsWith("/faculty/") ||
+    pathname === "/";
 
   if (!token && !isPublicPath) {
     return NextResponse.redirect(new URL("/login", request.url));
