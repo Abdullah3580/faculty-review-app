@@ -5,7 +5,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 // টাইপ ফিক্স (Promise) - facultyId এর জায়গায় id দেওয়া হলো
 interface RouteParams {
-  params: Promise<{ id: string }>;
+  params: Promise<{ facultyId: string }>;
 }
 
 // ১. আপডেট (PUT) - PATCH পরিবর্তন করে PUT করা হলো
@@ -18,12 +18,12 @@ export async function PUT(req: Request, { params }: RouteParams) {
 
   try {
     // ⚠️ ফিক্স: params কে await করা হলো এবং id নেওয়া হলো
-    const { id } = await params;
+    const { facultyId } = await params;
     const { name, department, image } = await req.json();
 
     const updatedFaculty = await prisma.faculty.update({
-      where: { id: id },
-      // ⚠️ ফিক্স: সরাসরি body না দিয়ে নির্দিষ্ট ফিল্ডগুলো পাঠানো হলো
+      where: { id: facultyId },
+      // ⚠️ ফিক্স: সরাসরি body না দিয়ে নির্দিষ্ট ফিল্ডগুলো পাঠানো হলো
       data: {
         name,
         department,
@@ -48,9 +48,9 @@ export async function DELETE(req: Request, { params }: RouteParams) {
 
   try {
     // ⚠️ ফিক্স: params কে await করা হলো এবং id নেওয়া হলো
-    const { id } = await params;
+    const { facultyId } = await params;
 
-    await prisma.faculty.delete({ where: { id: id } });
+    await prisma.faculty.delete({ where: { id: facultyId } });
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("[FACULTY_DELETE_ERROR]:", error);
