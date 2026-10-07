@@ -7,12 +7,12 @@ export default function VerifyRequestPage() {
         <h1 className="text-2xl font-bold text-center text-gray-900">
           Check Your Email
         </h1>
-        <p className="text-center text-gray-600">
-          A magic link has been sent to your email address.
-        </p>
         <p className="text-center text-sm text-gray-500">
-          Please check your inbox (and spam folder) to sign in.
-        </p>
+          Please check your inbox to sign in.
+          </p>
+          <p className="text-2xl font-bold text-red-600 dark:text-red-400 mb-4">
+            ⚠️ Also check your spam folder
+          </p>
       </div>
     </div>
   );
