@@ -76,7 +76,10 @@ export default function RegisterPage() {
           <h2 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 mb-4">Check Your Email 📧</h2>
           <p className="text-gray-600 dark:text-gray-300 mb-6">
             We have sent a verification link to <strong>{formData.email}</strong>. 
-            Please check your inbox (and spam folder).
+            Please check your inbox.
+          </p>
+          <p className="text-2xl font-bold text-red-600 dark:text-red-400 mb-4">
+            ⚠️ Also check your spam folder
           </p>
           <Link href="/login" className="text-indigo-600 hover:underline font-medium">
             Go to Login Page
