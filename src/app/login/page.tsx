@@ -1,3 +1,5 @@
+
+// src/app/login/page.tsx
 "use client";
 
 import { useState } from "react";
@@ -33,7 +35,6 @@ export default function LoginPage() {
       toast.error("Invalid Email/ID or password");
     } else {
       toast.success("Logged in successfully!");
-      router.refresh(); 
       router.push("/"); 
     }
   };
