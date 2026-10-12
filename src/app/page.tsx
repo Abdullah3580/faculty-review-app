@@ -1,3 +1,4 @@
+// src/app/page.tsx
 import AdminReviewDeleteButton from "@/components/AdminReviewDeleteButton";
 import prisma from "@/lib/prisma";
 import AuthButtons from "@/components/AuthButtons";
@@ -99,7 +100,10 @@ export default async function HomePage(props: Props) {
   });
 
   facultiesWithStats.sort((a, b) => b.avgRating - a.avgRating);
-  const topFaculties = facultiesWithStats.slice(0, 3);
+  const topFaculties = facultiesWithStats
+  .filter(f => f.reviews.length >= 3)
+  .sort((a, b) => b.avgRating - a.avgRating || b.reviews.length - a.reviews.length)
+  .slice(0, 3);
   
   const startIndex = (page - 1) * itemsPerPage;
   const paginatedFaculties = facultiesWithStats.slice(startIndex, startIndex + itemsPerPage);
