@@ -1,5 +1,5 @@
 ﻿// src/middleware.ts
-import prisma from "@/lib/prisma";
+//import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
@@ -68,14 +68,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (token?.id) {
-    prisma.user
-      .update({
-        where: { id: token.id as string },
-        data: { lastSeen: new Date() },
-      })
-      .catch(() => {});
-  }
+
 
   return NextResponse.next();
 }

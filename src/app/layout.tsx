@@ -1,5 +1,5 @@
 // src/app/layout.tsx
-
+import PingTracker from "@/components/PingTracker";
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
@@ -62,6 +62,7 @@ export default function RootLayout({
           </AuthProvider>
         </ThemeProvider>
         <Analytics />
+        <PingTracker />
       </body>
     </html>
   );
