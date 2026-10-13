@@ -1,5 +1,6 @@
 //src/app/api/register/route.ts
-import { NextResponse } from "next/server";
+//import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import prisma from "@/lib/prisma";
 import argon2 from "argon2";
 import { v4 as uuidv4 } from "uuid";
@@ -119,8 +120,14 @@ export async function POST(request: Request) {
       },
     });
 
-    await sendVerificationEmail(email, token);
-
+    //await sendVerificationEmail(email, token);
+        after(async () => {
+      try {
+        await sendVerificationEmail(email, token);
+      } catch (err) {
+        console.error("Verification email failed:", err);
+      }
+    });
     return NextResponse.json({
       message: "Registration successful. Please verify your email.",
     });
