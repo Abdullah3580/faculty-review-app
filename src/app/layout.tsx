@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import ContentProtector from "@/components/ContentProtector";
 import Navbar from "@/components/Navbar";
 import SessionGuard from "@/components/SessionGuard"; 
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ 
   subsets: ["latin"], 
@@ -60,6 +61,7 @@ export default function RootLayout({
             </div>
           </AuthProvider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
