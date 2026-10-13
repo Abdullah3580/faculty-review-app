@@ -50,6 +50,7 @@ model User {
   studentId         String?        @unique
   verifyToken       String?        @unique
   verifyTokenExpiry DateTime?
+  lastSeen         DateTime?
   accounts          Account[]
   answers           Answer[]
   notifications     Notification[]

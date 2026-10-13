@@ -1,7 +1,8 @@
-﻿import { NextResponse } from "next/server";
+﻿// src/middleware.ts
+import prisma from "@/lib/prisma";
+import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
-
 
 const ratelimit = new Map();
 
@@ -10,7 +11,6 @@ function checkRateLimit(ip: string) {
   const maxReq = 60;
   const now = Date.now();
   const record = ratelimit.get(ip);
-
 
   if (!record) {
     ratelimit.set(ip, { count: 1, startTime: now });
@@ -27,13 +27,13 @@ function checkRateLimit(ip: string) {
   return true;
 }
 
-
-
 export async function middleware(request: NextRequest) {
   const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
 
   if (!checkRateLimit(ip)) {
-    return new NextResponse("Too Many Requests. Please slow down.", { status: 429 });
+    return new NextResponse("Too Many Requests. Please slow down.", {
+      status: 429,
+    });
   }
 
   const token = await getToken({ req: request });
@@ -42,10 +42,10 @@ export async function middleware(request: NextRequest) {
   const isPublicPath =
     pathname === "/login" ||
     pathname === "/register" ||
-    pathname === "/forgot-password" ||  
-    pathname === "/reset-password" ||  
+    pathname === "/forgot-password" ||
+    pathname === "/reset-password" ||
     pathname.startsWith("/verify-email") ||
-    pathname.startsWith("/api/auth") ||    
+    pathname.startsWith("/api/auth") ||
     pathname === "/api/register" ||
     pathname === "/auth-error" ||
     pathname.startsWith("/faculty/");
@@ -53,23 +53,33 @@ export async function middleware(request: NextRequest) {
   if (!token && !isPublicPath) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
-  if (token && (pathname === "/login" || pathname === "/register" || pathname === "/forgot-password")) {
+  if (
+    token &&
+    (pathname === "/login" ||
+      pathname === "/register" ||
+      pathname === "/forgot-password")
+  ) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
   if (pathname.startsWith("/admin")) {
-
-    if (token?.role !== "ADMIN" && token?.role !== "admin" ) {
+    if (token?.role !== "ADMIN" && token?.role !== "admin") {
       return NextResponse.redirect(new URL("/", request.url));
     }
+  }
+
+  if (token?.id) {
+    prisma.user
+      .update({
+        where: { id: token.id as string },
+        data: { lastSeen: new Date() },
+      })
+      .catch(() => {});
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-
   matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
-
-}; 
-
+};
