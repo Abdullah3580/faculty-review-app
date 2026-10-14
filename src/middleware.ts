@@ -1,43 +1,49 @@
-﻿// src/middleware.ts
-//import prisma from "@/lib/prisma";
+﻿// middleware.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-const ratelimit = new Map();
+// আলাদা আলাদা rate limit map
+const rateLimitMap = new Map<string, { count: number; startTime: number }>();
 
-function checkRateLimit(ip: string) {
-  const windowMs = 60 * 1000;
-  const maxReq = 60;
+function checkRateLimit(key: string, limit: number, windowMs: number): boolean {
   const now = Date.now();
-  const record = ratelimit.get(ip);
+  const record = rateLimitMap.get(key);
 
-  if (!record) {
-    ratelimit.set(ip, { count: 1, startTime: now });
+  if (!record || now - record.startTime > windowMs) {
+    rateLimitMap.set(key, { count: 1, startTime: now });
     return true;
   }
 
-  if (now - record.startTime > windowMs) {
-    ratelimit.set(ip, { count: 1, startTime: now });
-    return true;
-  }
-
-  if (record.count >= maxReq) return false;
+  if (record.count >= limit) return false;
   record.count += 1;
   return true;
 }
 
 export async function middleware(request: NextRequest) {
-  const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "127.0.0.1";
+  const { pathname } = request.nextUrl;
 
-  if (!checkRateLimit(ip)) {
-    return new NextResponse("Too Many Requests. Please slow down.", {
-      status: 429,
-    });
+  // ১. Login/Register এ কড়া limit — per IP ৫ req/min (brute force আটকাবে)
+  if (pathname === "/api/register" || pathname.startsWith("/api/auth/signin")) {
+    if (!checkRateLimit(`auth:${ip}`, 5, 60 * 1000)) {
+      return new NextResponse("Too many attempts. Please wait a minute.", { status: 429 });
+    }
+  }
+  // ২. বাকি API routes — per IP ১২০ req/min
+  else if (pathname.startsWith("/api/")) {
+    if (!checkRateLimit(`api:${ip}`, 120, 60 * 1000)) {
+      return new NextResponse("Too Many Requests.", { status: 429 });
+    }
+  }
+  // ৩. Page routes — per IP ২০০ req/min (page load এ অনেক request হয়)
+  else {
+    if (!checkRateLimit(`page:${ip}`, 200, 60 * 1000)) {
+      return new NextResponse("Too Many Requests.", { status: 429 });
+    }
   }
 
   const token = await getToken({ req: request });
-  const { pathname } = request.nextUrl;
 
   const isPublicPath =
     pathname === "/login" ||
@@ -47,28 +53,26 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/verify-email") ||
     pathname.startsWith("/api/auth") ||
     pathname === "/api/register" ||
+    pathname === "/api/ping" ||
     pathname === "/auth-error" ||
     pathname.startsWith("/faculty/");
 
+  // Login না করলে protected page এ যেতে পারবে না
   if (!token && !isPublicPath) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
-  if (
-    token &&
-    (pathname === "/login" ||
-      pathname === "/register" ||
-      pathname === "/forgot-password")
-  ) {
+
+  // Login করা থাকলে login/register page এ গেলে home এ redirect
+  if (token && (pathname === "/login" || pathname === "/register" || pathname === "/forgot-password")) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
+  // Admin route — শুধু ADMIN role এর জন্য
   if (pathname.startsWith("/admin")) {
-    if (token?.role !== "ADMIN" && token?.role !== "admin") {
+    if (token?.role?.toUpperCase() !== "ADMIN") {
       return NextResponse.redirect(new URL("/", request.url));
     }
   }
-
-
 
   return NextResponse.next();
 }
