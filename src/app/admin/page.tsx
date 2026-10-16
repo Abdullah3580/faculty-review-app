@@ -1,4 +1,5 @@
 //src\app\admin\page.tsx
+
 import prisma from "@/lib/prisma";
 import AdminReviewControls from "@/components/AdminReviewControls";
 import AdminFacultyControls from "@/components/AdminFacultyControls";
@@ -9,6 +10,7 @@ import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import OnlineUsers from "@/components/OnlineUsers";
+import AdminContactStudents from "@/components/AdminContactStudents";
 
 export const dynamic = "force-dynamic";
 
@@ -125,6 +127,18 @@ export default async function AdminPage() {
         {/* Online Users */}
         <div className="mb-12">
           <OnlineUsers />
+        </div>
+        {/* Contact Students */}
+        <div className="mb-12">
+          <AdminContactStudents
+            students={allStudents.map((s) => ({
+              id: s.id,
+              name: s.name,
+              nickname: s.nickname,
+              studentId: s.studentId,
+              email: s.email,
+            }))}
+          />
         </div>
         {/* Pending Reviews & Faculties */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">

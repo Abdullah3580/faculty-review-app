@@ -6,10 +6,33 @@ import { useSession, signOut } from "next-auth/react";
 import NotificationBell from "./NotificationBell";
 import ProfileMenu from "./ProfileMenu";
 import AuthButtons from "./AuthButtons";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+
 
 export default function Navbar() {
   const { data: session } = useSession();
-  
+    const pathname = usePathname();
+  const myId = session?.user?.id;
+  const [unread, setUnread] = useState(0);
+
+  useEffect(() => {
+    if (!myId) return;
+    const load = async () => {
+      try {
+        const res = await fetch("/api/messages/unread");
+        if (res.ok) {
+          const data = await res.json();
+          setUnread(data.unread);
+        }
+      } catch {}
+    };
+    load();
+    const t = setInterval(() => {
+      if (document.visibilityState === "visible") load();
+    }, 30000);
+    return () => clearInterval(t);
+  }, [myId, pathname]);
   const userRole = session?.user?.role; 
   const isAdmin = userRole === "admin" || userRole === "ADMIN";
 
@@ -26,10 +49,38 @@ export default function Navbar() {
 
         <div className="flex items-center gap-4">
           
+                    {session && (
+            <Link
+              href="/messages"
+              aria-label="Messages"
+              className="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                className="w-6 h-6 text-gray-700 dark:text-gray-200"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 12c0 4.14-4.03 7.5-9 7.5-1.2 0-2.34-.2-3.38-.55L3 20l1.4-3.74C3.53 14.9 3 13.5 3 12c0-4.14 4.03-7.5 9-7.5s9 3.36 9 7.5z"
+                />
+              </svg>
+              {unread > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 min-w-5 h-5 px-1 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">
+                  {unread > 9 ? "9+" : unread}
+                </span>
+              )}
+            </Link>
+          )}
+
           {session && <NotificationBell />}
 
           {session?.user ? (
-            <ProfileMenu user={session.user} isAdmin={isAdmin} />
+                            <ProfileMenu user={session.user} isAdmin={isAdmin} />
           ) : (
             <AuthButtons />
           )}

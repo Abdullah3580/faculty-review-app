@@ -50,7 +50,8 @@ model User {
   studentId         String?        @unique
   verifyToken       String?        @unique
   verifyTokenExpiry DateTime?
-  lastSeen         DateTime?
+  department        String?
+  lastSeen          DateTime?      @db.Timestamp(6)
   accounts          Account[]
   answers           Answer[]
   notifications     Notification[]
@@ -60,6 +61,8 @@ model User {
   sessions          Session[]
   votes             Vote[]
   followedFaculties Faculty[]      @relation("UserFollows")
+  conversationParticipants ConversationParticipant[]
+  sentMessages             Message[]
 }
 
 model VerificationToken {
@@ -81,8 +84,8 @@ model Faculty {
   initial     String?
   roomNumber  String?
   email       String?
-  image       String?
   department  String     @default("General")
+  image       String?
   questions   Question[]
   reviews     Review[]
   followers   User[]     @relation("UserFollows")
@@ -101,7 +104,6 @@ model Review {
   faculty   Faculty  @relation(fields: [facultyId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   votes     Vote[]
-  @@unique([userId, facultyId])
 }
 
 model Vote {
@@ -175,7 +177,38 @@ model Notification {
 
 model Course {
   id        String   @id @default(cuid())
-  code      String   @unique // যেমন: "CSE101"
-  name      String?  // ঐচ্ছিক: কোর্সের নাম, যেমন: "Computer Programming"
+  code      String   @unique
+  name      String?
   createdAt DateTime @default(now())
+}
+model Conversation {
+  id           String                    @id @default(cuid())
+  createdAt    DateTime                  @default(now())
+  updatedAt    DateTime                  @default(now()) @updatedAt
+  participants ConversationParticipant[]
+  messages     Message[]
+}
+
+model ConversationParticipant {
+  id             String       @id @default(cuid())
+  conversationId String
+  userId         String
+  lastReadAt     DateTime?
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  content        String
+  createdAt      DateTime     @default(now())
+  conversationId String
+  senderId       String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender         User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId, createdAt])
 }

@@ -68,6 +68,8 @@ export default async function HomePage(props: Props) {
   const session = await getServerSession(authOptions);
 
   let isAdmin = false;
+
+  
   let currentUserId = "";
 
   if (session?.user?.email) {

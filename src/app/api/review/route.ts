@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { z } from "zod";
 
-const bannedWords = ["bad", "worst", "useless", "stupid", "idiot", "fake", "baje", "faltu", "gali"];
+const bannedWords = [ "stupid","idiot"];
 
 const reviewSchema = z.object({
   rating: z.coerce.number().min(1).max(5),
