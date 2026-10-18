@@ -93,6 +93,14 @@ export default async function HomePage(props: Props) {
               { department: { contains: word, mode: "insensitive" as const } },
               { code: { contains: word, mode: "insensitive" as const } },
               { initial: { contains: word, mode: "insensitive" as const } },
+                            {
+                reviews: {
+                  some: {
+                    status: "APPROVED",
+                    course: { contains: word, mode: "insensitive" as const },
+                  },
+                },
+              },
             ],
           })),
       }
@@ -111,7 +119,6 @@ export default async function HomePage(props: Props) {
       reviews: {
         where: { status: "APPROVED" },
         orderBy: { createdAt: "desc" },
-        take: 3,
         include: {
           user: {
             select: {
@@ -147,13 +154,25 @@ export default async function HomePage(props: Props) {
     take: itemsPerPage,
   });
 
+    const searchWords = query.toLowerCase().split(/\s+/).filter(Boolean);
+  const matchesCourse = (course: string | null) =>
+    !!course && searchWords.some((w) => course.toLowerCase().includes(w));
+
   const paginatedFaculties = faculties.map((faculty) => {
+    // search করা course-এর review আগে, বাকিগুলো তারপর (নতুন থেকে পুরোনো)
+    const reviews = searchWords.length
+      ? [...faculty.reviews].sort(
+          (a, b) =>
+            Number(matchesCourse(b.course)) - Number(matchesCourse(a.course)),
+        )
+      : faculty.reviews;
+
     const totalRating = faculty.reviews.reduce((sum, r) => sum + r.rating, 0);
     const reviewCount = faculty._count.reviews;
     const avgRating =
       faculty.reviews.length > 0 ? totalRating / faculty.reviews.length : 0;
     const tags = getTags(avgRating, reviewCount);
-    return { ...faculty, avgRating, tags, reviewCount };
+    return { ...faculty, reviews, avgRating, tags, reviewCount };
   });
 
   // Top 3 — শুধু first page এ এবং search না করলে
