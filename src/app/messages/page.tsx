@@ -1,3 +1,4 @@
+// src/app/messages/page.tsx
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -65,6 +66,7 @@ export default function MessagesPage() {
 
   const activeRef = useRef<string | null>(null);
   activeRef.current = activeId;
+  const openedTargetRef = useRef<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const taRef = useRef<HTMLTextAreaElement>(null);
 
@@ -109,10 +111,47 @@ export default function MessagesPage() {
     return () => clearInterval(t);
   }, [myId, loadConvs, loadMessages]);
 
-  // student হলে একমাত্র conversation নিজে থেকে খুলবে
+  // Student হলে একমাত্র conversation নিজে থেকে খুলবে
   useEffect(() => {
     if (!isAdmin && !activeId && convs.length > 0) setActiveId(convs[0].id);
   }, [isAdmin, activeId, convs]);
+
+  // Admin dashboard থেকে /messages?to=USER_ID এ এলে ওই user-এর chat খুলবে
+  useEffect(() => {
+    if (!myId || !isAdmin) return;
+
+    const targetId = new URLSearchParams(window.location.search).get("to");
+    if (!targetId || openedTargetRef.current === targetId) return;
+
+    openedTargetRef.current = targetId;
+
+    const openConversation = async () => {
+      setError("");
+      try {
+        const res = await fetch("/api/messages/open", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ toUserId: targetId }),
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok || !data.conversationId) {
+          openedTargetRef.current = null;
+          setError(data.error || "Could not open conversation.");
+          return;
+        }
+
+        await loadConvs();
+        setActiveId(data.conversationId);
+      } catch {
+        openedTargetRef.current = null;
+        setError("Could not open conversation. Please try again.");
+      }
+    };
+
+    void openConversation();
+  }, [myId, isAdmin, loadConvs]);
 
   useEffect(() => {
     if (activeId) loadMessages(activeId);
