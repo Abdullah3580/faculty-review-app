@@ -8,16 +8,24 @@ import Link from "next/link";
 type Conv = {
   id: string;
   updatedAt: string;
-  other: { id: string; nickname: string | null; role: string; name?: string | null } | null;
+    other: { id: string; nickname: string | null; role: string; name?: string | null; reviewCount?: number } | null;
   lastMessage: { content: string; createdAt: string; senderId: string } | null;
   unread: number;
+  totalReviews?: number;
 };
 type Msg = { id: string; content: string; createdAt: string; senderId: string };
+
+//////////
+
+
 
 const GROUP_GAP = 5 * 60 * 1000;
 
 function timeLabel(iso: string) {
-  return new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  return new Date(iso).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 function dayLabel(iso: string) {
@@ -27,7 +35,11 @@ function dayLabel(iso: string) {
   yesterday.setDate(today.getDate() - 1);
   if (d.toDateString() === today.toDateString()) return "Today";
   if (d.toDateString() === yesterday.toDateString()) return "Yesterday";
-  return d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
+  return d.toLocaleDateString(undefined, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 }
 
 function listTime(iso: string) {
@@ -36,7 +48,15 @@ function listTime(iso: string) {
   return d.toLocaleDateString(undefined, { day: "numeric", month: "short" });
 }
 
-function Avatar({ label, admin, small }: { label: string; admin?: boolean; small?: boolean }) {
+function Avatar({
+  label,
+  admin,
+  small,
+}: {
+  label: string;
+  admin?: boolean;
+  small?: boolean;
+}) {
   const size = small ? "w-9 h-9 text-sm" : "w-11 h-11 text-base";
   return (
     <div
@@ -77,8 +97,14 @@ export default function MessagesPage() {
       ? "Admin"
       : c.other?.name || c.other?.nickname || "User";
 
-  const isAdminConv = (c: Conv | null) => c?.other?.role?.toUpperCase() === "ADMIN";
-
+  const isAdminConv = (c: Conv | null) =>
+    c?.other?.role?.toUpperCase() === "ADMIN";
+  const reviewText = (c: Conv | null) =>
+    c?.other &&
+    c.other.role?.toUpperCase() !== "ADMIN" &&
+    typeof c.other.reviewCount === "number"
+      ? `${c.other.reviewCount} review${c.other.reviewCount === 1 ? "" : "s"}`
+      : null;
   const loadConvs = useCallback(async () => {
     try {
       const res = await fetch("/api/messages");
@@ -184,7 +210,12 @@ export default function MessagesPage() {
     if (activeId) {
       setMessages((p) => [
         ...p,
-        { id: tempId, content, createdAt: new Date().toISOString(), senderId: myId },
+        {
+          id: tempId,
+          content,
+          createdAt: new Date().toISOString(),
+          senderId: myId,
+        },
       ]);
     }
     setText("");
@@ -225,7 +256,10 @@ export default function MessagesPage() {
   if (!session) {
     return (
       <div className="p-10 text-center">
-        <Link href="/login" className="text-indigo-600 font-bold hover:underline">
+        <Link
+          href="/login"
+          className="text-indigo-600 font-bold hover:underline"
+        >
           Login to see your messages
         </Link>
       </div>
@@ -234,10 +268,18 @@ export default function MessagesPage() {
 
   const q = search.trim().toLowerCase();
   const shownConvs = q
-    ? convs.filter((c) => labelFor(c).toLowerCase().includes(q) || c.other?.nickname?.toLowerCase().includes(q))
+    ? convs.filter(
+        (c) =>
+          labelFor(c).toLowerCase().includes(q) ||
+          c.other?.nickname?.toLowerCase().includes(q),
+      )
     : convs;
 
-  const headerTitle = activeConv ? labelFor(activeConv) : isAdmin ? "Select a conversation" : "Admin";
+  const headerTitle = activeConv
+    ? labelFor(activeConv)
+    : isAdmin
+      ? "Select a conversation"
+      : "Admin";
   const headerAdmin = activeConv ? isAdminConv(activeConv) : !isAdmin;
 
   return (
@@ -263,7 +305,9 @@ export default function MessagesPage() {
             <div className="flex-1 overflow-y-auto">
               {shownConvs.length === 0 && (
                 <p className="p-6 text-sm text-gray-500 text-center">
-                  {q ? "No match found." : "No conversations yet. Start one from the Admin Dashboard."}
+                  {q
+                    ? "No match found."
+                    : "No conversations yet. Start one from the Admin Dashboard."}
                 </p>
               )}
               {shownConvs.map((c) => (
@@ -277,16 +321,27 @@ export default function MessagesPage() {
                   <Avatar label={labelFor(c)} admin={isAdminConv(c)} />
                   <div className="min-w-0 flex-1">
                     <div className="flex justify-between items-center gap-2">
-                      <span
-                        className={`text-sm truncate text-gray-900 dark:text-white ${
-                          c.unread > 0 ? "font-extrabold" : "font-semibold"
-                        }`}
-                      >
-                        {labelFor(c)}
-                      </span>
-                      {c.lastMessage && (
-                        <span className="text-[10px] text-gray-400 shrink-0">
-                          {listTime(c.lastMessage.createdAt)}
+                                            <div className="flex items-center gap-1.5 min-w-0">
+                        <span
+                          className={`text-sm truncate text-gray-900 dark:text-white ${
+                            c.unread > 0 ? "font-extrabold" : "font-semibold"
+                          }`}
+                        >
+                          {labelFor(c)}
+                        </span>
+                        {reviewText(c) && (
+                          <span
+                            title={reviewText(c) || ""}
+                            className="shrink-0 text-[10px] font-bold bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-200 px-1.5 py-0.5 rounded-full"
+                          >
+                            📝 {c.other?.reviewCount}
+                          </span>
+                        )}
+                      </div>
+
+                      {typeof c.totalReviews === "number" && (
+                        <span className="text-[10px] rounded-full bg-indigo-100 text-indigo-700 px-2 py-0.5 shrink-0">
+                          {c.totalReviews} reviews
                         </span>
                       )}
                     </div>
@@ -328,14 +383,21 @@ export default function MessagesPage() {
                 ←
               </button>
             )}
-            {(activeConv || !isAdmin) && <Avatar label={headerTitle} admin={headerAdmin} small />}
+            {(activeConv || !isAdmin) && (
+              <Avatar label={headerTitle} admin={headerAdmin} small />
+            )}
             <div className="min-w-0">
               <p className="font-bold text-gray-900 dark:text-white truncate leading-tight">
                 {headerTitle}
               </p>
-              {activeConv?.other?.nickname && isAdmin && (
+                            {activeConv?.other && isAdmin && (
                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                  @{activeConv.other.nickname}
+                  {[
+                    activeConv.other.nickname && `@${activeConv.other.nickname}`,
+                    reviewText(activeConv),
+                  ]
+                    .filter(Boolean)
+                    .join(" · ")}
                 </p>
               )}
               {!isAdmin && (
@@ -354,13 +416,17 @@ export default function MessagesPage() {
             {!activeConv && isAdmin ? (
               <div className="h-full flex flex-col items-center justify-center text-center text-gray-400">
                 <span className="text-5xl mb-3">💬</span>
-                <p className="text-sm">Select a conversation to start chatting.</p>
+                <p className="text-sm">
+                  Select a conversation to start chatting.
+                </p>
               </div>
             ) : messages.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-center text-gray-400">
                 <span className="text-5xl mb-3">👋</span>
                 <p className="text-sm">
-                  {isAdmin ? "No messages yet." : "No messages yet. Say hello to the admin!"}
+                  {isAdmin
+                    ? "No messages yet."
+                    : "No messages yet. Say hello to the admin!"}
                 </p>
               </div>
             ) : (
@@ -369,17 +435,24 @@ export default function MessagesPage() {
                 const next = messages[i + 1];
                 const mine = m.senderId === myId;
                 const newDay =
-                  !prev || new Date(prev.createdAt).toDateString() !== new Date(m.createdAt).toDateString();
+                  !prev ||
+                  new Date(prev.createdAt).toDateString() !==
+                    new Date(m.createdAt).toDateString();
                 const joinsPrev =
                   !!prev &&
                   !newDay &&
                   prev.senderId === m.senderId &&
-                  new Date(m.createdAt).getTime() - new Date(prev.createdAt).getTime() < GROUP_GAP;
+                  new Date(m.createdAt).getTime() -
+                    new Date(prev.createdAt).getTime() <
+                    GROUP_GAP;
                 const lastInGroup =
                   !next ||
                   next.senderId !== m.senderId ||
-                  new Date(next.createdAt).toDateString() !== new Date(m.createdAt).toDateString() ||
-                  new Date(next.createdAt).getTime() - new Date(m.createdAt).getTime() > GROUP_GAP;
+                  new Date(next.createdAt).toDateString() !==
+                    new Date(m.createdAt).toDateString() ||
+                  new Date(next.createdAt).getTime() -
+                    new Date(m.createdAt).getTime() >
+                    GROUP_GAP;
 
                 return (
                   <div key={m.id}>
@@ -421,7 +494,9 @@ export default function MessagesPage() {
           {/* Composer */}
           {canCompose && (
             <div className="p-3 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
-              {error && <p className="text-xs text-red-500 mb-2 px-1">{error}</p>}
+              {error && (
+                <p className="text-xs text-red-500 mb-2 px-1">{error}</p>
+              )}
               <div className="flex items-end gap-2">
                 <textarea
                   ref={taRef}
@@ -459,7 +534,9 @@ export default function MessagesPage() {
                   Enter to send, Shift + Enter for a new line
                 </span>
                 {text.length > 1800 && (
-                  <span className="text-[10px] text-gray-400">{text.length}/2000</span>
+                  <span className="text-[10px] text-gray-400">
+                    {text.length}/2000
+                  </span>
                 )}
               </div>
             </div>

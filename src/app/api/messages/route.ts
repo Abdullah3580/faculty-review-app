@@ -103,7 +103,15 @@ export async function GET() {
     include: {
       participants: {
         include: {
-          user: { select: { id: true, name: true, nickname: true, role: true } },
+                    user: {
+            select: {
+              id: true,
+              name: true,
+              nickname: true,
+              role: true,
+              _count: { select: { reviews: true } },
+            },
+          },
         },
       },
       messages: { orderBy: { createdAt: "desc" }, take: 1 },
@@ -121,6 +129,8 @@ export async function GET() {
           ...(mine?.lastReadAt ? { createdAt: { gt: mine.lastReadAt } } : {}),
         },
       });
+      
+      
       return {
         id: c.id,
         updatedAt: c.updatedAt,
@@ -130,6 +140,7 @@ export async function GET() {
               nickname: other.nickname,
               role: other.role,
               name: viewerIsAdmin ? other.name : undefined,
+              reviewCount: other._count.reviews,
             }
           : null,
         lastMessage: c.messages[0] ?? null,
