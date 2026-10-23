@@ -22,12 +22,12 @@ export default function AdminFacultyManager({ faculties, departments }: Props) {
 
   // 🔍 সার্চ ফিল্টার
   const filteredFaculties = faculties.filter((f) => {
-  const term = searchTerm.toLowerCase().trim();
-  return (
-    f.name.toLowerCase().includes(term) ||
-    f.department.toLowerCase().includes(term)
-  );
-});
+    const term = searchTerm.toLowerCase().trim();
+    return (
+      f.name.toLowerCase().includes(term) ||
+      f.department.toLowerCase().includes(term)
+    );
+  });
   // ✅ সব সিলেক্ট করার লজিক
   const handleSelectAll = (e: any) => {
     if (e.target.checked) setSelectedIds(filteredFaculties.map((f) => f.id));
@@ -147,9 +147,25 @@ export default function AdminFacultyManager({ faculties, departments }: Props) {
                       onChange={() => handleSelectOne(faculty.id)}
                     />
                   </td>
+                  <td className="p-4 flex items-center gap-4">
+                    <div className="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-4xl text-white font-bold shadow-md overflow-hidden shrink-0">
+                      {faculty.image ? (
+                        <img
+                          src={faculty.image}
+                          alt={faculty.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        faculty.name.charAt(0)
+                      )}
+                    </div>
+                  </td>
                   <td className="p-4">
                     <div className="font-bold text-gray-900 dark:text-white">
-                      <Link href={`/faculty/${faculty.id}`} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                      <Link
+                        href={`/faculty/${faculty.id}`}
+                        className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                      >
                         {faculty.name}
                       </Link>
                     </div>
