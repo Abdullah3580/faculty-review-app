@@ -19,7 +19,8 @@ export default function RegisterPage() {
   
   
   const [showPassword, setShowPassword] = useState(false);
-  
+  const [showWarning, setShowWarning] = useState(true);
+
   const [errorMessages, setErrorMessages] = useState<string[]>([]); 
   const router = useRouter();
 
@@ -91,6 +92,45 @@ export default function RegisterPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900 px-4 py-12">
+
+      {/* ⚠️ Warning Popup */}
+      {showWarning && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4"
+          onClick={() => setShowWarning(false)}
+        >
+          <div
+            className="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-yellow-300 dark:border-yellow-600 max-w-sm w-full p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowWarning(false)}
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 dark:hover:text-white transition text-xl font-bold leading-none"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+            <div className="flex items-start gap-3">
+              <span className="text-2xl">⚠️</span>
+              <div>
+                <h3 className="font-bold text-gray-900 dark:text-white mb-2">সতর্কতা</h3>
+                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                  অনুগ্রহ করে <span className="font-semibold text-red-600 dark:text-red-400">UCAM/ELMS এর পাসওয়ার্ড ইউজ করবেন না</span>, বা ইউজ করে লগিন করবেন না।
+                </p>
+                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mt-2">
+                  লগিন করার জন্য প্রথমে <span className="font-semibold">সাইন আপ</span> করতে হবে। এটি স্টুডেন্টদের হেল্প করার জন্য একটি <span className="font-semibold">আনঅফিসিয়াল ওয়েবসাইট</span>।
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowWarning(false)}
+              className="mt-4 w-full py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium transition"
+            >
+              বুঝেছি, ঠিক আছে
+            </button>
+          </div>
+        </div>
+      )}
       <div className="w-full max-w-md space-y-6 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Create Account</h2>
