@@ -231,7 +231,10 @@ export default async function HomePage(props: Props) {
         )
       : faculty.reviews;
 
-    const totalRating = faculty.reviews.reduce((sum, r) => sum + r.rating, 0);
+    const totalRating = faculty.reviews.reduce(
+  (sum: number, r: { rating: number }) => sum + r.rating,
+  0,
+);
     const reviewCount = faculty._count.reviews;
     const avgRating = faculty.reviews.length > 0 ? totalRating / faculty.reviews.length : 0;
     const tags = getTags(avgRating, reviewCount);
