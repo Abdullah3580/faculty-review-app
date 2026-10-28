@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; 
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -12,16 +12,15 @@ export default function RegisterPage() {
     email: "",
     studentId: "",
     nickname: "",
-    password: ""
+    password: "",
   });
   const [loading, setLoading] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  
-  
+
   const [showPassword, setShowPassword] = useState(false);
   const [showWarning, setShowWarning] = useState(true);
 
-  const [errorMessages, setErrorMessages] = useState<string[]>([]); 
+  const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +31,7 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setErrorMessages([]); 
+    setErrorMessages([]);
 
     try {
       const res = await fetch("/api/register", {
@@ -54,12 +53,12 @@ export default function RegisterPage() {
       } else {
         if (data.errors && Array.isArray(data.errors)) {
           setErrorMessages(data.errors);
-          toast.error(data.errors[0]); 
+          toast.error(data.errors[0]);
         } else if (data.error) {
-           setErrorMessages([data.error]);
-           toast.error(data.error);
+          setErrorMessages([data.error]);
+          toast.error(data.error);
         } else {
-           setErrorMessages(["Registration failed."]);
+          setErrorMessages(["Registration failed."]);
         }
       }
     } catch (error) {
@@ -74,15 +73,20 @@ export default function RegisterPage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white p-4">
         <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg text-center border border-gray-200 dark:border-gray-700 max-w-md w-full">
-          <h2 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 mb-4">Check Your Email 📧</h2>
+          <h2 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 mb-4">
+            Check Your Email 📧
+          </h2>
           <p className="text-gray-600 dark:text-gray-300 mb-6">
-            We have sent a verification link to <strong>{formData.email}</strong>. 
-            Please check your inbox.
+            We have sent a verification link to{" "}
+            <strong>{formData.email}</strong>. Please check your inbox.
           </p>
           <p className="text-2xl font-bold text-red-600 dark:text-red-400 mb-4">
             ⚠️ Also check your spam folder
           </p>
-          <Link href="/login" className="text-indigo-600 hover:underline font-medium">
+          <Link
+            href="/login"
+            className="text-indigo-600 hover:underline font-medium"
+          >
             Go to Login Page
           </Link>
         </div>
@@ -92,7 +96,6 @@ export default function RegisterPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900 px-4 py-12">
-
       {/* ⚠️ Warning Popup */}
       {showWarning && (
         <div
@@ -113,12 +116,21 @@ export default function RegisterPage() {
             <div className="flex items-start gap-3">
               <span className="text-2xl">⚠️</span>
               <div>
-                <h3 className="font-bold text-gray-900 dark:text-white mb-2">সতর্কতা</h3>
+                <h3 className="font-bold text-gray-900 dark:text-white mb-2">
+                  সতর্কতা
+                </h3>
                 <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                  অনুগ্রহ করে <span className="font-semibold text-red-600 dark:text-red-400">UCAM/ELMS এর পাসওয়ার্ড ইউজ করবেন না</span>, বা ইউজ করে লগিন করবেন না।
+                  অনুগ্রহ করে{" "}
+                  <span className="font-semibold text-red-600 dark:text-red-400">
+                    UCAM/ELMS এর পাসওয়ার্ড ইউজ করবেন না
+                  </span>
+                  , বা ইউজ করে লগিন করবেন না।
                 </p>
                 <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mt-2">
-                  লগিন করার জন্য প্রথমে <span className="font-semibold">সাইন আপ</span> করতে হবে। এটি স্টুডেন্টদের হেল্প করার জন্য একটি <span className="font-semibold">আনঅফিসিয়াল ওয়েবসাইট</span>।
+                  লগিন করার জন্য প্রথমে{" "}
+                  <span className="font-semibold">সাইন আপ</span> করতে হবে। এটি
+                  স্টুডেন্টদের হেল্প করার জন্য একটি{" "}
+                  <span className="font-semibold">আনঅফিসিয়াল ওয়েবসাইট</span>।
                 </p>
               </div>
             </div>
@@ -133,7 +145,9 @@ export default function RegisterPage() {
       )}
       <div className="w-full max-w-md space-y-6 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Create Account</h2>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+            Create Account
+          </h2>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
             Join the community to review faculties anonymously
           </p>
@@ -145,8 +159,12 @@ export default function RegisterPage() {
           <div className="text-xs text-indigo-900 dark:text-indigo-200">
             <p className="font-bold mb-1">Your identity is hidden!</p>
             <p className="opacity-90 leading-relaxed">
-              Your <span className="font-semibold">Name</span>, <span className="font-semibold">ID</span>, and <span className="font-semibold">Email</span> will remain completely <span className="font-bold underline">confidential</span>. 
-              Only your <strong>Anonymous Name</strong> will be visible to others.
+              Your <span className="font-semibold">Name</span>,{" "}
+              <span className="font-semibold">ID</span>, and{" "}
+              <span className="font-semibold">Email</span> will remain
+              completely{" "}
+              <span className="font-bold underline">confidential</span>. Only
+              your <strong>Anonymous Name</strong> will be visible to others.
             </p>
           </div>
         </div>
@@ -164,25 +182,55 @@ export default function RegisterPage() {
         )}
 
         <form className="mt-4 space-y-4" onSubmit={handleSubmit}>
-          <input name="name" type="text" required placeholder="Full Name  (Will be Hidden)" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
-          <input name="studentId" type="text" required placeholder="Student ID  (Will be Hidden)" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
-          
+          <input
+            name="name"
+            type="text"
+            required
+            placeholder="Full Name  (Will be Hidden)"
+            onChange={handleChange}
+            className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition"
+          />
+          <input
+            name="studentId"
+            type="text"
+            required
+            placeholder="Student ID  (Will be Hidden)"
+            onChange={handleChange}
+            className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition"
+          />
+
           <div className="relative">
-            <input name="nickname" type="text" required placeholder="Anonymous Name (Visible to Public)" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border-2 border-indigo-100 dark:border-indigo-800 outline-none focus:border-indigo-500 transition" />
-            <span className="absolute right-3 top-3.5 text-xs text-gray-400">Public</span>
+            <input
+              name="nickname"
+              type="text"
+              required
+              placeholder="Anonymous Name (Visible to Public)"
+              onChange={handleChange}
+              className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border-2 border-indigo-100 dark:border-indigo-800 outline-none focus:border-indigo-500 transition"
+            />
+            <span className="absolute right-3 top-3.5 text-xs text-gray-400">
+              Public
+            </span>
           </div>
 
-          <input name="email" type="email" required placeholder="Varsity Email  (Hidden)" onChange={handleChange} className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition" />
-          
+          <input
+            name="email"
+            type="email"
+            required
+            placeholder="Varsity Email  (Hidden)"
+            onChange={handleChange}
+            className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition"
+          />
+
           {/* ✅ ৩. পাসওয়ার্ড ইনপুট ফিল্ড আপডেট (শো/হাইড ফিচার সহ) */}
           <div className="relative">
-            <input 
-              name="password" 
-              type={showPassword ? "text" : "password"} 
-              required 
-              placeholder="Password" 
-              onChange={handleChange} 
-              className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition pr-10" 
+            <input
+              name="password"
+              type={showPassword ? "text" : "password"}
+              required
+              placeholder="Password"
+              onChange={handleChange}
+              className="w-full p-3 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 outline-none focus:border-indigo-500 transition pr-10"
             />
             <button
               type="button"
@@ -193,14 +241,25 @@ export default function RegisterPage() {
             </button>
           </div>
 
-          <button type="submit" disabled={loading} className="w-full bg-indigo-600 text-white p-3 rounded font-bold hover:bg-indigo-500 disabled:opacity-50 transition shadow-lg shadow-indigo-500/30">
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-indigo-600 text-white p-3 rounded font-bold hover:bg-indigo-500 disabled:opacity-50 transition shadow-lg shadow-indigo-500/30"
+          >
             {loading ? "Creating Account..." : "Sign Up Securely"}
           </button>
         </form>
 
         <div className="text-center text-sm">
-          <span className="text-gray-600 dark:text-gray-400">Already have an account? </span>
-          <Link href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">Sign in</Link>
+          <span className="text-gray-600 dark:text-gray-400">
+            Already have an account?{" "}
+          </span>
+          <Link
+            href="/login"
+            className="font-medium text-indigo-600 hover:text-indigo-500"
+          >
+            Sign in
+          </Link>
         </div>
       </div>
     </div>

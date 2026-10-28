@@ -1,7 +1,6 @@
 // src/app/page.tsx
 import AdminReviewDeleteButton from "@/components/AdminReviewDeleteButton";
 import prisma from "@/lib/prisma";
-import AuthButtons from "@/components/AuthButtons";
 import AddFacultyForm from "@/components/AddFacultyForm";
 import ReviewModalButton from "@/components/ReviewModalButton";
 import VoteButtons from "@/components/VoteButtons";
@@ -10,12 +9,67 @@ import ReportButton from "@/components/ReportButton";
 import Pagination from "@/components/Pagination";
 import Link from "next/link";
 import UserBadge from "@/components/UserBadge";
-import NotificationBell from "@/components/NotificationBell";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import FadeIn from "@/components/FadeIn";
 import SearchBox from "@/components/SearchBox";
-import ProfileMenu from "@/components/ProfileMenu";
+
+// ─── Compound sort helpers ─────────────────────────────────────────────────
+function compareByCriterion(a: any, b: any, criterion: string, deptOrder: string[]): number {
+  switch (criterion) {
+    case "reviews_desc": return b.reviews.length - a.reviews.length;
+    case "reviews_asc":  return a.reviews.length - b.reviews.length;
+    case "zero_review_last": {
+      const aH = a.reviews.length > 0, bH = b.reviews.length > 0;
+      return aH === bH ? 0 : aH ? -1 : 1;
+    }
+    case "zero_review_first": {
+      const aH = a.reviews.length > 0, bH = b.reviews.length > 0;
+      return aH === bH ? 0 : aH ? 1 : -1;
+    }
+    case "rating_desc": {
+      const avgA = a.reviews.length > 0 ? a.reviews.reduce((s: number, r: any) => s + r.rating, 0) / a.reviews.length : -1;
+      const avgB = b.reviews.length > 0 ? b.reviews.reduce((s: number, r: any) => s + r.rating, 0) / b.reviews.length : -1;
+      return avgB - avgA;
+    }
+    case "rating_asc": {
+      const avgA = a.reviews.length > 0 ? a.reviews.reduce((s: number, r: any) => s + r.rating, 0) / a.reviews.length : 999;
+      const avgB = b.reviews.length > 0 ? b.reviews.reduce((s: number, r: any) => s + r.rating, 0) / b.reviews.length : 999;
+      return avgA - avgB;
+    }
+    case "alpha_asc": return a.name.localeCompare(b.name);
+    case "alpha_desc": return b.name.localeCompare(a.name);
+    case "newest": return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    case "oldest": return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    case "recently_reviewed": {
+      const lA = a.reviews.length > 0 ? Math.max(...a.reviews.map((r: any) => new Date(r.createdAt).getTime())) : 0;
+      const lB = b.reviews.length > 0 ? Math.max(...b.reviews.map((r: any) => new Date(r.createdAt).getTime())) : 0;
+      return lB - lA;
+    }
+    case "dept_priority": {
+      const pa = deptOrder.indexOf(a.department), pb = deptOrder.indexOf(b.department);
+      return (pa === -1 ? 9999 : pa) - (pb === -1 ? 9999 : pb);
+    }
+    case "random": {
+      const today = new Date();
+      const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+      const hA = Math.abs((seed * 31 + a.id.charCodeAt(0) * 17) & 0xffffffff);
+      const hB = Math.abs((seed * 31 + b.id.charCodeAt(0) * 17) & 0xffffffff);
+      return hA - hB;
+    }
+    default: return 0;
+  }
+}
+
+function applyCompoundSort(arr: any[], criteria: string[], deptOrder: string[]) {
+  return [...arr].sort((a, b) => {
+    for (const c of criteria) {
+      const r = compareByCriterion(a, b, c, deptOrder);
+      if (r !== 0) return r;
+    }
+    return 0;
+  });
+}
 
 export const dynamic = "force-dynamic";
 
@@ -28,33 +82,28 @@ const getTags = (avgRating: number, reviewCount: number) => {
   if (reviewCount > 2 && avgRating >= 4.5)
     tags.push({
       label: "💎 Gem",
-      color:
-        "bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-200 border border-purple-200 dark:border-purple-700",
+      color: "bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-200 border border-purple-200 dark:border-purple-700",
     });
   else if (reviewCount > 2 && avgRating >= 4.0)
     tags.push({
       label: "☀ Friendly",
-      color:
-        "bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200 border border-green-200 dark:border-green-700",
+      color: "bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200 border border-green-200 dark:border-green-700",
     });
   else if (reviewCount > 2 && avgRating <= 2.5)
     tags.push({
       label: "💀 Strict",
-      color:
-        "bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200 border border-red-200 dark:border-red-700",
+      color: "bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200 border border-red-200 dark:border-red-700",
     });
 
   if (reviewCount >= 5)
     tags.push({
       label: "🔥 Popular",
-      color:
-        "bg-orange-100 text-orange-800 dark:bg-orange-900/50 dark:text-orange-200 border border-orange-200 dark:border-orange-700",
+      color: "bg-orange-100 text-orange-800 dark:bg-orange-900/50 dark:text-orange-200 border border-orange-200 dark:border-orange-700",
     });
   if (reviewCount === 0)
     tags.push({
       label: "🆕 New",
-      color:
-        "bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 border border-blue-200 dark:border-blue-700",
+      color: "bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 border border-blue-200 dark:border-blue-700",
     });
 
   return tags;
@@ -68,8 +117,6 @@ export default async function HomePage(props: Props) {
   const session = await getServerSession(authOptions);
 
   let isAdmin = false;
-
-  
   let currentUserId = "";
 
   if (session?.user?.email) {
@@ -93,7 +140,7 @@ export default async function HomePage(props: Props) {
               { department: { contains: word, mode: "insensitive" as const } },
               { code: { contains: word, mode: "insensitive" as const } },
               { initial: { contains: word, mode: "insensitive" as const } },
-                            {
+              {
                 reviews: {
                   some: {
                     status: "APPROVED",
@@ -108,69 +155,85 @@ export default async function HomePage(props: Props) {
 
   // Total count for pagination
   const totalCount = await prisma.faculty.count({ where: searchWhere });
-  // Review আছে এমন faculty count
-  const reviewedCount = await prisma.faculty.count({
-    where: { ...searchWhere, reviews: { some: { status: "APPROVED" } } },
-  });
-  // শুধু current page এর faculty (DB থেকেই ১০টা)
-  const faculties = await prisma.faculty.findMany({
+
+  // ─── Compound sort settings ───────────────────────────────────────────────
+  const [sortCriteriaSetting, deptOrderSetting] = await Promise.all([
+    prisma.siteSetting.findUnique({ where: { key: "faculty_sort_criteria" } }),
+    prisma.siteSetting.findUnique({ where: { key: "dept_priority_order" } }),
+  ]);
+
+  const sortCriteria: string[] = sortCriteriaSetting?.value
+    ? JSON.parse(sortCriteriaSetting.value)
+    : ["reviews_desc"];
+  const deptOrder: string[] = deptOrderSetting?.value
+    ? JSON.parse(deptOrderSetting.value)
+    : [];
+
+  // Minimal fetch for compound sorting
+  const allForSort = await prisma.faculty.findMany({
     where: searchWhere,
-    include: {
+    select: {
+      id: true,
+      name: true,
+      department: true,
+      createdAt: true,
       reviews: {
         where: { status: "APPROVED" },
-        orderBy: { createdAt: "desc" },
-        include: {
-          user: {
-            select: {
-              id: true,
-              nickname: true,
-              semester: true,
-              role: true,
-              _count: { select: { reviews: true } },
-            },
-          },
-          votes: true,
-          reports: true,
-        },
-      },
-      questions: {
-        orderBy: { createdAt: "desc" },
-        include: {
-          user: { select: { id: true, nickname: true, semester: true } },
-          answers: {
-            orderBy: { createdAt: "asc" },
-            include: {
-              user: { select: { id: true, nickname: true, semester: true } },
-            },
-          },
-        },
-      },
-      _count: {
-        select: { reviews: { where: { status: "APPROVED" } } },
+        select: { rating: true, createdAt: true },
       },
     },
-    orderBy: [{ reviews: { _count: "desc" } }, { name: "asc" }],
-    skip: (page - 1) * itemsPerPage,
-    take: itemsPerPage,
   });
 
-    const searchWords = query.toLowerCase().split(/\s+/).filter(Boolean);
+  const sorted = applyCompoundSort(allForSort, sortCriteria, deptOrder);
+  const pageIds = sorted
+    .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+    .map((f: any) => f.id);
+
+  let faculties: any[] = [];
+  if (pageIds.length > 0) {
+    const raw = await prisma.faculty.findMany({
+      where: { id: { in: pageIds } },
+      include: {
+        reviews: {
+          where: { status: "APPROVED" },
+          orderBy: { createdAt: "desc" },
+          include: {
+            user: { select: { id: true, nickname: true, semester: true, role: true, _count: { select: { reviews: true } } } },
+            votes: true,
+            reports: true,
+          },
+        },
+        questions: {
+          orderBy: { createdAt: "desc" },
+          include: {
+            user: { select: { id: true, nickname: true, semester: true } },
+            answers: {
+              orderBy: { createdAt: "asc" },
+              include: { user: { select: { id: true, nickname: true, semester: true } } },
+            },
+          },
+        },
+        _count: { select: { reviews: { where: { status: "APPROVED" } } } },
+      },
+    });
+    const map = new Map(raw.map((f) => [f.id, f]));
+    faculties = pageIds.map((id: string) => map.get(id)).filter(Boolean) as any[];
+  }
+
+  const searchWords = query.toLowerCase().split(/\s+/).filter(Boolean);
   const matchesCourse = (course: string | null) =>
     !!course && searchWords.some((w) => course.toLowerCase().includes(w));
 
   const paginatedFaculties = faculties.map((faculty) => {
-    // search করা course-এর review আগে, বাকিগুলো তারপর (নতুন থেকে পুরোনো)
     const reviews = searchWords.length
       ? [...faculty.reviews].sort(
-          (a, b) =>
-            Number(matchesCourse(b.course)) - Number(matchesCourse(a.course)),
+          (a, b) => Number(matchesCourse(b.course)) - Number(matchesCourse(a.course))
         )
       : faculty.reviews;
 
     const totalRating = faculty.reviews.reduce((sum, r) => sum + r.rating, 0);
     const reviewCount = faculty._count.reviews;
-    const avgRating =
-      faculty.reviews.length > 0 ? totalRating / faculty.reviews.length : 0;
+    const avgRating = faculty.reviews.length > 0 ? totalRating / faculty.reviews.length : 0;
     const tags = getTags(avgRating, reviewCount);
     return { ...faculty, reviews, avgRating, tags, reviewCount };
   });
@@ -193,16 +256,12 @@ export default async function HomePage(props: Props) {
 
     topFaculties = topRaw
       .map((f) => {
-        const avg =
-          f.reviews.reduce((s, r) => s + r.rating, 0) / (f.reviews.length || 1);
+        const avg = f.reviews.reduce((s, r) => s + r.rating, 0) / (f.reviews.length || 1);
         const tags = getTags(avg, f.reviews.length);
         return { ...f, avgRating: avg, tags };
       })
       .filter((f) => f.reviews.length >= 3)
-      .sort(
-        (a, b) =>
-          b.avgRating - a.avgRating || b.reviews.length - a.reviews.length,
-      )
+      .sort((a, b) => b.avgRating - a.avgRating || b.reviews.length - a.reviews.length)
       .slice(0, 3);
   }
 
@@ -349,7 +408,6 @@ export default async function HomePage(props: Props) {
                 </Link>
 
                 <div className="mb-4 pr-24 flex items-center gap-4">
-                  {/* Faculty Photo */}
                   <Link href={`/faculty/${faculty.id}`} className="shrink-0">
                     <div className="w-16 h-16 rounded-full overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-2xl text-white font-bold shadow-md">
                       {faculty.image ? (
@@ -377,7 +435,7 @@ export default async function HomePage(props: Props) {
                       {faculty.designation} of {faculty.department} Dept.
                     </p>
                     <div className="flex flex-wrap gap-2 mt-3">
-                      {faculty.tags.map((tag, i) => (
+                      {faculty.tags.map((tag: any, i: number) => (
                         <span
                           key={i}
                           className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${tag.color}`}
@@ -409,7 +467,7 @@ export default async function HomePage(props: Props) {
                     </div>
                   )}
 
-                  {faculty.reviews.map((review) => (
+                  {faculty.reviews.map((review: any) => (
                     <div
                       key={review.id}
                       className="bg-gray-50 dark:bg-gray-700/30 p-4 rounded-xl text-sm border border-gray-100 dark:border-gray-700/50"

@@ -8,7 +8,13 @@ import Link from "next/link";
 type Conv = {
   id: string;
   updatedAt: string;
-    other: { id: string; nickname: string | null; role: string; name?: string | null; reviewCount?: number } | null;
+  other: {
+    id: string;
+    nickname: string | null;
+    role: string;
+    name?: string | null;
+    reviewCount?: number;
+  } | null;
   lastMessage: { content: string; createdAt: string; senderId: string } | null;
   unread: number;
   totalReviews?: number;
@@ -16,8 +22,6 @@ type Conv = {
 type Msg = { id: string; content: string; createdAt: string; senderId: string };
 
 //////////
-
-
 
 const GROUP_GAP = 5 * 60 * 1000;
 
@@ -295,10 +299,11 @@ export default function MessagesPage() {
             className={`${activeId ? "hidden md:flex" : "flex"} w-full md:w-80 shrink-0 flex-col border-r border-gray-200 dark:border-gray-800`}
           >
             <div className="p-3 border-b border-gray-100 dark:border-gray-800">
+              
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search conversations..."
+                placeholder="Search conversatins..."
                 className="w-full rounded-xl bg-gray-100 dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500/40"
               />
             </div>
@@ -321,14 +326,14 @@ export default function MessagesPage() {
                   <Avatar label={labelFor(c)} admin={isAdminConv(c)} />
                   <div className="min-w-0 flex-1">
                     <div className="flex justify-between items-center gap-2">
-                                            <div className="flex items-center gap-1.5 min-w-0">
+                      <div className="flex items-center gap-1.5 min-w-0">
                         <span
                           className={`text-sm truncate text-gray-900 dark:text-white ${
                             c.unread > 0 ? "font-extrabold" : "font-semibold"
                           }`}
                         >
                           {labelFor(c)}
-                        </span>
+                        </span> 
                         {reviewText(c) && (
                           <span
                             title={reviewText(c) || ""}
@@ -342,6 +347,7 @@ export default function MessagesPage() {
                       {typeof c.totalReviews === "number" && (
                         <span className="text-[10px] rounded-full bg-indigo-100 text-indigo-700 px-2 py-0.5 shrink-0">
                           {c.totalReviews} reviews
+                          
                         </span>
                       )}
                     </div>
@@ -392,12 +398,18 @@ export default function MessagesPage() {
               </p>
                             {activeConv?.other && isAdmin && (
                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                  {[
-                    activeConv.other.nickname && `@${activeConv.other.nickname}`,
-                    reviewText(activeConv),
-                  ]
-                    .filter(Boolean)
-                    .join(" · ")}
+                  {activeConv.other.nickname && (
+                    <Link
+                      href={`/student/${activeConv.other.id}`}
+                      className="group"
+                    >
+                      <span className="font-mono group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition cursor-pointer">
+                        @{activeConv.other.nickname}
+                      </span>
+                    </Link>
+                  )}
+                  {activeConv.other.nickname && reviewText(activeConv) && " · "}
+                  {reviewText(activeConv)}
                 </p>
               )}
               {!isAdmin && (
